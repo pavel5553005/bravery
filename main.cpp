@@ -64,6 +64,22 @@ int main()
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
 
+        sf::Text xPos;
+        xPos.setFont(font);
+        xPos.setString(std::to_string(camera.getPos().x));
+        xPos.setCharacterSize(10);
+        xPos.setFillColor(sf::Color::Black);
+        xPos.setPosition(0, 0);
+        window.draw(xPos);
+
+        sf::Text yPos;
+        yPos.setFont(font);
+        yPos.setString(std::to_string(camera.getPos().y));
+        yPos.setCharacterSize(10);
+        yPos.setFillColor(sf::Color::Black);
+        yPos.setPosition(0, 10);
+        window.draw(yPos);
+
         sf::RectangleShape playerShape;
         playerShape.setSize(sf::Vector2f(10, 10));
         playerShape.setPosition((player.getPos().x - camera.getPos().x + 20) * 20, (player.getPos().y - camera.getPos().y + 20) * 20);
