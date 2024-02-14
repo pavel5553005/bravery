@@ -18,11 +18,17 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
     this->layout->addObject(this);
 }
 
-ObjOnLayout::~ObjOnLayout()
-{
-}
-
 Coordinates ObjOnLayout::getPos()
 {
     return pos;
+}
+
+void ObjOnLayout::tick()
+{
+    layout->isCollide(this);
+}
+
+ObjOnLayout::~ObjOnLayout()
+{
+    
 }

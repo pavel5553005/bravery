@@ -14,6 +14,7 @@ public:
     ~Layout();
     void addObject(ObjOnLayout* obj);
     bool isCollide(ObjOnLayout* obj);
+    void tick();
 };
 
 Layout::Layout(Map* map)
@@ -43,6 +44,14 @@ bool Layout::isCollide(ObjOnLayout* obj)
         }
     }
     return false;
+}
+
+void Layout::tick()
+{
+    for (ObjOnLayout* i : objects)
+    {
+        i->tick();
+    }
 }
 
 #endif

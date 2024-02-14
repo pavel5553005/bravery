@@ -19,6 +19,7 @@ public:
     Coordinates getPos();
     Vector2d getSize();
     void setPos(Coordinates pos);
+    void tick();
 };
 
 #endif
