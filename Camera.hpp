@@ -60,7 +60,7 @@ void Camera::render(sf::RenderWindow& window)
         }
     }
     // double speed = sqrt(followObj->getPos().x - pos.x) / 100;
-    double speed = 0.02 - (0.02 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
+    double speed = 0.05 - (0.05 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
     pos.x += (followObj->getPos().x - pos.x) * speed;
     pos.y += (followObj->getPos().y - pos.y) * speed;
 
