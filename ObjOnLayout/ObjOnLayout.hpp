@@ -1,8 +1,8 @@
 #ifndef ObjOnLayout_hpp_
 #define ObjOnLayout_hpp_
 
-#include "Coordinates.hpp"
-#include "Vector2d.hpp"
+#include "../Coordinates.hpp"
+#include "../Vector2d.hpp"
 
 class Layout;
 

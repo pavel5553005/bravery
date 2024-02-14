@@ -23,6 +23,16 @@ Coordinates ObjOnLayout::getPos()
     return pos;
 }
 
+Vector2d ObjOnLayout::getSize()
+{
+    return size;
+}
+
+void ObjOnLayout::setPos(Coordinates pos)
+{
+    this->pos = pos;
+}
+
 void ObjOnLayout::tick()
 {
     layout->isCollide(this);

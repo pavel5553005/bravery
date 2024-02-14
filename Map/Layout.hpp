@@ -8,23 +8,20 @@ class Layout
 {
 private:
     std::list<ObjOnLayout*> objects;
-    Map* map;
+    Map map;
 public:
-    Layout(Map* map);
-    ~Layout();
+    Layout();
     void addObject(ObjOnLayout* obj);
     bool isCollide(ObjOnLayout* obj);
     void tick();
+    Map* getMap();
+    ~Layout();
 };
 
-Layout::Layout(Map* map)
-{
-    this->map = map;
-}
+Layout::Layout()
+{}
 
-Layout::~Layout()
-{
-}
+
 
 void Layout::addObject(ObjOnLayout* obj)
 {
@@ -52,6 +49,16 @@ void Layout::tick()
     {
         i->tick();
     }
+}
+
+Map *Layout::getMap()
+{
+    return &map;
+}
+
+Layout::~Layout()
+{
+
 }
 
 #endif

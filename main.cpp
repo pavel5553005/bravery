@@ -1,14 +1,23 @@
 #include <SFML/Graphics.hpp>
-#include "Map/Map.hpp"
+#include "Map/Layout.hpp"
+#include "Camera.hpp"
+#include "ObjOnLayout/ObjOnLayout.cpp"
 
 int getTime();
-
-void renderMap(sf::RenderWindow& window, Map* map);
 
 int main()
 {
 
-    Map* map = new Map();
+    Layout layout;
+
+    Coordinates pos;
+    pos.x = 0;
+    pos.y = 0;
+    pos.z = 0;
+
+    ObjOnLayout player (pos, Vector2d(10, 10), &layout);
+
+    Camera camera(&player, &layout, 20);
 
     const int windowWidth = 800;
     const int windowHeight = 600;
@@ -21,6 +30,8 @@ int main()
     int endTime = 1;
     int fps = 0;
     
+    int scet = 0;
+
     sf::Font font;
     font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
 
@@ -37,7 +48,7 @@ int main()
 
         window.clear();
         
-        renderMap(window, map);
+        camera.render(window);
 
         sf::RectangleShape fpsBorder;
         fpsBorder.setSize(sf::Vector2f(30, 12));
@@ -53,7 +64,26 @@ int main()
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
 
+        sf::RectangleShape playerShape;
+        playerShape.setSize(sf::Vector2f(10, 10));
+        playerShape.setPosition((player.getPos().x - camera.getPos().x + 20) * 20, (player.getPos().y - camera.getPos().y + 20) * 20);
+        playerShape.setFillColor(sf::Color::Red);
+        window.draw(playerShape);
+
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) pos.y -= 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) pos.y += 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) pos.x -= 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) pos.x += 0.3;
+
+        player.setPos(pos);
+
         window.display();
+
+        scet++;
+
+
 
         endTime = getTime();
         if (endTime - startTime != 0)
@@ -72,28 +102,4 @@ int getTime()
     struct timespec time;
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time);
     return time.tv_sec * 1000 + time.tv_nsec / 1000000;
-}
-
-void renderMap(sf::RenderWindow& window, Map* map)
-{
-    for (int x = 0; x < 100; x++)
-    {
-        for (int y = 0; y < 100; y++)
-        {
-            if (map->getCell(x, y, 0).getType() == FloorCellType::Grass)
-            {
-                sf::RectangleShape shape(sf::Vector2f(10, 10));
-                shape.setPosition(x * 10, y * 10);
-                shape.setFillColor(sf::Color::Green);
-                window.draw(shape);
-            }
-            else if (map->getCell(x, y, 0).getType() == FloorCellType::Stone)
-            {
-                sf::RectangleShape shape(sf::Vector2f(10, 10));
-                shape.setPosition(x * 10, y * 10);
-                shape.setFillColor(sf::Color(128, 128, 128));
-                window.draw(shape);
-            }
-        }
-    }
 }
