@@ -8,6 +8,7 @@ ObjOnLayout::ObjOnLayout()
     pos.y = 0;
     pos.z = 0;
     this->size = Vector2d();
+    this->layout->addObject(this);
 }
 
 ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)

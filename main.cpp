@@ -1,13 +1,16 @@
 #include <SFML/Graphics.hpp>
-#include "Map/Layout.hpp"
+#include "InternalServer/Map/Layout.hpp"
 #include "Camera.hpp"
-#include "ObjOnLayout/ObjOnLayout.cpp"
+#include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 
 int getTime();
 
+void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, int index);
+
 int main()
 {
-
+    const int windowWidth = 800;
+    const int windowHeight = 600;
     Layout layout;
 
     Coordinates pos;
@@ -17,10 +20,11 @@ int main()
 
     ObjOnLayout player (pos, Vector2d(10, 10), &layout);
 
-    Camera camera(&player, &layout, 20);
+    pos.x = 10;
 
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    ObjOnLayout enemy (pos, Vector2d(10, 10), &layout);
+
+    Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
 
@@ -29,8 +33,6 @@ int main()
     int startTime = 0;
     int endTime = 1;
     int fps = 0;
-    
-    int scet = 0;
 
     sf::Font font;
     font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
@@ -44,17 +46,30 @@ int main()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::MouseWheelScrolled and event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+            {
+                if (event.mouseWheelScroll.delta > 0)
+                {
+                    camera.setScale(camera.getScale() * 1.1);
+                }
+                else
+                {
+                    camera.setScale(camera.getScale() * 0.9);
+                }
+            }
         }
+
+        layout.tick();
 
         window.clear();
         
         camera.render(window);
 
-        sf::RectangleShape fpsBorder;
-        fpsBorder.setSize(sf::Vector2f(30, 12));
-        fpsBorder.setPosition(windowWidth - 30, 0);
-        fpsBorder.setFillColor(sf::Color::Black);
-        window.draw(fpsBorder);
+        drawTextLeft(window, font, "Count: " + std::to_string(layout.getObjects().size()), 0);
+
+        drawTextLeft(window, font, "xPos: " + std::to_string(camera.getPos().x), 1);
+
+        drawTextLeft(window, font, "yPos: " + std::to_string(camera.getPos().y), 2);
 
         sf::Text fpsText;
         fpsText.setFont(font);
@@ -64,30 +79,6 @@ int main()
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
 
-        sf::Text xPos;
-        xPos.setFont(font);
-        xPos.setString(std::to_string(camera.getPos().x));
-        xPos.setCharacterSize(10);
-        xPos.setFillColor(sf::Color::Black);
-        xPos.setPosition(0, 0);
-        window.draw(xPos);
-
-        sf::Text yPos;
-        yPos.setFont(font);
-        yPos.setString(std::to_string(camera.getPos().y));
-        yPos.setCharacterSize(10);
-        yPos.setFillColor(sf::Color::Black);
-        yPos.setPosition(0, 10);
-        window.draw(yPos);
-
-        sf::RectangleShape playerShape;
-        playerShape.setSize(sf::Vector2f(10, 10));
-        playerShape.setPosition((player.getPos().x - camera.getPos().x + 20) * 20, (player.getPos().y - camera.getPos().y + 20) * 20);
-        playerShape.setFillColor(sf::Color::Red);
-        window.draw(playerShape);
-
-
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) pos.y -= 0.3;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) pos.y += 0.3;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) pos.x -= 0.3;
@@ -96,10 +87,6 @@ int main()
         player.setPos(pos);
 
         window.display();
-
-        scet++;
-
-
 
         endTime = getTime();
         if (endTime - startTime != 0)
@@ -118,4 +105,20 @@ int getTime()
     struct timespec time;
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time);
     return time.tv_sec * 1000 + time.tv_nsec / 1000000;
+}
+
+void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, int index)
+{
+    sf::RectangleShape rect(sf::Vector2f(100, 15));
+    rect.setPosition(0, index * 12);
+    rect.setFillColor(sf::Color::Black);
+    window.draw(rect);
+
+    sf::Text textObj;
+    textObj.setFont(font);
+    textObj.setString(text);
+    textObj.setCharacterSize(10);
+    textObj.setFillColor(sf::Color::White);
+    textObj.setPosition(0, index * 12);
+    window.draw(textObj);
 }
