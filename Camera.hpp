@@ -94,8 +94,8 @@ void Camera::render(sf::RenderWindow& window)
     // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
     // pos.x += (followObj->getPos().x - pos.x) * speed / scale;
     // pos.y += (followObj->getPos().y - pos.y) * speed / scale;
-    pos.x = followObj->getPos().x;
-    pos.y = followObj->getPos().y;
+    pos.x = followObj->getPos().x + followObj->getSize().x / 2;
+    pos.y = followObj->getPos().y + followObj->getSize().y / 2;
 
 }
 

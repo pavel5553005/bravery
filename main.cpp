@@ -12,8 +12,8 @@ int main()
 {
     EventHandler eventHandler;
 
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    const int windowWidth = 600;
+    const int windowHeight = 800;
     Layout layout(&eventHandler);
 
     Coordinates pos;
@@ -21,13 +21,17 @@ int main()
     pos.y = 0;
     pos.z = 0;
 
-    ObjOnLayout player (pos, Vector2d(1, 1));
+    Vector2d v(2, 2);
+
+    ObjOnLayout player(pos, v);
     layout.addObject(&player);
 
     pos.x = 10;
 
-    ObjOnLayout enemy (pos, Vector2d(1.5, 1.5));
-    layout.addObject(&enemy);
+    // ObjOnLayout enemy (pos, Vector2d(1.5, 1.5));
+    // layout.addObject(&enemy);
+
+    pos.x = 0;
 
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
@@ -76,6 +80,14 @@ int main()
 
         drawTextLeft(window, font, "yPos: " + std::to_string(camera.getPos().y), 2);
 
+        drawTextLeft(window, font, "y: " + std::to_string(player.getSize().y), 3);
+
+        sf::RectangleShape rect(sf::Vector2f(1, 1));
+        rect.setPosition(windowWidth / 2, windowHeight / 2);
+        rect.setFillColor(sf::Color::Red);
+        window.draw(rect);
+
+
         sf::Text fpsText;
         fpsText.setFont(font);
         fpsText.setString(std::to_string(fps));
@@ -91,8 +103,6 @@ int main()
 
         player.setPos(pos);
 
-        window.display();
-
         endTime = getTime();
         if (endTime - startTime != 0)
         {
@@ -102,6 +112,8 @@ int main()
         {
             fps = 1000;
         }
+        
+        window.display();
     }
 }
 
