@@ -1,5 +1,6 @@
 #include "ObjOnLayout.hpp"
-#include "../Map/Layout.hpp"
+#include "../Event/Event.hpp"
+#include "../Event/EventHandler.hpp"
 
 ObjOnLayout::ObjOnLayout()
 {
@@ -8,15 +9,12 @@ ObjOnLayout::ObjOnLayout()
     pos.y = 0;
     pos.z = 0;
     this->size = Vector2d();
-    this->layout->addObject(this);
 }
 
-ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
+ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size)
 {
     this->pos = pos;
     this->size = size;
-    this->layout = layout;
-    this->layout->addObject(this);
 }
 
 Coordinates ObjOnLayout::getPos()
@@ -29,6 +27,11 @@ Vector2d ObjOnLayout::getSize()
     return size;
 }
 
+void ObjOnLayout::setEventHandler(EventHandler* eventHandler)
+{
+    this->eventHandler = eventHandler;
+}
+
 void ObjOnLayout::setPos(Coordinates pos)
 {
     this->pos = pos;
@@ -36,7 +39,7 @@ void ObjOnLayout::setPos(Coordinates pos)
 
 void ObjOnLayout::tick()
 {
-    layout->isCollide(this);
+
 }
 
 ObjOnLayout::~ObjOnLayout()

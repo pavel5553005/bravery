@@ -4,22 +4,26 @@
 #include "../Coordinates.hpp"
 #include "../Vector2d.hpp"
 
-class Layout;
+class Event;
+
+class EventHandler;
 
 class ObjOnLayout
 {
 private:
     Coordinates pos;
     Vector2d size;
-    Layout* layout;
+protected:
+    EventHandler* eventHandler;
 public:
     ObjOnLayout();
-    ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout);
-    ~ObjOnLayout();
+    ObjOnLayout(Coordinates pos, Vector2d size);
     Coordinates getPos();
     Vector2d getSize();
+    void setEventHandler(EventHandler* eventHandler);
     void setPos(Coordinates pos);
     void tick();
+    ~ObjOnLayout();
 };
 
 #endif

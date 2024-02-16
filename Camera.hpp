@@ -65,6 +65,7 @@ void Camera::render(sf::RenderWindow& window)
             Coordinates screenPos;
             screenPos.x = (x - pos.x) * scale + windowWidth / 2;
             screenPos.y = (y - pos.y) * scale + windowHeight / 2;
+
             if (layout->getMap()->getCell(x, y, 0)->getObj() != nullptr)
             {
                 sf::RectangleShape rect(sf::Vector2f(scale, scale));

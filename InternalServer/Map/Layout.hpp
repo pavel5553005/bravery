@@ -3,24 +3,27 @@
 #include <list>
 #include "Map.hpp"
 #include "../ObjOnLayout/ObjOnLayout.hpp"
+#include "../Event/EventHandler.hpp"
 
 class Layout
 {
 private:
     std::list<ObjOnLayout*> objects;
     Map map;
+    EventHandler* eventHandler;
 public:
-    Layout();
+    Layout(EventHandler* eventHandler);
     void addObject(ObjOnLayout* obj);
-    bool isCollide(ObjOnLayout* obj);
     std::list<ObjOnLayout*> getObjects();
     void tick();
     Map* getMap();
     ~Layout();
 };
 
-Layout::Layout()
-{}
+Layout::Layout(EventHandler* eventHandler)
+{
+    this->eventHandler = eventHandler;
+}
 
 std::list<ObjOnLayout*> Layout::getObjects()
 {
@@ -30,21 +33,7 @@ std::list<ObjOnLayout*> Layout::getObjects()
 void Layout::addObject(ObjOnLayout* obj)
 {
     objects.push_back(obj);
-}
-
-bool Layout::isCollide(ObjOnLayout* obj)
-{
-    for (auto it = objects.begin(); it != objects.end(); it++)
-    {
-        if (obj->getPos().x < (*it)->getPos().x + (*it)->getSize().getX() &&
-            obj->getPos().x + obj->getSize().getX() > (*it)->getPos().x &&
-            obj->getPos().y < (*it)->getPos().y + (*it)->getSize().getY() &&
-            obj->getPos().y + obj->getSize().getY() > (*it)->getPos().y)
-        {
-            return true;
-        }
-    }
-    return false;
+    obj->setEventHandler(eventHandler);
 }
 
 void Layout::tick()

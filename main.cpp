@@ -2,6 +2,7 @@
 #include "InternalServer/Map/Layout.hpp"
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
+#include "InternalServer/Event/EventHandler.hpp"
 
 int getTime();
 
@@ -9,20 +10,24 @@ void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, in
 
 int main()
 {
+    EventHandler eventHandler;
+
     const int windowWidth = 800;
     const int windowHeight = 600;
-    Layout layout;
+    Layout layout(&eventHandler);
 
     Coordinates pos;
     pos.x = 0;
     pos.y = 0;
     pos.z = 0;
 
-    ObjOnLayout player (pos, Vector2d(10, 10), &layout);
+    ObjOnLayout player (pos, Vector2d(1, 1));
+    layout.addObject(&player);
 
     pos.x = 10;
 
-    ObjOnLayout enemy (pos, Vector2d(10, 10), &layout);
+    ObjOnLayout enemy (pos, Vector2d(1.5, 1.5));
+    layout.addObject(&enemy);
 
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
