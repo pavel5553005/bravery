@@ -4,6 +4,7 @@
 #include "InternalServer/ObjOnLayout/ObjOnLayout.hpp"
 #include "InternalServer/Map/Layout.hpp"
 #include "InternalServer/Coordinates.hpp"
+#include <list>
 
 class Camera
 {
@@ -73,22 +74,30 @@ void Camera::render(sf::RenderWindow& window)
                 rect.setFillColor(sf::Color::Blue);
                 window.draw(rect);
             }
-            else if (layout->getMap()->getCell(x, y, 0)->getType() == Grass)
-            {
-                sf::RectangleShape rect(sf::Vector2f(scale, scale));
-                rect.setPosition(screenPos.x, screenPos.y);
-                rect.setFillColor(sf::Color::Green);
-                window.draw(rect); 
+
+            // else if (layout->getMap()->getCell(x, y, 0)->getType() == Grass)
+            // {
+            //     sf::RectangleShape rect(sf::Vector2f(scale, scale));
+            //     rect.setPosition(screenPos.x, screenPos.y);
+            //     rect.setFillColor(sf::Color::Green);
+            //     window.draw(rect); 
                 
-            }                                    
-            else if (layout->getMap()->getCell(x, y, 0)->getType() == Stone)
-            {
-                sf::RectangleShape rect(sf::Vector2f(scale, scale));
-                rect.setPosition(screenPos.x, screenPos.y);
-                rect.setFillColor(sf::Color(128, 128, 128));
-                window.draw(rect);
-            }
+            // }                                    
+            // else if (layout->getMap()->getCell(x, y, 0)->getType() == Stone)
+            // {
+            //     sf::RectangleShape rect(sf::Vector2f(scale, scale));
+            //     rect.setPosition(screenPos.x, screenPos.y);
+            //     rect.setFillColor(sf::Color(128, 128, 128));
+            //     window.draw(rect);
+            // }
         }
+    }
+    for (auto i : layout->getObjects())
+    {
+        sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+        rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        rect.setFillColor(sf::Color::Red);
+        window.draw(rect);
     }
     // double speed = sqrt(followObj->getPos().x - pos.x) / 100;
     // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));

@@ -1,6 +1,7 @@
 #include "ObjOnLayout.hpp"
 #include "../Event/Event.hpp"
 #include "../Event/EventHandler.hpp"
+#include "../Map/Layout.hpp"
 #include <iostream>
 
 ObjOnLayout::ObjOnLayout()
@@ -9,12 +10,13 @@ ObjOnLayout::ObjOnLayout()
     this->size = Vector2d();
 }
 
-ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size)
+ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
 {
     this->pos = pos;
-    this->size.x = size.x;
-    this->size.y = size.y;
+    this->size = size;
     std::cout << "ObjOnLayout:" << size.x << " " << size.y << std::endl;
+    this->layout = layout;
+    layout->addObject(this);
 }
 
 Coordinates ObjOnLayout::getPos()

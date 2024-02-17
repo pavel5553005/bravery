@@ -3,6 +3,7 @@
 #include <math.h>
 #include <iostream>
 
+
 class Vector2d
 {
 public:
@@ -10,7 +11,6 @@ public:
     double y;
     Vector2d();
     Vector2d(double x, double y);
-    Vector2d(double length, int angle);
     double getLength();
     double getAngle();
     Vector2d& operator=(const Vector2d& other);
@@ -29,13 +29,6 @@ Vector2d::Vector2d(double x, double y)
     this->y = y;
     std::cout << "Vector2d:" << x << " " << y << std::endl;
 }
-
-Vector2d::Vector2d(double length, int angle)
-{
-    this->x = length * cos(angle * M_PI / 180);
-    this->y = length * -sin(angle * M_PI / 180);
-}
-
 
 double Vector2d::getLength()
 {

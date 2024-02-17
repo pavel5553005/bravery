@@ -12,26 +12,20 @@ int main()
 {
     EventHandler eventHandler;
 
-    const int windowWidth = 600;
-    const int windowHeight = 800;
+    const int windowWidth = 800;
+    const int windowHeight = 600;
     Layout layout(&eventHandler);
 
-    Coordinates pos;
-    pos.x = 0;
-    pos.y = 0;
-    pos.z = 0;
+    ObjOnLayout player(Coordinates(20, 20), Vector2d(1.5, 1.5), &layout);
 
-    Vector2d v(2, 2);
+    Coordinates position = player.getPos();
 
-    ObjOnLayout player(pos, v);
-    layout.addObject(&player);
+    // ObjOnLayout arr[10];
 
-    pos.x = 10;
-
-    // ObjOnLayout enemy (pos, Vector2d(1.5, 1.5));
-    // layout.addObject(&enemy);
-
-    pos.x = 0;
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     arr[i] = ObjOnLayout(Coordinates(i, i), Vector2d(1.5, 1.5), &layout);
+    // }
 
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
@@ -80,7 +74,9 @@ int main()
 
         drawTextLeft(window, font, "yPos: " + std::to_string(camera.getPos().y), 2);
 
-        drawTextLeft(window, font, "y: " + std::to_string(player.getSize().y), 3);
+        // drawTextLeft(window, font, "y: " + std::to_string(arr[0].getPos().y), 3);
+
+        // drawTextLeft(window, font, "x: " + std::to_string(arr[0].getPos().x), 4);
 
         sf::RectangleShape rect(sf::Vector2f(1, 1));
         rect.setPosition(windowWidth / 2, windowHeight / 2);
@@ -96,12 +92,12 @@ int main()
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) pos.y -= 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) pos.y += 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) pos.x -= 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) pos.x += 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) position.y -= 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) position.y += 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) position.x -= 0.3;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) position.x += 0.3;
 
-        player.setPos(pos);
+        player.setPos(position);
 
         endTime = getTime();
         if (endTime - startTime != 0)

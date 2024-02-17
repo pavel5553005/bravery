@@ -7,8 +7,10 @@ class Event
 {
 public:
     enum class Type {
-        TestEvent
+        TestEvent,
+        ObjMove
     };
+    
     Type type;
     Event(Type type);
 };
