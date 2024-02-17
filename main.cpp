@@ -18,16 +18,14 @@ int main()
 
     ObjOnLayout player(Coordinates(20, 30), Vector2d(0.5, 0.5), &layout);
 
+    ObjOnLayout player2(Coordinates(30, 30), Vector2d(0.5, 0.5), &layout);
+
     Coordinates position = player.getPos();
 
-    std::list<ObjOnLayout> objects;
+    ObjOnLayout objects[10];
 
-    for (int i = 0; i < 100; i++)
-    {
-        objects.push_back(ObjOnLayout(Coordinates(i, i), Vector2d(0.5, 0.5), &layout));
-    }
+    ObjOnLayout l(Coordinates(1, 1), Vector2d(1, 1), &layout);
     
-
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
@@ -70,14 +68,9 @@ int main()
         camera.render(window);
 
         drawTextLeft(window, font, "Count: " + std::to_string(layout.getObjects().size()), 0);
-
         drawTextLeft(window, font, "xPos: " + std::to_string(camera.getPos().x), 1);
-
         drawTextLeft(window, font, "yPos: " + std::to_string(camera.getPos().y), 2);
-
-        // drawTextLeft(window, font, "y: " + std::to_string(arr[0].getPos().y), 3);
-
-        // drawTextLeft(window, font, "x: " + std::to_string(arr[0].getPos().x), 4);
+        drawTextLeft(window, font, "0x0y: " + std::to_string(layout.getMap()->getCell(0, 0, 0)->getObjects()->size()), 3);
 
         sf::RectangleShape rect(sf::Vector2f(1, 1));
         rect.setPosition(windowWidth / 2, windowHeight / 2);

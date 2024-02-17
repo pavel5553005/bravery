@@ -34,6 +34,7 @@ void Layout::addObject(ObjOnLayout* obj)
 {
     objects.push_back(obj);
     obj->setEventHandler(eventHandler);
+    map.getCell(obj->getPos().x, obj->getPos().y, 0)->addObject(obj);
 }
 
 void Layout::tick()
