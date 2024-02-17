@@ -16,16 +16,17 @@ int main()
     const int windowHeight = 600;
     Layout layout(&eventHandler);
 
-    ObjOnLayout player(Coordinates(20, 20), Vector2d(0.5, 0.5), &layout);
+    ObjOnLayout player(Coordinates(20, 30), Vector2d(0.5, 0.5), &layout);
 
     Coordinates position = player.getPos();
 
-    // ObjOnLayout arr[10];
+    std::list<ObjOnLayout> objects;
 
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     arr[i] = ObjOnLayout(Coordinates(i, i), Vector2d(1.5, 1.5), &layout);
-    // }
+    for (int i = 0; i < 100; i++)
+    {
+        objects.push_back(ObjOnLayout(Coordinates(i, i), Vector2d(0.5, 0.5), &layout));
+    }
+    
 
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
