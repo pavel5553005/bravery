@@ -8,6 +8,7 @@ ObjOnLayout::ObjOnLayout()
 {
     this->pos = Coordinates();
     this->size = Vector2d();
+    layout = nullptr;
 }
 
 ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
@@ -56,7 +57,16 @@ void ObjOnLayout::move(Coordinates delta)
     setPos(pos + delta);
 }
 
+void ObjOnLayout::removeFromLayout()
+{
+    if (layout != nullptr)
+    {
+        ObjOnLayout* temp = this;
+        layout->getObjects()->remove(temp);
+        layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(temp);
+    }
+}
+
 ObjOnLayout::~ObjOnLayout()
 {
-    
 }

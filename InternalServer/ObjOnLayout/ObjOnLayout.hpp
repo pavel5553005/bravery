@@ -27,6 +27,7 @@ public:
     void setPos(Coordinates pos);
     void move(Coordinates delta);
     void tick();
+    void removeFromLayout();
     ~ObjOnLayout();
 };
 

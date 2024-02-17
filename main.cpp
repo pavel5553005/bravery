@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 #include "InternalServer/Event/EventHandler.hpp"
+#include <random>
 
 int getTime();
 
@@ -12,13 +13,13 @@ int main()
 {
     EventHandler eventHandler;
 
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    const int windowWidth = 1920;
+    const int windowHeight = 1080;
     Layout layout(&eventHandler);
 
     ObjOnLayout player(Coordinates(20, 30), Vector2d(0.5, 0.5), &layout);
 
-    ObjOnLayout player2(Coordinates(30, 30), Vector2d(0.5, 0.5), &layout);
+    ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
 
     ObjOnLayout* objects[100];
 
@@ -31,7 +32,7 @@ int main()
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window", sf::Style::Fullscreen);
 
     window.setFramerateLimit(60);
 
@@ -70,7 +71,8 @@ int main()
         
         camera.render(window);
 
-        drawTextLeft(window, font, "Count: " + std::to_string(layout.getObjects().size()), 0);
+
+        drawTextLeft(window, font, "Count: " + std::to_string(layout.getObjects()->size()), 0);
         drawTextLeft(window, font, "xPos: " + std::to_string(camera.getPos().x), 1);
         drawTextLeft(window, font, "yPos: " + std::to_string(camera.getPos().y), 2);
         drawTextLeft(window, font, "0x0y: " + std::to_string(layout.getMap()->getCell(0, 0, 0)->getObjects()->size()), 3);
@@ -80,6 +82,11 @@ int main()
         rect.setFillColor(sf::Color::Red);
         window.draw(rect);
 
+        sf::RectangleShape fpsRect;
+        fpsRect.setSize(sf::Vector2f(30, 12));
+        fpsRect.setPosition(windowWidth - 30, 0);
+        fpsRect.setFillColor(sf::Color::Black);
+        window.draw(fpsRect);
 
         sf::Text fpsText;
         fpsText.setFont(font);
@@ -88,11 +95,6 @@ int main()
         fpsText.setFillColor(sf::Color::Green);
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) player.move(Coordinates(0, -0.3));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.move(Coordinates(0, 0.3));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.move(Coordinates(-0.3, 0));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.move(Coordinates(0.3, 0));
 
         endTime = getTime();
         if (endTime - startTime != 0)
@@ -105,6 +107,16 @@ int main()
         }
         
         window.display();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) player.move(Coordinates(0, -0.3));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.move(Coordinates(0, 0.3));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.move(Coordinates(-0.3, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.move(Coordinates(0.3, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            player2->removeFromLayout();
+        }
     }
 }
 

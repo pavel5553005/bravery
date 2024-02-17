@@ -12,6 +12,7 @@ private:
     Coordinates pos;
     ObjOnLayout* followObj;
     Layout* layout;
+    sf::Texture mapTexture;
     double scale;
     int windowHeight;
     int windowWidth;
@@ -33,6 +34,26 @@ Camera::Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowW
     this->layout = layout;
     this->windowHeight = windowHeight;
     this->windowWidth = windowWidth;
+    sf::Texture texture;
+    texture.create(100 * 16, 100 * 16);
+    sf::Image image;
+    image.create(100 * 16, 100 * 16, sf::Color::Black);
+    for (int x = 0; x < 100 * 16; x++)
+    {
+        for (int y = 0; y < 100 * 16; y++)
+        {
+            if (layout->getMap()->getCell(x / 16, y / 16, 0)->getType() == LayoutCellType::Grass)
+            {
+                image.setPixel(x, y, sf::Color::Green);
+            }
+            else
+            {
+                image.setPixel(x, y, sf::Color(128, 128, 128));
+            }
+        }
+    }
+    texture.update(image);
+    mapTexture = texture;
 }
 
 Camera::Camera()
@@ -62,21 +83,18 @@ void Camera::render(sf::RenderWindow& window)
     pos.x = followObj->getPos().x + followObj->getSize().x / 2;
     pos.y = followObj->getPos().y + followObj->getSize().y / 2;
 
+    sf::Sprite sprite;
+    sprite.setTexture(mapTexture);
+    sprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
+    sprite.setScale(scale / 16, scale / 16);
+    window.draw(sprite);
+
     for (int x = 0; x < 100; x++)
     {
         for (int y = 0; y < 100; y++)
         {
-            Coordinates screenPos;
-            screenPos.x = (x - pos.x) * scale + windowWidth / 2;
-            screenPos.y = (y - pos.y) * scale + windowHeight / 2;
-
             for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
-            {                
-                sf::RectangleShape cell(sf::Vector2f(scale, scale));
-                cell.setPosition(screenPos.x, screenPos.y);
-                cell.setFillColor(sf::Color::Blue);
-                window.draw(cell);
-                
+            {
                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
                 rect.setFillColor(sf::Color::Red);

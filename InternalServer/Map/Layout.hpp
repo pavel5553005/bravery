@@ -14,7 +14,7 @@ private:
 public:
     Layout(EventHandler* eventHandler);
     void addObject(ObjOnLayout* obj);
-    std::list<ObjOnLayout*> getObjects();
+    std::list<ObjOnLayout*>* getObjects();
     void tick();
     Map* getMap();
     ~Layout();
@@ -25,9 +25,9 @@ Layout::Layout(EventHandler* eventHandler)
     this->eventHandler = eventHandler;
 }
 
-std::list<ObjOnLayout*> Layout::getObjects()
+std::list<ObjOnLayout*>* Layout::getObjects()
 {
-    return objects;
+    return &objects;
 }
 
 void Layout::addObject(ObjOnLayout* obj)
