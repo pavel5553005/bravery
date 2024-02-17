@@ -20,11 +20,14 @@ int main()
 
     ObjOnLayout player2(Coordinates(30, 30), Vector2d(0.5, 0.5), &layout);
 
-    Coordinates position = player.getPos();
+    ObjOnLayout* objects[100];
 
-    ObjOnLayout objects[10];
-
-    ObjOnLayout l(Coordinates(1, 1), Vector2d(1, 1), &layout);
+    for (int i = 0; i < 100; i++)
+    {
+        ObjOnLayout* obj = new ObjOnLayout(Coordinates(i, i), Vector2d(0.5, 0.5), &layout);
+        objects[i] = obj;
+    }
+    
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
@@ -86,12 +89,10 @@ int main()
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) position.y -= 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) position.y += 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) position.x -= 0.3;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) position.x += 0.3;
-
-        player.setPos(position);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) player.move(Coordinates(0, -0.3));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.move(Coordinates(0, 0.3));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.move(Coordinates(-0.3, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.move(Coordinates(0.3, 0));
 
         endTime = getTime();
         if (endTime - startTime != 0)

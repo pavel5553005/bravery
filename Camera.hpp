@@ -71,7 +71,12 @@ void Camera::render(sf::RenderWindow& window)
             screenPos.y = (y - pos.y) * scale + windowHeight / 2;
 
             for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
-            {
+            {                
+                sf::RectangleShape cell(sf::Vector2f(scale, scale));
+                cell.setPosition(screenPos.x, screenPos.y);
+                cell.setFillColor(sf::Color::Blue);
+                window.draw(cell);
+                
                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
                 rect.setFillColor(sf::Color::Red);

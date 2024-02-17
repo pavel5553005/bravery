@@ -25,6 +25,7 @@ public:
     Vector2d getSize();
     void setEventHandler(EventHandler* eventHandler);
     void setPos(Coordinates pos);
+    void move(Coordinates delta);
     void tick();
     ~ObjOnLayout();
 };
