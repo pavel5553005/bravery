@@ -16,7 +16,7 @@ int main()
     const int windowHeight = 600;
     Layout layout(&eventHandler);
 
-    ObjOnLayout player(Coordinates(20, 20), Vector2d(1.5, 1.5), &layout);
+    ObjOnLayout player(Coordinates(20, 20), Vector2d(0.5, 0.5), &layout);
 
     Coordinates position = player.getPos();
 

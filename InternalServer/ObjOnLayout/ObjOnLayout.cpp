@@ -36,7 +36,9 @@ void ObjOnLayout::setEventHandler(EventHandler* eventHandler)
 
 void ObjOnLayout::setPos(Coordinates pos)
 {
+    layout->getMap()->getCell(this->pos.x, this->pos.y, 0)->deleteObject(this);
     this->pos = pos;
+    layout->getMap()->getCell(this->pos.x, this->pos.y, 0)->addObject(this);
 }
 
 void ObjOnLayout::tick()

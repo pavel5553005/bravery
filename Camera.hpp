@@ -59,6 +59,9 @@ void Camera::setScale(double scale)
 
 void Camera::render(sf::RenderWindow& window)
 {
+    pos.x = followObj->getPos().x + followObj->getSize().x / 2;
+    pos.y = followObj->getPos().y + followObj->getSize().y / 2;
+
     for (int x = 0; x < 100; x++)
     {
         for (int y = 0; y < 100; y++)
@@ -67,44 +70,19 @@ void Camera::render(sf::RenderWindow& window)
             screenPos.x = (x - pos.x) * scale + windowWidth / 2;
             screenPos.y = (y - pos.y) * scale + windowHeight / 2;
 
-            if (layout->getMap()->getCell(x, y, 0)->getObj() != nullptr)
+            for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
             {
-                sf::RectangleShape rect(sf::Vector2f(scale, scale));
-                rect.setPosition(screenPos.x, screenPos.y);
-                rect.setFillColor(sf::Color::Blue);
+                sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+                rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+                rect.setFillColor(sf::Color::Red);
                 window.draw(rect);
             }
-
-            // else if (layout->getMap()->getCell(x, y, 0)->getType() == Grass)
-            // {
-            //     sf::RectangleShape rect(sf::Vector2f(scale, scale));
-            //     rect.setPosition(screenPos.x, screenPos.y);
-            //     rect.setFillColor(sf::Color::Green);
-            //     window.draw(rect); 
-                
-            // }                                    
-            // else if (layout->getMap()->getCell(x, y, 0)->getType() == Stone)
-            // {
-            //     sf::RectangleShape rect(sf::Vector2f(scale, scale));
-            //     rect.setPosition(screenPos.x, screenPos.y);
-            //     rect.setFillColor(sf::Color(128, 128, 128));
-            //     window.draw(rect);
-            // }
         }
-    }
-    for (auto i : layout->getObjects())
-    {
-        sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-        rect.setFillColor(sf::Color::Red);
-        window.draw(rect);
     }
     // double speed = sqrt(followObj->getPos().x - pos.x) / 100;
     // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
     // pos.x += (followObj->getPos().x - pos.x) * speed / scale;
     // pos.y += (followObj->getPos().y - pos.y) * speed / scale;
-    pos.x = followObj->getPos().x + followObj->getSize().x / 2;
-    pos.y = followObj->getPos().y + followObj->getSize().y / 2;
 
 }
 
