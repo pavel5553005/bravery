@@ -42,7 +42,7 @@ Camera::Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowW
     {
         for (int y = 0; y < 100 * 16; y++)
         {
-            if (layout->getMap()->getCell(x / 16, y / 16, 0)->getType() == LayoutCellType::Grass)
+            if (layout->getMap()->getCell(x / 16, y / 16, 0)->getType() == MapCell::Type::Grass)
             {
                 image.setPixel(x, y, sf::Color::Green);
             }

@@ -4,6 +4,7 @@
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 #include "InternalServer/Event/EventHandler.hpp"
 #include <random>
+#include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
 
 int getTime();
 
@@ -13,26 +14,24 @@ int main()
 {
     EventHandler eventHandler;
 
-    const int windowWidth = 1920;
-    const int windowHeight = 1080;
+    const int windowWidth = 800;
+    const int windowHeight = 600;
     Layout layout(&eventHandler);
 
     ObjOnLayout player(Coordinates(20, 30), Vector2d(0.5, 0.5), &layout);
 
-    ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
+    // ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
 
-    ObjOnLayout* objects[100];
+    // ObjOnLayout objects[100];
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 3000; i++)
     {
-        ObjOnLayout* obj = new ObjOnLayout(Coordinates(i, i), Vector2d(0.5, 0.5), &layout);
-        objects[i] = obj;
+        new ObjOnLayout(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout);
     }
-    
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
 
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
 
     window.setFramerateLimit(60);
 
@@ -95,16 +94,6 @@ int main()
         fpsText.setFillColor(sf::Color::Green);
         fpsText.setPosition(windowWidth - 30, 0);
         window.draw(fpsText);
-
-        endTime = getTime();
-        if (endTime - startTime != 0)
-        {
-            fps = 1000 / (endTime - startTime);
-        }
-        else
-        {
-            fps = 1000;
-        }
         
         window.display();
 
@@ -113,9 +102,16 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.move(Coordinates(0, 0.3));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.move(Coordinates(-0.3, 0));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.move(Coordinates(0.3, 0));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+
+        endTime = getTime();
+
+        if (endTime - startTime != 0)
         {
-            player2->removeFromLayout();
+            fps = 1000 / (endTime - startTime);
+        }
+        else
+        {
+            fps = 1000;
         }
     }
 }

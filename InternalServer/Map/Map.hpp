@@ -1,6 +1,6 @@
 #ifndef Map_hpp_
 #define Map_hpp_
-#include "LayoutCell.hpp"
+#include "MapCell.hpp"
 
 class Map
 {
@@ -8,11 +8,11 @@ private:
     int sizeX;
     int sizeY;
     int sizeZ;
-    LayoutCell cells[1][100][100];
+    MapCell cells[1][100][100];
 public:
     Map();
-    Map(LayoutCell*** cells, int sizeX, int sizeY, int sizeZ);
-    LayoutCell* getCell(int x, int y, int z);
+    Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ);
+    MapCell* getCell(int x, int y, int z);
     ~Map();
 };
 
@@ -27,11 +27,11 @@ Map::Map()
         {
             if (x % 2 == 0 and y % 2 == 0 or x % 2 == 1 and y % 2 == 1)
             {
-                cells[0][x][y] = LayoutCell(LayoutCellType::Grass);
+                cells[0][x][y] = MapCell(MapCell::Type::Grass);
             }
             else
             {
-                cells[0][x][y] = LayoutCell(LayoutCellType::Stone);
+                cells[0][x][y] = MapCell(MapCell::Type::Stone);
             }
         }
         
@@ -39,14 +39,14 @@ Map::Map()
     
 }
 
-Map::Map(LayoutCell*** cells, int sizeX, int sizeY, int sizeZ)
+Map::Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ)
 {
     this->sizeX = sizeX;
     this->sizeY = sizeY;
     this->sizeZ = sizeZ;
 }
 
-LayoutCell* Map::getCell(int x, int y, int z)
+MapCell* Map::getCell(int x, int y, int z)
 {
     return &cells[z][x][y];
 }

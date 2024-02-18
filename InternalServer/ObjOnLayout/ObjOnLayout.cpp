@@ -15,9 +15,13 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
 {
     this->pos = pos;
     this->size = size;
-    std::cout << "ObjOnLayout:" << size.x << " " << size.y << std::endl;
     this->layout = layout;
     layout->addObject(this);
+    Event event;
+    event.type = Event::Type::ObjSpawn;
+    event.objSpawn.obj = this;
+    event.objSpawn.pos = pos;
+    eventHandler->generateEvent(event);
 }
 
 Coordinates ObjOnLayout::getPos()
@@ -37,15 +41,27 @@ void ObjOnLayout::setEventHandler(EventHandler* eventHandler)
 
 void ObjOnLayout::setPos(Coordinates pos)
 {
-    if (pos.x > 100) pos.x = 100;
-    if (pos.y > 100) pos.y = 100;
+    if (pos.x + size.x > 100) pos.x = 100;
+    if (pos.y + size.y > 100) pos.y = 100;
     if (pos.x < 0) pos.x = 0;
     if (pos.y < 0) pos.y = 0;
 
+    Event event;
+    event.type = Event::Type::ObjMove;
+    event.objMove.obj = this;
+    event.objMove.start = this->pos;
+    event.objMove.end = pos;
+    eventHandler->generateEvent(event);
+
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(this);
+
     this->pos = pos;
+    
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(this);
 }
+
+void ObjOnLayout::event(Event event)
+{}
 
 void ObjOnLayout::tick()
 {
@@ -61,9 +77,7 @@ void ObjOnLayout::removeFromLayout()
 {
     if (layout != nullptr)
     {
-        ObjOnLayout* temp = this;
-        layout->getObjects()->remove(temp);
-        layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(temp);
+        layout->deleteObject(this);
     }
 }
 

@@ -21,10 +21,14 @@ protected:
 public:
     ObjOnLayout();
     ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout);
+
     Coordinates getPos();
     Vector2d getSize();
+
     void setEventHandler(EventHandler* eventHandler);
     void setPos(Coordinates pos);
+
+    virtual void event(Event event);
     void move(Coordinates delta);
     void tick();
     void removeFromLayout();

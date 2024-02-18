@@ -20,14 +20,12 @@ Vector2d::Vector2d()
 {
     x = 0;
     y = 0;
-    std::cout << "Vector2d:" << x << " " << y << std::endl;
 }
 
 Vector2d::Vector2d(double x, double y)
 {
     this->x = x;
     this->y = y;
-    std::cout << "Vector2d:" << x << " " << y << std::endl;
 }
 
 double Vector2d::getLength()
@@ -47,7 +45,6 @@ Vector2d& Vector2d::operator=(const Vector2d& other)
         x = other.x;
         y = other.y;
     }
-    std::cout << "Vector2d = :" << x << " " << y << std::endl;
     return *this;
 }
 

@@ -3,20 +3,15 @@
 #include "Event.hpp"
 #include <list>
 #include "../ObjOnLayout/ObjOnLayout.hpp"
+#include <iostream>
 
 class EventHandler
 {
 private:
-    struct ObjAndPpinter
-    {
-        ObjOnLayout* obj;
-        void (*func) (Event);
-    };
-    
-    std::list<ObjAndPpinter> objects;
+    std::list<ObjOnLayout*> objects;
 public:
     EventHandler();
-    void addObject(ObjOnLayout* obj, void (*func) (Event));
+    void addObject(ObjOnLayout* obj);
     void deleteObject(ObjOnLayout* obj);
     void generateEvent(Event event);
 };
@@ -26,31 +21,21 @@ EventHandler::EventHandler()
 
 }
 
-void EventHandler::addObject(ObjOnLayout* obj, void (*func) (Event))
+void EventHandler::addObject(ObjOnLayout* obj)
 {
-    ObjAndPpinter temp;
-    temp.obj = obj;
-    temp.func = func;
-    objects.push_back(temp);
+    objects.push_back(obj);
 }
 
 void EventHandler::deleteObject(ObjOnLayout* obj)
 {
-    for (auto i = objects.begin(); i != objects.end(); i++)
-    {
-        if (i->obj == obj)
-        {
-            objects.erase(i);
-            break;
-        }
-    }
+    objects.remove(obj);
 }
 
 void EventHandler::generateEvent(Event event)
 {
-    for (ObjAndPpinter i : objects)
+    for (auto i : objects)
     {
-        i.func(event);
+        i->event(event);
     }
 }
 

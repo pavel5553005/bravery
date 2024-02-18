@@ -14,6 +14,7 @@ private:
 public:
     Layout(EventHandler* eventHandler);
     void addObject(ObjOnLayout* obj);
+    void deleteObject(ObjOnLayout* obj);
     std::list<ObjOnLayout*>* getObjects();
     void tick();
     Map* getMap();
@@ -35,6 +36,12 @@ void Layout::addObject(ObjOnLayout* obj)
     objects.push_back(obj);
     obj->setEventHandler(eventHandler);
     map.getCell(obj->getPos().x + obj->getSize().x / 2, obj->getPos().y + obj->getSize().y / 2, 0)->addObject(obj);
+}
+
+void Layout::deleteObject(ObjOnLayout* obj)
+{
+    objects.remove(obj);
+    map.getCell(obj->getPos().x + obj->getSize().x / 2, obj->getPos().y + obj->getSize().y / 2, 0)->deleteObject(obj);
 }
 
 void Layout::tick()
