@@ -5,8 +5,7 @@
 #include "InternalServer/Event/EventHandler.hpp"
 #include <random>
 #include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
-
-int getTime();
+#include "Debug/FpsCounter.hpp"
 
 void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, int index);
 
@@ -18,15 +17,15 @@ int main()
     const int windowHeight = 600;
     Layout layout(&eventHandler);
 
-    ObjOnLayout player(Coordinates(20, 30), Vector2d(0.5, 0.5), &layout);
+    ObjOnLayout player(Coordinates(20, 30), Vector2d(10, 10), &layout);
 
     // ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
 
     // ObjOnLayout objects[100];
 
-    for (int i = 0; i < 3000; i++)
+    for (int i = 0; i < 500; i++)
     {
-        new ObjOnLayout(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout);
+        new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, &player);
     }
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
@@ -42,9 +41,10 @@ int main()
     sf::Font font;
     font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
 
+    FpsCounter fpsCounter(font);
+
     while (window.isOpen())
     {
-        startTime = getTime();
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -67,6 +67,8 @@ int main()
         layout.tick();
 
         window.clear();
+
+        fpsCounter.getStartTime();
         
         camera.render(window);
 
@@ -80,47 +82,21 @@ int main()
         rect.setPosition(windowWidth / 2, windowHeight / 2);
         rect.setFillColor(sf::Color::Red);
         window.draw(rect);
-
-        sf::RectangleShape fpsRect;
-        fpsRect.setSize(sf::Vector2f(30, 12));
-        fpsRect.setPosition(windowWidth - 30, 0);
-        fpsRect.setFillColor(sf::Color::Black);
-        window.draw(fpsRect);
-
-        sf::Text fpsText;
-        fpsText.setFont(font);
-        fpsText.setString(std::to_string(fps));
-        fpsText.setCharacterSize(10);
-        fpsText.setFillColor(sf::Color::Green);
-        fpsText.setPosition(windowWidth - 30, 0);
-        window.draw(fpsText);
         
-        window.display();
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) player.move(Coordinates(0, -0.3));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.move(Coordinates(0, 0.3));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.move(Coordinates(-0.3, 0));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.move(Coordinates(0.3, 0));
 
-        endTime = getTime();
 
-        if (endTime - startTime != 0)
-        {
-            fps = 1000 / (endTime - startTime);
-        }
-        else
-        {
-            fps = 1000;
-        }
+        fpsCounter.getEndTime();
+        
+        fpsCounter.draw(window, windowWidth);
+
+        window.display();
+
     }
-}
-
-int getTime()
-{
-    struct timespec time;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time);
-    return time.tv_sec * 1000 + time.tv_nsec / 1000000;
 }
 
 void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, int index)
