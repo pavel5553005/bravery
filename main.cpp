@@ -23,9 +23,11 @@ int main()
 
     // ObjOnLayout objects[100];
 
-    for (int i = 0; i < 500; i++)
+    ObjOnLayout* o = new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, &player);
+
+    for (int i = 0; i < 100; i++)
     {
-        new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, &player);
+        new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, o);
     }
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);
@@ -64,11 +66,11 @@ int main()
             }
         }
 
+        fpsCounter.getStartTime();
+
         layout.tick();
 
         window.clear();
-
-        fpsCounter.getStartTime();
         
         camera.render(window);
 

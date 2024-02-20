@@ -11,8 +11,10 @@ public:
     double y;
     Vector2d();
     Vector2d(double x, double y);
+
     double getLength();
     double getAngle();
+    
     Vector2d& operator=(const Vector2d& other);
 };
 

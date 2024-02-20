@@ -17,8 +17,7 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
     this->size = size;
     this->layout = layout;
     layout->addObject(this);
-    Event event;
-    event.type = Event::Type::ObjSpawn;
+    Event event(Event::Type::ObjSpawn);
     event.objSpawn.obj = this;
     event.objSpawn.pos = pos;
     eventHandler->generateEvent(event);
@@ -41,17 +40,10 @@ void ObjOnLayout::setEventHandler(EventHandler* eventHandler)
 
 void ObjOnLayout::setPos(Coordinates pos)
 {
-    if (pos.x + size.x > 100) pos.x = 100;
-    if (pos.y + size.y > 100) pos.y = 100;
+    if (pos.x + size.x > 100) pos.x = 100 - size.x;
+    if (pos.y + size.y > 100) pos.y = 100 - size.y;
     if (pos.x < 0) pos.x = 0;
     if (pos.y < 0) pos.y = 0;
-
-    Event event;
-    event.type = Event::Type::ObjMove;
-    event.objMove.obj = this;
-    event.objMove.start = this->pos;
-    event.objMove.end = pos;
-    eventHandler->generateEvent(event);
 
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(this);
 
@@ -83,4 +75,5 @@ void ObjOnLayout::removeFromLayout()
 
 ObjOnLayout::~ObjOnLayout()
 {
+    removeFromLayout();
 }

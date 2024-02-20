@@ -13,12 +13,14 @@ private:
     EventHandler* eventHandler;
 public:
     Layout(EventHandler* eventHandler);
+
+    std::list<ObjOnLayout*>* getObjects();
+    Map* getMap();
+
     void addObject(ObjOnLayout* obj);
     void deleteObject(ObjOnLayout* obj);
-    std::list<ObjOnLayout*>* getObjects();
     void tick();
-    Map* getMap();
-    ~Layout();
+    virtual ~Layout();
 };
 
 Layout::Layout(EventHandler* eventHandler)
@@ -26,10 +28,9 @@ Layout::Layout(EventHandler* eventHandler)
     this->eventHandler = eventHandler;
 }
 
-std::list<ObjOnLayout*>* Layout::getObjects()
-{
-    return &objects;
-}
+std::list<ObjOnLayout*>* Layout::getObjects() { return &objects; }
+
+Map *Layout::getMap() { return &map; }
 
 void Layout::addObject(ObjOnLayout* obj)
 {
@@ -46,12 +47,10 @@ void Layout::deleteObject(ObjOnLayout* obj)
 
 void Layout::tick()
 {
-    
-}
-
-Map *Layout::getMap()
-{
-    return &map;
+    for (auto i : objects)
+    {
+        i->tick();
+    }
 }
 
 Layout::~Layout()

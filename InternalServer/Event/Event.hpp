@@ -7,12 +7,6 @@
 class Event
 {
 public:
-    struct ObjMove
-    {
-        ObjOnLayout* obj;
-        Coordinates start;
-        Coordinates end;
-    };
     
     struct ObjSpawn
     {
@@ -22,7 +16,6 @@ public:
 
     enum class Type {
         TestEvent,
-        ObjMove,
         ObjSpawn
     };
     
@@ -30,17 +23,16 @@ public:
 
     union
     {
-        ObjMove objMove;
         ObjSpawn objSpawn;
         bool nullEvent;
     };
     
-    Event();
+    Event(Type type);
 };
 
-Event::Event()
+Event::Event(Type type)
 {
-
+    this->type = type;
 }
 
 #endif

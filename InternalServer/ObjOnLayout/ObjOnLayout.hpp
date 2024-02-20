@@ -30,9 +30,10 @@ public:
 
     virtual void event(Event event);
     void move(Coordinates delta);
-    void tick();
+    virtual void tick();
     void removeFromLayout();
-    ~ObjOnLayout();
+
+    virtual ~ObjOnLayout();
 };
 
 #endif

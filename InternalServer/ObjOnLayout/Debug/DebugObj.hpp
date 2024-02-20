@@ -10,14 +10,14 @@ private:
 public:
     DebugObj();
     DebugObj(Coordinates pos, Vector2d size, Layout* layout, ObjOnLayout* followObj);
+
     void generateEvent();
     void event(Event event);
+    void tick();
+    ~DebugObj();
 };
 
-DebugObj::DebugObj()
-{
-    
-}
+DebugObj::DebugObj() : ObjOnLayout() { }
 
 DebugObj::DebugObj(Coordinates pos, Vector2d size, Layout* layout, ObjOnLayout* followObj) : ObjOnLayout(pos, size, layout)
 {
@@ -25,10 +25,13 @@ DebugObj::DebugObj(Coordinates pos, Vector2d size, Layout* layout, ObjOnLayout* 
     this->followObj = followObj;
 }
 
-void DebugObj::event(Event event)
+void DebugObj::generateEvent() { }
+
+void DebugObj::tick()
 {
-    if (event.type == Event::Type::ObjMove and event.objMove.obj == followObj)
-    {
-        setPos(event.objMove.end);
-    }
+    setPos(followObj->getPos());
 }
+
+void DebugObj::event(Event event) { }
+
+DebugObj::~DebugObj() { }

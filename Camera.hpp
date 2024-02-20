@@ -19,10 +19,14 @@ private:
 public:
     Camera();
     Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowWidth, int windowHeight);
+
     Coordinates getPos();
     double getScale();
+
     void setScale(double scale);
+
     void render(sf::RenderWindow& window);
+    
     ~Camera();
 };
 
