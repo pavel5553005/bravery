@@ -23,10 +23,7 @@ public:
     virtual ~Layout();
 };
 
-Layout::Layout()
-{
-
-}
+Layout::Layout() { }
 
 std::list<ObjOnLayout*>* Layout::getObjects() { return &objects; }
 
@@ -43,13 +40,13 @@ void Layout::generateEvent(Event event)
 void Layout::addObject(ObjOnLayout& obj)
 {
     objects.push_back(&obj);
-    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->addObject(&obj);
+    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->addObject(obj);
 }
 
 void Layout::deleteObject(ObjOnLayout& obj)
 {
     objects.remove(&obj);
-    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->deleteObject(&obj);
+    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->deleteObject(obj);
 }
 
 void Layout::tick()

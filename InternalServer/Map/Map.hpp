@@ -25,7 +25,7 @@ Map::Map()
     {
         for (int y = 0; y < 100; y++)
         {
-            if (x % 2 == 0 and y % 2 == 0)
+            if (x % 2 == 0 and y % 2 == 0 or y % 2 == 1 and x % 2 == 1)
             {
                 cells[0][x][y] = MapCell(MapCell::Type::Grass);
             }

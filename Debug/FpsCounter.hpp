@@ -24,6 +24,7 @@ public:
     void getStartTime();
     void getEndTime();
     void draw(sf::RenderWindow& window, int windowWidth);
+    void drawTextLeft(sf::RenderWindow& window, std::string text);
 };
 
 FpsCounter::FpsCounter(sf::Font& font)

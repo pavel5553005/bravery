@@ -17,8 +17,8 @@ public:
     Type getType();
     std::list<ObjOnLayout*>* getObjects();
 
-    void addObject(ObjOnLayout* obj);
-    void deleteObject(ObjOnLayout* obj);
+    void addObject(ObjOnLayout& obj);
+    void deleteObject(ObjOnLayout& obj);
 
     ~MapCell();
 };
@@ -43,14 +43,14 @@ std::list<ObjOnLayout*>* MapCell::getObjects()
     return &objects;
 }
 
-void MapCell::addObject(ObjOnLayout* obj)
+void MapCell::addObject(ObjOnLayout& obj)
 {
-    objects.push_back(obj);
+    objects.push_back(&obj);
 }
 
-void MapCell::deleteObject(ObjOnLayout* obj)
+void MapCell::deleteObject(ObjOnLayout& obj)
 {
-    objects.remove(obj);
+    objects.remove(&obj);
 }
 
 MapCell::~MapCell()

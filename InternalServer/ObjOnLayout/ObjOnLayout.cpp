@@ -39,19 +39,14 @@ void ObjOnLayout::setPos(Coordinates pos)
     if (pos.x < 0) pos.x = 0;
     if (pos.y < 0) pos.y = 0;
 
-    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(this);
+    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
 
     this->pos = pos;
     
-    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(this);
+    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
 void ObjOnLayout::event(Event event) { }
-
-void ObjOnLayout::move(Coordinates delta)
-{
-    setPos(pos + delta);
-}
 
 void ObjOnLayout::removeFromLayout()
 {

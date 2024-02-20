@@ -18,7 +18,7 @@ private:
     int windowWidth;
 public:
     Camera();
-    Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowWidth, int windowHeight);
+    Camera(ObjOnLayout& followObj, Layout& layout, double scale, int windowWidth, int windowHeight);
 
     Coordinates getPos();
     double getScale();
@@ -30,12 +30,12 @@ public:
     ~Camera();
 };
 
-Camera::Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowWidth, int windowHeight)
+Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, int windowWidth, int windowHeight)
 {
-    this->followObj = followObj;
-    this->pos = followObj->getPos();
+    this->followObj = &followObj;
+    this->pos = followObj.getPos();
     this->scale = scale;
-    this->layout = layout;
+    this->layout = &layout;
     this->windowHeight = windowHeight;
     this->windowWidth = windowWidth;
     sf::Texture texture;
@@ -46,7 +46,7 @@ Camera::Camera(ObjOnLayout* followObj, Layout* layout, double scale, int windowW
     {
         for (int y = 0; y < 100 * 16; y++)
         {
-            if (layout->getMap()->getCell(x / 16, y / 16, 0)->getType() == MapCell::Type::Grass)
+            if (layout.getMap()->getCell(x / 16, y / 16, 0)->getType() == MapCell::Type::Grass)
             {
                 image.setPixel(x, y, sf::Color::Green);
             }
@@ -87,6 +87,10 @@ void Camera::render(sf::RenderWindow& window)
     pos.x = followObj->getPos().x + followObj->getSize().x / 2;
     pos.y = followObj->getPos().y + followObj->getSize().y / 2;
 
+    // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
+    // pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
+    // pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
+
     sf::Sprite sprite;
     sprite.setTexture(mapTexture);
     sprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
@@ -107,9 +111,6 @@ void Camera::render(sf::RenderWindow& window)
         }
     }
     // double speed = sqrt(followObj->getPos().x - pos.x) / 100;
-    // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
-    // pos.x += (followObj->getPos().x - pos.x) * speed / scale;
-    // pos.y += (followObj->getPos().y - pos.y) * speed / scale;
 
 }
 
