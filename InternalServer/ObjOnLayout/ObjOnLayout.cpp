@@ -1,6 +1,5 @@
 #include "ObjOnLayout.hpp"
 #include "../Event/Event.hpp"
-#include "../Event/EventHandler.hpp"
 #include "../Map/Layout.hpp"
 #include <iostream>
 
@@ -11,16 +10,16 @@ ObjOnLayout::ObjOnLayout()
     layout = nullptr;
 }
 
-ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout)
+ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
 {
     this->pos = pos;
     this->size = size;
-    this->layout = layout;
-    layout->addObject(this);
+    this->layout = &layout;
+    layout.addObject(*this);
     Event event(Event::Type::ObjSpawn);
     event.objSpawn.obj = this;
     event.objSpawn.pos = pos;
-    eventHandler->generateEvent(event);
+    layout.generateEvent(event);
 }
 
 Coordinates ObjOnLayout::getPos()
@@ -31,11 +30,6 @@ Coordinates ObjOnLayout::getPos()
 Vector2d ObjOnLayout::getSize()
 {
     return size;
-}
-
-void ObjOnLayout::setEventHandler(EventHandler* eventHandler)
-{
-    this->eventHandler = eventHandler;
 }
 
 void ObjOnLayout::setPos(Coordinates pos)
@@ -52,13 +46,7 @@ void ObjOnLayout::setPos(Coordinates pos)
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(this);
 }
 
-void ObjOnLayout::event(Event event)
-{}
-
-void ObjOnLayout::tick()
-{
-
-}
+void ObjOnLayout::event(Event event) { }
 
 void ObjOnLayout::move(Coordinates delta)
 {
@@ -69,7 +57,7 @@ void ObjOnLayout::removeFromLayout()
 {
     if (layout != nullptr)
     {
-        layout->deleteObject(this);
+        layout->deleteObject(*this);
     }
 }
 

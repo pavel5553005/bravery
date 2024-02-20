@@ -2,8 +2,6 @@
 #define Event_hpp_
 #include "../ObjOnLayout/ObjOnLayout.hpp"
 
-
-
 class Event
 {
 public:
@@ -16,7 +14,8 @@ public:
 
     enum class Type {
         TestEvent,
-        ObjSpawn
+        ObjSpawn,
+        Tick
     };
     
     Type type;

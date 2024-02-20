@@ -2,7 +2,7 @@
 #include "InternalServer/Map/Layout.hpp"
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
-#include "InternalServer/Event/EventHandler.hpp"
+#include "InternalServer/Event/Event.hpp"
 #include <random>
 #include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
 #include "Debug/FpsCounter.hpp"
@@ -11,23 +11,15 @@ void drawTextLeft(sf::RenderWindow& window, sf::Font& font, std::string text, in
 
 int main()
 {
-    EventHandler eventHandler;
-
     const int windowWidth = 800;
     const int windowHeight = 600;
-    Layout layout(&eventHandler);
+    Layout layout;
 
-    ObjOnLayout player(Coordinates(20, 30), Vector2d(10, 1), &layout);
+    ObjOnLayout player(Coordinates(20, 30), Vector2d(1, 1), layout);
 
-    // ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
-
-    // ObjOnLayout objects[100];
-
-    ObjOnLayout* o = new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, &player);
-
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 500; i++)
     {
-        new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), &layout, o);
+        new DebugObj(Coordinates(rand() % 100, rand() % 100), Vector2d(0.5, 0.5), layout, player);
     }
     
     Camera camera(&player, &layout, 21, windowWidth, windowHeight);

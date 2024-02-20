@@ -6,8 +6,6 @@
 
 class Event;
 
-class EventHandler;
-
 class Layout;
 
 class ObjOnLayout
@@ -16,21 +14,18 @@ private:
     Coordinates pos;
     Vector2d size;
 protected:
-    EventHandler* eventHandler;
     Layout* layout;
 public:
     ObjOnLayout();
-    ObjOnLayout(Coordinates pos, Vector2d size, Layout* layout);
+    ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout);
 
     Coordinates getPos();
     Vector2d getSize();
 
-    void setEventHandler(EventHandler* eventHandler);
     void setPos(Coordinates pos);
 
     virtual void event(Event event);
     void move(Coordinates delta);
-    virtual void tick();
     void removeFromLayout();
 
     virtual ~ObjOnLayout();

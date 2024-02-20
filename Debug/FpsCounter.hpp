@@ -15,6 +15,7 @@ private:
     int cointer;
     int fps;
     int fpsCounter;
+    int averageFps;
     sf::Font font;
     int getTime();
     sf::Color getColor(int index);
@@ -29,6 +30,9 @@ FpsCounter::FpsCounter(sf::Font& font)
 {
     this->font = font;
     texture.create(100, 40);
+    averageFps = 0;
+    cointer = 0;
+    fpsCounter = 0;
 }
 
 int FpsCounter::getTime()
@@ -59,7 +63,7 @@ void FpsCounter::getEndTime()
     if (cointer == 20)
     {
         points.push_back(fpsCounter / 20);
-        // points.push_back(fps);
+        averageFps = (fpsCounter / 20);
         fpsCounter = 0;
         cointer = 0;
         if (points.size() > 100)
@@ -109,7 +113,7 @@ void FpsCounter::draw(sf::RenderWindow& window, int windowWidth)
         sf::Text text;
         text.setFont(font);
         text.setCharacterSize(10);
-        text.setString(std::to_string(fps));
+        text.setString(std::to_string(averageFps));
         text.setFillColor(sf::Color::White);
         text.setPosition(windowWidth - 30, 0);
         window.draw(text);
