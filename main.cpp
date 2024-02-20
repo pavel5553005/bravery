@@ -17,7 +17,7 @@ int main()
     const int windowHeight = 600;
     Layout layout(&eventHandler);
 
-    ObjOnLayout player(Coordinates(20, 30), Vector2d(10, 10), &layout);
+    ObjOnLayout player(Coordinates(20, 30), Vector2d(10, 1), &layout);
 
     // ObjOnLayout* player2 = new ObjOnLayout(Coordinates(30, 40), Vector2d(0.5, 0.5), &layout);
 
