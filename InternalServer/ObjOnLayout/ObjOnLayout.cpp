@@ -46,7 +46,7 @@ void ObjOnLayout::setPos(Coordinates pos)
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
-void ObjOnLayout::event(Event event) { }
+// void ObjOnLayout::event(Event event) { }
 
 void ObjOnLayout::removeFromLayout()
 {

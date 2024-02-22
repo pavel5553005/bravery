@@ -6,6 +6,7 @@
 #include <random>
 #include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
 #include "Debug/FpsCounter.hpp"
+#include "InternalServer/ObjOnLayout/Unit/Unit.hpp"
 
 int main()
 {
@@ -13,14 +14,14 @@ int main()
     const int windowHeight = 600;
     Layout layout;
 
-    ObjOnLayout player(Coordinates(20, 30), Vector2d(1, 1), layout);
+    Unit player(Coordinates(10, 10), Vector2d(1, 1), layout);
 
-    ObjOnLayout debugObj(Coordinates(10, 10), Vector2d(1, 1), layout);
+    // ObjOnLayout debugObj(Coordinates(10, 10), Vector2d(1, 1), layout);
 
-    for (int i = 0; i < 5; i++)
-    {
-        new ObjOnLayout(Coordinates(rand() % 100, rand() % 100), Vector2d(1, 0.5), layout);
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     new ObjOnLayout(Coordinates(rand() % 100, rand() % 100), Vector2d(1, 0.5), layout);
+    // }
     
     Camera camera(player, layout, 21, windowWidth, windowHeight);
 
@@ -70,12 +71,20 @@ int main()
         rect.setPosition(windowWidth / 2, windowHeight / 2);
         rect.setFillColor(sf::Color::Red);
         window.draw(rect);
-        
+
+        int x = 0;
+        int y = 0;
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) player.setPos(player.getPos() + Coordinates(0, -0.3));+
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) player.setPos(player.getPos() + Coordinates(0, 0.3));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) player.setPos(player.getPos() + Coordinates(-0.3, 0));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.setPos(player.getPos() + Coordinates(0.3, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) y++;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x--;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) y--;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x++;
+
+        if (x != 0 or y != 0)
+        {
+            player.move(atan2(y, x) * 180 / M_PI);
+        }
 
         fpsCounter.getEndTime();
         
