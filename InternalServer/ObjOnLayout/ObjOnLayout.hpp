@@ -24,7 +24,7 @@ public:
 
     void setPos(Coordinates pos);
 
-    virtual void event(Event event) = 0;
+    virtual void event(Event event);
     void removeFromLayout();
 
     virtual ~ObjOnLayout();

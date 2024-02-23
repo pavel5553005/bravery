@@ -56,6 +56,8 @@ void ObjOnLayout::removeFromLayout()
     }
 }
 
+void ObjOnLayout::event(Event event) { }
+
 ObjOnLayout::~ObjOnLayout()
 {
     removeFromLayout();
