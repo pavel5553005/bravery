@@ -31,6 +31,9 @@ FpsCounter::FpsCounter(sf::Font& font)
 {
     this->font = font;
     texture.create(100, 40);
+    sf::Image image;
+    image.create(100, 40, sf::Color::Black);
+    texture.update(image);
     averageFps = 0;
     cointer = 0;
     fpsCounter = 0;

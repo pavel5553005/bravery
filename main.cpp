@@ -7,21 +7,20 @@
 #include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
 #include "Debug/FpsCounter.hpp"
 #include "InternalServer/ObjOnLayout/Unit/Unit.hpp"
+#include "InternalServer/ObjOnLayout/Unit/GameCharacter/NPC.hpp"
 
 int main()
 {
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    const int windowWidth = 400;
+    const int windowHeight = 300;
     Layout layout;
 
     Unit player(Coordinates(10, 10), Vector2d(1, 1), layout);
 
-    // ObjOnLayout debugObj(Coordinates(10, 10), Vector2d(1, 1), layout);
+    NPC npc(Coordinates(10, 10), Vector2d(1, 1), layout);
 
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     new ObjOnLayout(Coordinates(rand() % 100, rand() % 100), Vector2d(1, 0.5), layout);
-    // }
+    npc.walk(Coordinates(20, 20));
+    
     
     Camera camera(player, layout, 21, windowWidth, windowHeight);
 

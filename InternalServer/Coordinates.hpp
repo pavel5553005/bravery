@@ -10,6 +10,10 @@ public:
     Coordinates(double x, double y, int z);
     Coordinates();
     Coordinates operator + (Coordinates other);
+    Coordinates operator - (Coordinates other);
+    bool operator == (const Coordinates& other);
+    bool operator != (const Coordinates& other);
+
 };
 
 Coordinates::Coordinates(double x, double y, int z = 0)
@@ -29,6 +33,21 @@ Coordinates::Coordinates()
 Coordinates Coordinates::operator + (Coordinates other)
 {
     return Coordinates(x + other.x, y + other.y, z + other.z);
+}
+
+Coordinates Coordinates::operator - (Coordinates other)
+{
+    return Coordinates(x - other.x, y - other.y, z - other.z);
+}
+
+bool Coordinates::operator == (const Coordinates& other)
+{
+    return x == other.x && y == other.y && z == other.z;
+}
+
+bool Coordinates::operator != (const Coordinates& other)
+{
+    return x != other.x || y != other.y || z != other.z;
 }
 
 #endif
