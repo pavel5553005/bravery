@@ -6,16 +6,21 @@
 class MapCell
 {
 public:
-    enum class Type { Grass, Stone, Ground, Water, None, Air};
+    enum class FloorType { Grass, Stone, Ground, Water, None};
+    enum class WallType { Wall, None };
 private:
-    Type type;
+    FloorType floorType;
+    WallType wallType;
     std::list<ObjOnLayout*> objects;
 public:
     MapCell();
-    MapCell(Type type);
+    MapCell(FloorType floorType, WallType wallType);
 
-    Type getType();
+    FloorType getFloorType();
+    WallType getWallType();
     std::list<ObjOnLayout*>* getObjects();
+
+    void setWallType(WallType wallType);
 
     void addObject(ObjOnLayout& obj);
     void deleteObject(ObjOnLayout& obj);
@@ -25,18 +30,21 @@ public:
 
 MapCell::MapCell()
 {
-    type = MapCell::Type::None;
+    floorType = MapCell::FloorType::None;
+    wallType = MapCell::WallType::None;
 }
 
-MapCell::MapCell(MapCell::Type type)
+MapCell::MapCell(FloorType floorType, WallType wallType = WallType::None)
 {
-    this->type = type;
+    this->floorType = floorType;
+    this->wallType = wallType;
 }
 
-MapCell::Type MapCell::getType()
-{
-    return type;
-}
+MapCell::FloorType MapCell::getFloorType() { return floorType; }
+
+MapCell::WallType MapCell::getWallType() { return wallType; }
+
+void MapCell::setWallType(WallType wallType) { this->wallType = wallType; }
 
 std::list<ObjOnLayout*>* MapCell::getObjects()
 {

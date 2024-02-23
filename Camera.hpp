@@ -12,7 +12,8 @@ private:
     Coordinates pos;
     ObjOnLayout* followObj;
     Layout* layout;
-    sf::Texture mapTexture;
+    sf::Texture floorTexture;
+    sf::Texture wallsTexture;
     double scale;
     int windowHeight;
     int windowWidth;
@@ -38,26 +39,39 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, int windowW
     this->layout = &layout;
     this->windowHeight = windowHeight;
     this->windowWidth = windowWidth;
-    sf::Texture texture;
-    texture.create(100 * 16, 100 * 16);
-    sf::Image image;
-    image.create(100 * 16, 100 * 16, sf::Color::Black);
+    floorTexture.create(100 * 16, 100 * 16);
+    sf::Image floorImage;
+    floorImage.create(100 * 16, 100 * 16, sf::Color::Black);
     for (int x = 0; x < 100 * 16; x++)
     {
         for (int y = 0; y < 100 * 16; y++)
         {
-            if (layout.getMap()->getCell(x / 16, y / 16, 0)->getType() == MapCell::Type::Grass)
+            if (layout.getMap()->getCell(x / 16, y / 16, 0)->getFloorType() == MapCell::FloorType::Grass)
             {
-                image.setPixel(x, y, sf::Color::Green);
+                floorImage.setPixel(x, y, sf::Color::Green);
             }
             else
             {
-                image.setPixel(x, y, sf::Color(128, 128, 128));
+                floorImage.setPixel(x, y, sf::Color(128, 128, 128));
             }
         }
     }
-    texture.update(image);
-    mapTexture = texture;
+    floorTexture.update(floorImage);
+
+    wallsTexture.create(100 * 16, 100 * 16);
+    sf::Image wallsImage;
+    wallsImage.create(100 * 16, 100 * 16, sf::Color(0, 0, 0, 0));
+    for (int x = 0; x < 100 * 16; x++)
+    {
+        for (int y = 0; y < 100 * 16; y++)
+        {
+            if (layout.getMap()->getCell(x / 16, y / 16, 0)->getWallType() == MapCell::WallType::Wall)
+            {
+                wallsImage.setPixel(x, y, sf::Color(255, 255, 255, 255));
+            }
+        }
+    }
+    wallsTexture.update(wallsImage);
 }
 
 Camera::Camera()
@@ -91,11 +105,11 @@ void Camera::render(sf::RenderWindow& window)
     // pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
     // pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
 
-    sf::Sprite sprite;
-    sprite.setTexture(mapTexture);
-    sprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
-    sprite.setScale(scale / 16, scale / 16);
-    window.draw(sprite);
+    sf::Sprite floorSprite;
+    floorSprite.setTexture(floorTexture);
+    floorSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
+    floorSprite.setScale(scale / 16, scale / 16);
+    window.draw(floorSprite);
 
     for (int x = 0; x < 100; x++)
     {
@@ -110,8 +124,12 @@ void Camera::render(sf::RenderWindow& window)
             }
         }
     }
-    // double speed = sqrt(followObj->getPos().x - pos.x) / 100;
-
+        
+    sf::Sprite wallsSprite;
+    wallsSprite.setTexture(wallsTexture);
+    wallsSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
+    wallsSprite.setScale(scale / 16, scale / 16);
+    window.draw(wallsSprite);
 }
 
 Camera::~Camera()

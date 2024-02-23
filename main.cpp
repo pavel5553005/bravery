@@ -11,8 +11,8 @@
 
 int main()
 {
-    const int windowWidth = 400;
-    const int windowHeight = 300;
+    const int windowWidth = 800;
+    const int windowHeight = 600;
     Layout layout;
 
     Unit player(Coordinates(10, 10), Vector2d(1, 1), layout);

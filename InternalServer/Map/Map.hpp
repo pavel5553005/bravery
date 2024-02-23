@@ -1,6 +1,7 @@
 #ifndef Map_hpp_
 #define Map_hpp_
 #include "MapCell.hpp"
+#include "iostream"
 
 class Map
 {
@@ -27,14 +28,41 @@ Map::Map()
         {
             if (x % 2 == 0 and y % 2 == 0 or y % 2 == 1 and x % 2 == 1)
             {
-                cells[0][x][y] = MapCell(MapCell::Type::Grass);
+                cells[0][x][y] = MapCell(MapCell::FloorType::Grass);
             }
             else
             {
-                cells[0][x][y] = MapCell(MapCell::Type::Stone);
+                cells[0][x][y] = MapCell(MapCell::FloorType::Stone);
             }
         }
         
+    }
+
+    for (int x = 10; x < 20; x++)
+    {
+        cells[0][x][10].setWallType(MapCell::WallType::Wall);
+        cells[0][x][20].setWallType(MapCell::WallType::Wall);
+
+    }
+    for (int y = 10; y < 20; y++)
+    {
+        cells[0][10][y].setWallType(MapCell::WallType::Wall);
+        cells[0][20][y].setWallType(MapCell::WallType::Wall);
+    }
+    for (int x = 0; x < 100; x++)
+    {
+        for (int y = 0; y < 100; y++)
+        {
+            if (cells[0][x][y].getWallType() == MapCell::WallType::Wall)
+            {
+                std::cout << '#';
+            }
+            else
+            {
+                std::cout << ' ';
+            }
+        }
+        std::cout << std::endl;
     }
     
 }
