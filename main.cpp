@@ -2,6 +2,7 @@
 #include "InternalServer/Position/Coordinates.hpp"
 #include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
+#include "Debug/Debuger.cpp"
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 #include "InternalServer/Event/Event.hpp"
@@ -15,29 +16,24 @@
 
 int main()
 {
-    const int windowWidth = 800;
-    const int windowHeight = 600;
+    const int windowWidth = 1920;
+    const int windowHeight = 1080;
     Layout layout;
 
-    Unit player(Coordinates(9, 9), Vector2d(0.8, 0.8), layout);
-    player.setSpeed(0.5);
+    Unit player(Coordinates(30, 30), Vector2d(0.8, 0.8), layout);
+    player.setSpeed(0.1);
 
-    std::list<NPC*> list;
+    NPC npc(Coordinates(30, 30), Vector2d(1, 1), layout);
+    npc.setSpeed(0.05);
 
-    for (int i = 0; i < 1000; i++)
-    {
-        list.push_back(new NPC(Coordinates(rand() % 20 + 30, rand() % 20 + 30), Vector2d(0.8, 0.8), layout));
-        std::cout << "x: " << list.back()->getPos().x << " y: " << list.back()->getPos().y << std::endl;
-        list.back()->setSpeed((rand() % 20 + 1) / 100.0);
-    }
+    // for (int i = 0; i < 100; i++)
+    // {
+    //     npc.addPath(Coordinates(rand() % 30 + 30, rand() % 30 + 30));
+    // }
     
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Game", sf::Style::Fullscreen);
 
-    // NPC npc(Coordinates(1, 10), Vector2d(1, 1), layout);
-    
-    Camera camera(player, layout, 21, windowWidth, windowHeight);
-
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML window");
-
+    Camera camera(player, layout, 21, window ,windowWidth, windowHeight);
     window.setFramerateLimit(60);
 
     int startTime = 0;
@@ -48,6 +44,16 @@ int main()
     font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
 
     FpsCounter fpsCounter(font);
+
+    debuger.setWindow(&window);
+    debuger.setCamera(&camera);
+    debuger.setFont(font);
+
+    // for (int i = 0; i < 100; i++)
+    // {
+    //     debuger.consoleLog(std::to_string(i));
+    // }
+    
 
     while (window.isOpen())
     {
@@ -75,13 +81,10 @@ int main()
         layout.tick();
 
         window.clear();
-        
-        camera.render(window);
 
-        sf::RectangleShape rect(sf::Vector2f(1, 1));
-        rect.setPosition(windowWidth / 2, windowHeight / 2);
-        rect.setFillColor(sf::Color::Red);
-        window.draw(rect);
+        camera.render();
+
+        // debuger.drawRectangle(sf::Color(255, 0, 0), Coordinates(player.getPos().x + 2, player.getPos().y + 2), player.getSize());
 
         int x = 0;
         int y = 0;
@@ -91,20 +94,22 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) y--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x++;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) x++,y--;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) debuger.consoleLog("Space");
 
         if (x != 0 or y != 0)
         {
             player.move(atan2(y, x) * 180 / M_PI);
         }
 
-        // npc.walk(player.getPos());
+        npc.move(player.getPos());
 
-        for (auto i : list) i->walk(player.getPos());
+        // for (auto i : list) i->walk(player.getPos());
 
         fpsCounter.getEndTime();
         
         fpsCounter.draw(window, windowWidth);
+
+        debuger.drawConsole();
 
         window.display();
 

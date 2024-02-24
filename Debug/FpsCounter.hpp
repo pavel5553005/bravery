@@ -114,14 +114,14 @@ void FpsCounter::draw(sf::RenderWindow& window, int windowWidth)
         sprite.setPosition(windowWidth - 100, 0);
         window.draw(sprite);
 
-        sf::RectangleShape rect(sf::Vector2f(100, 12));
+        sf::RectangleShape rect(sf::Vector2f(100, 20));
         rect.setPosition(windowWidth - 30, 40);
         rect.setFillColor(sf::Color::Black);
         window.draw(rect);
 
         sf::Text text;
         text.setFont(font);
-        text.setCharacterSize(10);
+        text.setCharacterSize(16);
         text.setString(std::to_string(averageFps));
         text.setFillColor(sf::Color::White);
         text.setPosition(windowWidth - 30, 40);

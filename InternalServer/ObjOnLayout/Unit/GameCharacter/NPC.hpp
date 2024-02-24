@@ -9,14 +9,10 @@ class NPC : public GameCharacter
 private:
     std::string generateName();
     bool isVowel(char c);
-    Coordinates targetPos;
 public:
     NPC();
     NPC(Coordinates pos, Vector2d size, Layout& layout);
     NPC(Coordinates pos, Vector2d size, Layout& layout, std::string name);
-
-    void walk(Coordinates pos);
-    void event(Event event);
 
     ~NPC();
 };
@@ -29,16 +25,6 @@ NPC::NPC()
 NPC::NPC(Coordinates pos, Vector2d size, Layout& layout) : GameCharacter(pos, size, layout, NPC::generateName()) { }
 
 NPC::NPC(Coordinates pos, Vector2d size, Layout& layout, std::string name) : GameCharacter(pos, size, layout, name) { }
-
-void NPC::walk(Coordinates pos) { targetPos = pos; }
-
-void NPC::event(Event event)
-{
-    if (event.type == Event::Type::Tick)
-    {
-        NPC::move(targetPos);
-    }
-}
 
 bool NPC::isVowel(char c)
 {

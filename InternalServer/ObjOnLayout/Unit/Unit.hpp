@@ -11,6 +11,9 @@ private:
     unsigned int hp;
     unsigned int maxHp;
     double speed;
+    std::list<Coordinates> pathList;
+protected:
+    void walk();
 public:
     Unit();
     Unit(Coordinates pos, Vector2d size, Layout& layout);
@@ -23,6 +26,8 @@ public:
     unsigned int getMaxHp();
     double getSpeed();
 
+    void addPath(Coordinates pos);
+    void deletePath();
     void move(int angle);
     void move(Coordinates pos);
     void event(Event event);
@@ -51,6 +56,10 @@ unsigned int Unit::getMaxHp() { return maxHp; }
 
 double Unit::getSpeed() { return speed; }
 
+void Unit::addPath(Coordinates pos) { pathList.push_back(pos); }
+
+void Unit::deletePath() { pathList.clear(); }
+
 void Unit::move(int angle)
 {
     Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y - sin(angle * M_PI / 180) * speed));
@@ -69,9 +78,27 @@ void Unit::move(Coordinates pos)
     }
 }
 
+void Unit::walk()
+{
+    if (!pathList.empty())
+    {
+        if (Unit::getPos() == pathList.front())
+        {
+            pathList.pop_front();
+        }
+        if (!pathList.empty())
+        {
+            Unit::move(pathList.front());
+        }
+    }
+}
+
 void Unit::event(Event event)
 {
-    // printf("Unit event\n");
+    if (event.type == Event::Type::Tick)
+    {
+        Unit::walk();
+    }
 }
 
 Unit::~Unit()
