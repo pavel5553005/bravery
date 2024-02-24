@@ -1,8 +1,8 @@
 #ifndef ObjOnLayout_hpp_
 #define ObjOnLayout_hpp_
 
-#include "../Coordinates.hpp"
-#include "../Vector2d.hpp"
+#include "../Position/Coordinates.hpp"
+#include "../Position/Vector2d.hpp"
 
 class Event;
 
@@ -13,6 +13,7 @@ class ObjOnLayout
 private:
     Coordinates pos;
     Vector2d size;
+    bool isCollide(int x, int y, int z);
 protected:
     Layout* layout;
 public:

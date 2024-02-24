@@ -2,6 +2,7 @@
 #define Unit_hpp_
 #include "../ObjOnLayout.hpp"
 #include "../../Event/Event.hpp"
+#include <iostream>
 
 
 class Unit : public ObjOnLayout
@@ -16,9 +17,11 @@ public:
 
     void setHp(unsigned int hp);
     void setMaxHp(unsigned int maxHp);
+    void setSpeed(double speed);
 
     unsigned int getHp();
     unsigned int getMaxHp();
+    double getSpeed();
 
     void move(int angle);
     void move(Coordinates pos);
@@ -33,16 +36,20 @@ Unit::Unit(Coordinates pos, Vector2d size, Layout& layout) : ObjOnLayout(pos, si
 {
     hp = 100;
     maxHp = 100;
-    speed = 0.3;
+    speed = 0.1;
 }
 
 void Unit::setHp(unsigned int hp) { this->hp = hp; }
 
 void Unit::setMaxHp(unsigned int maxHp) { this->maxHp = maxHp; }
 
+void Unit::setSpeed(double speed) { this->speed = speed; std::cout << "x: " << getPos().x << " y: " << getPos().y << std::endl; }
+
 unsigned int Unit::getHp() { return hp; }
 
 unsigned int Unit::getMaxHp() { return maxHp; }
+
+double Unit::getSpeed() { return speed; }
 
 void Unit::move(int angle)
 {

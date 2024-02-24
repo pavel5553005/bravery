@@ -1,22 +1,5 @@
-#ifndef Vector2d_hpp_
-#define Vector2d_hpp_
-#include <math.h>
-#include <iostream>
-
-
-class Vector2d
-{
-public:
-    double x;
-    double y;
-    Vector2d();
-    Vector2d(double x, double y);
-
-    double getLength();
-    double getAngle();
-    
-    Vector2d& operator=(const Vector2d& other);
-};
+#include "Vector2d.hpp"
+#include "Coordinates.hpp"
 
 Vector2d::Vector2d()
 {
@@ -28,6 +11,12 @@ Vector2d::Vector2d(double x, double y)
 {
     this->x = x;
     this->y = y;
+}
+
+Vector2d::Vector2d(Coordinates pos)
+{
+    this->x = pos.x;
+    this->y = pos.y;
 }
 
 double Vector2d::getLength()
@@ -49,5 +38,3 @@ Vector2d& Vector2d::operator=(const Vector2d& other)
     }
     return *this;
 }
-
-#endif

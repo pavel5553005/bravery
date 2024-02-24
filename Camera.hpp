@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "InternalServer/ObjOnLayout/ObjOnLayout.hpp"
 #include "InternalServer/Map/Layout.hpp"
-#include "InternalServer/Coordinates.hpp"
+#include "InternalServer/Position/Coordinates.hpp"
 #include <list>
 
 class Camera

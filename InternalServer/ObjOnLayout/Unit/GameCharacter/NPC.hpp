@@ -36,14 +36,7 @@ void NPC::event(Event event)
 {
     if (event.type == Event::Type::Tick)
     {
-        if (int(NPC::getPos().y) == int(targetPos.y) && int(NPC::getPos().x) == int(targetPos.x))
-        {
-            NPC::setPos(targetPos);
-        }
-        else if (NPC::getPos() != targetPos)
-        {
-            NPC::move(targetPos);
-        }
+        NPC::move(targetPos);
     }
 }
 

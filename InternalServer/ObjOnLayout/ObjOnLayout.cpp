@@ -32,21 +32,57 @@ Vector2d ObjOnLayout::getSize()
     return size;
 }
 
-void ObjOnLayout::setPos(Coordinates pos)
+void ObjOnLayout::setPos(Coordinates newPos)
 {
-    if (pos.x + size.x > 100) pos.x = 100 - size.x;
-    if (pos.y + size.y > 100) pos.y = 100 - size.y;
-    if (pos.x < 0) pos.x = 0;
-    if (pos.y < 0) pos.y = 0;
+    if (newPos == pos) return;
+
+    if (newPos.x + size.x > 100) newPos.x = 100 - size.x;
+    if (newPos.y + size.y > 100) newPos.y = 100 - size.y;
+    if (newPos.x < 0) newPos.x = 0;
+    if (newPos.y < 0) newPos.y = 0;
+
+    for (int x = pos.x; x < pos.x + size.x; x++)
+    {
+        if (newPos.y - pos.y > 0 and isCollide(x, newPos.y + size.y, pos.z))
+        {
+            newPos.y = int(newPos.y + size.y) - size.y;
+            break;
+        }
+        else if (newPos.y - pos.y < 0 and isCollide(x, newPos.y, pos.z))
+        {
+            newPos.y = int(newPos.y) + 1;
+            break;
+        }
+    }
+    for (int y = pos.y; y < pos.y + size.y; y++)
+    {
+        if (newPos.x - pos.x > 0 and isCollide(newPos.x + size.x, y, pos.z))
+        {
+            newPos.x = int(newPos.x + size.x) - size.x;
+            break;
+        }
+        else if (newPos.x - pos.x < 0 and isCollide(newPos.x, y, pos.z))
+        {
+            newPos.x = int(newPos.x) + 1;
+            break;
+        }
+    }
+
+    if (newPos == pos) return;
 
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
 
-    this->pos = pos;
+    this->pos = newPos;
     
     layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
 // void ObjOnLayout::event(Event event) { }
+
+bool ObjOnLayout::isCollide(int x, int y, int z)
+{
+    return layout->getMap()->getCell(x, y, z)->getWallType() != MapCell::WallType::None;
+}
 
 void ObjOnLayout::removeFromLayout()
 {

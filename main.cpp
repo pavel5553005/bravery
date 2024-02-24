@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include "InternalServer/Position/Coordinates.hpp"
+#include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
@@ -8,6 +10,8 @@
 #include "Debug/FpsCounter.hpp"
 #include "InternalServer/ObjOnLayout/Unit/Unit.hpp"
 #include "InternalServer/ObjOnLayout/Unit/GameCharacter/NPC.hpp"
+#include <list>
+#include <iostream>
 
 int main()
 {
@@ -15,12 +19,20 @@ int main()
     const int windowHeight = 600;
     Layout layout;
 
-    Unit player(Coordinates(10, 10), Vector2d(1, 1), layout);
+    Unit player(Coordinates(9, 9), Vector2d(0.8, 0.8), layout);
+    player.setSpeed(0.5);
 
-    NPC npc(Coordinates(10, 10), Vector2d(1, 1), layout);
+    std::list<NPC*> list;
 
-    npc.walk(Coordinates(20, 20));
+    for (int i = 0; i < 1000; i++)
+    {
+        list.push_back(new NPC(Coordinates(rand() % 20 + 30, rand() % 20 + 30), Vector2d(0.8, 0.8), layout));
+        std::cout << "x: " << list.back()->getPos().x << " y: " << list.back()->getPos().y << std::endl;
+        list.back()->setSpeed((rand() % 20 + 1) / 100.0);
+    }
     
+
+    // NPC npc(Coordinates(1, 10), Vector2d(1, 1), layout);
     
     Camera camera(player, layout, 21, windowWidth, windowHeight);
 
@@ -79,11 +91,16 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) y--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x++;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) x++,y--;
 
         if (x != 0 or y != 0)
         {
             player.move(atan2(y, x) * 180 / M_PI);
         }
+
+        // npc.walk(player.getPos());
+
+        for (auto i : list) i->walk(player.getPos());
 
         fpsCounter.getEndTime();
         

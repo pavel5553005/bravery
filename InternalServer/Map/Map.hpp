@@ -44,26 +44,13 @@ Map::Map()
         cells[0][x][20].setWallType(MapCell::WallType::Wall);
 
     }
-    for (int y = 10; y < 20; y++)
+    for (int y = 10; y < 21; y++)
     {
         cells[0][10][y].setWallType(MapCell::WallType::Wall);
         cells[0][20][y].setWallType(MapCell::WallType::Wall);
     }
-    for (int x = 0; x < 100; x++)
-    {
-        for (int y = 0; y < 100; y++)
-        {
-            if (cells[0][x][y].getWallType() == MapCell::WallType::Wall)
-            {
-                std::cout << '#';
-            }
-            else
-            {
-                std::cout << ' ';
-            }
-        }
-        std::cout << std::endl;
-    }
+
+    cells[0][10][15].setWallType(MapCell::WallType::None);
     
 }
 
