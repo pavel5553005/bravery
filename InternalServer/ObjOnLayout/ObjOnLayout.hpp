@@ -13,6 +13,7 @@ class ObjOnLayout
 private:
     Coordinates pos;
     Vector2d size;
+    Vector2d center;
     bool isCollide(int x, int y, int z);
 protected:
     Layout* layout;
@@ -24,6 +25,7 @@ public:
     Vector2d getSize();
 
     void setPos(Coordinates pos);
+
 
     virtual void event(Event event);
     void removeFromLayout();

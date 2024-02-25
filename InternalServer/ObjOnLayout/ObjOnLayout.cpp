@@ -7,7 +7,8 @@ ObjOnLayout::ObjOnLayout()
 {
     this->pos = Coordinates();
     this->size = Vector2d();
-    layout = nullptr;
+    this->center = Vector2d();
+    this->layout = nullptr;
 }
 
 ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
