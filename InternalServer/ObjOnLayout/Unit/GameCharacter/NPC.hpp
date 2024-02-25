@@ -64,7 +64,7 @@ std::string NPC::generateName()
         }
     }
     name[0] = toupper(name[0]);
-    std::cout << name << std::endl;
+    debuger.consoleLog(name);
     return name;
 }
 

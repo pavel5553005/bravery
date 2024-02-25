@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include "Debug/Debuger.hpp"
 #include "InternalServer/Position/Coordinates.hpp"
 #include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
-#include "Debug/Debuger.cpp"
 #include "Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 #include "InternalServer/Event/Event.hpp"
@@ -11,6 +11,7 @@
 #include "Debug/FpsCounter.hpp"
 #include "InternalServer/ObjOnLayout/Unit/Unit.hpp"
 #include "InternalServer/ObjOnLayout/Unit/GameCharacter/NPC.hpp"
+#include "InternalServer/ObjOnLayout/Unit/Animal/Animal.hpp"
 #include <list>
 #include <iostream>
 
@@ -31,6 +32,9 @@ int main()
     //     npc.addPath(Coordinates(rand() % 30 + 30, rand() % 30 + 30));
     // }
     
+    Animal animal(Coordinates(30, 30), Vector2d(0.8, 0.8), layout);
+    animal.setSpeed(0.1);
+
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Game", sf::Style::Fullscreen);
 
     Camera camera(player, layout, 21, window ,windowWidth, windowHeight);
@@ -39,15 +43,22 @@ int main()
     int startTime = 0;
     int endTime = 1;
     int fps = 0;
+    int timeBeforeSpawnNPC = rand() % 600;
 
     sf::Font font;
-    font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
+    font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf");
 
     FpsCounter fpsCounter(font);
 
     debuger.setWindow(&window);
-    debuger.setCamera(&camera);
     debuger.setFont(font);
+
+    std::list<NPC*> npcList;
+
+    sf::RectangleShape backgroundSprite;
+    backgroundSprite.setSize(sf::Vector2f(windowWidth, windowHeight));
+    backgroundSprite.setPosition(0, 0);
+    backgroundSprite.setFillColor(sf::Color(85, 85, 85));
 
     // for (int i = 0; i < 100; i++)
     // {
@@ -78,9 +89,18 @@ int main()
 
         fpsCounter.getStartTime();
 
+        if (npcList.size() < 1000)
+        {
+            npcList.push_back(new NPC(Coordinates(rand() % 30 + 30, rand() % 30 + 30), Vector2d(1, 1), layout));
+            npcList.back()->setSpeed((rand() % 49 + 1 )/ 1000.0);
+            debuger.consoleLog("Count of NPC: " + std::to_string(npcList.size()));
+        }
+
         layout.tick();
 
         window.clear();
+
+        window.draw(backgroundSprite);
 
         camera.render();
 
@@ -94,16 +114,16 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) y--;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x++;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) debuger.consoleLog("Space");
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) debuger.consoleLog("GGGGGGGGGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
         if (x != 0 or y != 0)
         {
             player.move(atan2(y, x) * 180 / M_PI);
         }
 
-        npc.move(player.getPos());
+        npc.move(animal.getPos());
 
-        // for (auto i : list) i->walk(player.getPos());
+        for (auto i : npcList) i->move(animal.getPos());
 
         fpsCounter.getEndTime();
         

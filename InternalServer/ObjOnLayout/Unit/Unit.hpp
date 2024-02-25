@@ -25,6 +25,7 @@ public:
     unsigned int getHp();
     unsigned int getMaxHp();
     double getSpeed();
+    bool isPathEmpty();
 
     void addPath(Coordinates pos);
     void deletePath();
@@ -48,13 +49,15 @@ void Unit::setHp(unsigned int hp) { this->hp = hp; }
 
 void Unit::setMaxHp(unsigned int maxHp) { this->maxHp = maxHp; }
 
-void Unit::setSpeed(double speed) { this->speed = speed; std::cout << "x: " << getPos().x << " y: " << getPos().y << std::endl; }
+void Unit::setSpeed(double speed) { this->speed = speed; }
 
 unsigned int Unit::getHp() { return hp; }
 
 unsigned int Unit::getMaxHp() { return maxHp; }
 
 double Unit::getSpeed() { return speed; }
+
+bool Unit::isPathEmpty() { return pathList.empty(); }
 
 void Unit::addPath(Coordinates pos) { pathList.push_back(pos); }
 
