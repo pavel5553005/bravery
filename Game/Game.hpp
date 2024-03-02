@@ -123,5 +123,9 @@ void Game::createNPC()
 
 Game::~Game()
 {
-    for (auto i : npcs) delete i;
+    for (auto i : npcs)
+    {
+        npcs.remove(i);
+        delete i;
+    }
 }
