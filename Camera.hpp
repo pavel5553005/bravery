@@ -16,6 +16,7 @@ private:
     sf::Texture wallsTexture;
     sf::RenderWindow* window;
     std::list<sf::RectangleShape> rectangleShapes;
+    sf::RectangleShape backgroundSprite;
 
     sf::Image grassImage;
     sf::Image stoneImage;
@@ -87,6 +88,10 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
         }
     }
     wallsTexture.update(wallsImage);
+
+    backgroundSprite.setSize(sf::Vector2f(windowWidth, windowHeight));
+    backgroundSprite.setPosition(0, 0);
+    backgroundSprite.setFillColor(sf::Color(85, 85, 85));
 }
 
 Camera::Camera()
@@ -119,6 +124,8 @@ void Camera::render()
     // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
     // pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
     // pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
+
+    window->draw(backgroundSprite);
 
     sf::Sprite floorSprite;
     floorSprite.setTexture(floorTexture);
