@@ -90,6 +90,7 @@ void ObjOnLayout::removeFromLayout()
     if (layout != nullptr)
     {
         layout->deleteObject(*this);
+        layout = nullptr;
     }
 }
 

@@ -125,7 +125,8 @@ Game::~Game()
 {
     for (auto i : npcs)
     {
-        npcs.remove(i);
+        i->removeFromLayout();
         delete i;
+        npcs.remove(i);
     }
 }
