@@ -31,12 +31,12 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
 {
     this->window = &window;
 
-    player = new Unit(Coordinates(30, 30), Vector2d(0.8, 0.8), *server.getLayout());
+    player = new Unit(Coordinates(0, 0), Vector2d(0.8, 0.8), *server.getLayout());
     player->setSpeed(0.1);
 
     camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
 
-    d = new DebugObj(Coordinates(40, 40), Vector2d(0.8, 0.8), *server.getLayout(), *player);
+    d = new DebugObj(Coordinates(10, 10), Vector2d(0.8, 0.8), *server.getLayout(), *player);
 
     debuger.setWindow(&window);
 }
@@ -81,14 +81,6 @@ void Game::run()
         // for (auto i : npcList) i->move(animal.getPos());
 
         server.tick();
-
-        // for (int y = 0; y < 100; y++)
-        // {
-        //     for (int x = 0; x < 100; x++)
-        //     {
-        //         std::cout << ((server.getLayout()->getMap()->getCell(x, y, 0)->getObjects()->size() == 0)?(""):("*"));
-        //     }
-        // }
 
         keyboardCheck();
 

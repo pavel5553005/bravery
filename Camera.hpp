@@ -48,17 +48,17 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
     this->window = &window;
     this->windowHeight = windowHeight;
     this->windowWidth = windowWidth;
-    floorTexture.create(100 * 16, 100 * 16);
+    floorTexture.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
 
     grassImage.loadFromFile("Resources/Textures/Floor/GrassTexture.png");
     stoneImage.loadFromFile("Resources/Textures/Floor/StoneTexture.png");
 
     sf::Image floorImage;
-    floorImage.create(100 * 16, 100 * 16, sf::Color(255, 0, 255));
+    floorImage.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16, sf::Color(255, 0, 255));
 
-    for (int x = 0; x < 100; x++)
+    for (int x = 0; x < layout.getMap()->getSizeX(); x++)
     {
-        for (int y = 0; y < 100; y++)
+        for (int y = 0; y < layout.getMap()->getSizeY(); y++)
         {
             if (layout.getMap()->getCell(x, y, 0)->getFloorType() == MapCell::FloorType::Grass)
             {
@@ -74,12 +74,12 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
 
     floorTexture.update(floorImage);
 
-    wallsTexture.create(100 * 16, 100 * 16);
+    wallsTexture.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
     sf::Image wallsImage;
-    wallsImage.create(100 * 16, 100 * 16, sf::Color(0, 0, 0, 0));
-    for (int x = 0; x < 100 * 16; x++)
+    wallsImage.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16, sf::Color(0, 0, 0, 0));
+    for (int x = 0; x < layout.getMap()->getSizeX() * 16; x++)
     {
-        for (int y = 0; y < 100 * 16; y++)
+        for (int y = 0; y < layout.getMap()->getSizeY() * 16; y++)
         {
             if (layout.getMap()->getCell(x / 16, y / 16, 0)->getWallType() == MapCell::WallType::Wall)
             {

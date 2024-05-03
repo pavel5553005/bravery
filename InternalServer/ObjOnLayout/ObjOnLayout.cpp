@@ -37,8 +37,8 @@ void ObjOnLayout::setPos(Coordinates newPos)
 {
     if (newPos == pos) return;
 
-    if (newPos.x + size.x > 100) newPos.x = 100 - size.x;
-    if (newPos.y + size.y > 100) newPos.y = 100 - size.y;
+    if (newPos.x + size.x > layout->getMap()->getSizeX()) newPos.x = layout->getMap()->getSizeX() - size.x;
+    if (newPos.y + size.y > layout->getMap()->getSizeY()) newPos.y = layout->getMap()->getSizeY() - size.y;
     if (newPos.x < 0) newPos.x = 0;
     if (newPos.y < 0) newPos.y = 0;
 
