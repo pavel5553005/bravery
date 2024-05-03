@@ -4,6 +4,7 @@
 #include "Map.hpp"
 #include "../ObjOnLayout/ObjOnLayout.hpp"
 #include "../Event/Event.hpp"
+#include "../Event/EventHandler.hpp"
 
 class Layout
 {
@@ -29,14 +30,6 @@ std::list<ObjOnLayout*>* Layout::getObjects() { return &objects; }
 
 Map *Layout::getMap() { return &map; }
 
-void Layout::generateEvent(Event event)
-{
-    for (auto i : objects)
-    {
-        i->event(event);
-    }
-}
-
 void Layout::addObject(ObjOnLayout& obj)
 {
     debuger.consoleLog("add object");
@@ -55,7 +48,7 @@ void Layout::deleteObject(ObjOnLayout& obj)
 
 void Layout::tick()
 {
-    Layout::generateEvent(Event(Event::Type::Tick));
+    handler.generateEvent(Event(Event::Type::Tick));
 }
 
 Layout::~Layout()

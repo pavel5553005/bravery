@@ -1,4 +1,5 @@
 #include "Header.hpp"
+#include "InternalServer/Event/EventHandler.hpp"
 #include "Game/Game.hpp"
 
 int main()

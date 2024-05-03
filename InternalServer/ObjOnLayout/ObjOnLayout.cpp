@@ -20,7 +20,7 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
     Event event(Event::Type::ObjSpawn);
     event.objSpawn.obj = this;
     event.objSpawn.pos = pos;
-    layout.generateEvent(event);
+    handler.generateEvent(event);
 }
 
 Coordinates ObjOnLayout::getPos()

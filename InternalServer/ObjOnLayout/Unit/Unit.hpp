@@ -13,7 +13,7 @@ private:
     double speed;
     std::list<Coordinates> pathList;
 protected:
-    void walk();
+    void walk(Event event);
 public:
     Unit();
     Unit(Coordinates pos, Vector2d size, Layout& layout);
@@ -43,6 +43,7 @@ Unit::Unit(Coordinates pos, Vector2d size, Layout& layout) : ObjOnLayout(pos, si
     hp = 100;
     maxHp = 100;
     speed = 0.1;
+    handler.addListener([this](Event event) { Unit::walk(event); });
 }
 
 void Unit::setHp(unsigned int hp) { this->hp = hp; }
@@ -81,7 +82,7 @@ void Unit::move(Coordinates pos)
     }
 }
 
-void Unit::walk()
+void Unit::walk(Event event)
 {
     if (!pathList.empty())
     {
@@ -93,14 +94,6 @@ void Unit::walk()
         {
             Unit::move(pathList.front());
         }
-    }
-}
-
-void Unit::event(Event event)
-{
-    if (event.type == Event::Type::Tick)
-    {
-        Unit::walk();
     }
 }
 
