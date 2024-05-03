@@ -13,9 +13,9 @@ ObjOnLayout::ObjOnLayout()
 
 ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
 {
-    this->pos = pos;
     this->size = size;
     this->layout = &layout;
+    this->setPos(pos);
     layout.addObject(*this);
     Event event(Event::Type::ObjSpawn);
     event.objSpawn.obj = this;
@@ -71,11 +71,11 @@ void ObjOnLayout::setPos(Coordinates newPos)
 
     if (newPos == pos) return;
 
-    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
+    // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
 
     this->pos = newPos;
     
-    layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
+    // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
 // void ObjOnLayout::event(Event event) { }

@@ -133,29 +133,49 @@ void Camera::render()
     floorSprite.setScale(scale / 16, scale / 16);
     window->draw(floorSprite);
 
-    for (int y = 0; y < 100; y++)
+    for (auto i : *layout->getObjects())
     {
-        for (int x = 0; x < 100; x++)
+        debuger.consoleLog("sex2");
+        if (i != followObj)
         {
-            for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
-            {
-                if (i != followObj)
-                {
-                    sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-                    rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-                    rect.setFillColor(sf::Color::Blue);
-                    window->draw(rect);
-                }
-                else
-                {
-                    sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-                    rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-                    rect.setFillColor(sf::Color::Red);
-                    window->draw(rect);
-                }
-            }
+            debuger.consoleLog("sex");
+            sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+            rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+            rect.setFillColor(sf::Color::Blue);
+            window->draw(rect);
+        }
+        else
+        {
+            sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+            rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+            rect.setFillColor(sf::Color::Red);
+            window->draw(rect);
         }
     }
+
+    // for (int y = 0; y < 100; y++)
+    // {
+    //     for (int x = 0; x < 100; x++)
+    //     {
+    //         for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
+    //         {
+    //             if (i != followObj)
+    //             {
+    //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+    //                 rect.setFillColor(sf::Color::Blue);
+    //                 window->draw(rect);
+    //             }
+    //             else
+    //             {
+    //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+    //                 rect.setFillColor(sf::Color::Red);
+    //                 window->draw(rect);
+    //             }
+    //         }
+    //     }
+    // }
         
     sf::Sprite wallsSprite;
     wallsSprite.setTexture(wallsTexture);

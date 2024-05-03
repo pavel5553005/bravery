@@ -12,6 +12,7 @@ public:
     Layout* getLayout();
 
     void tick();
+    void stop();
 
     ~InternalServer();
 };
@@ -25,6 +26,14 @@ void InternalServer::tick()
     layout.tick();
 }
 
-InternalServer::~InternalServer() {}
+void InternalServer::stop()
+{
+    
+}
+
+InternalServer::~InternalServer()
+{
+    layout.~Layout();
+}
 
 #endif

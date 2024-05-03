@@ -14,6 +14,9 @@ public:
     Map();
     Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ);
     MapCell* getCell(int x, int y, int z);
+    int getSizeX() {return sizeX;}
+    int getSizeY() {return sizeY;}
+    int getSizeZ() {return sizeZ;}
     ~Map();
 };
 
@@ -68,7 +71,13 @@ MapCell* Map::getCell(int x, int y, int z)
 
 Map::~Map()
 {
-
+    for (int x = 0; x < sizeX; x++)
+    {
+        for (int y = 0; y < sizeY; y++)
+        {
+            cells[0][x][y].~MapCell();
+        }
+    }
 }
 
 

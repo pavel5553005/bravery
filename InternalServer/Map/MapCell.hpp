@@ -11,19 +11,19 @@ public:
 private:
     FloorType floorType;
     WallType wallType;
-    std::list<ObjOnLayout*> objects;
+    // std::list<ObjOnLayout*> objects;
 public:
     MapCell();
     MapCell(FloorType floorType, WallType wallType);
 
     FloorType getFloorType();
     WallType getWallType();
-    std::list<ObjOnLayout*>* getObjects();
+    // std::list<ObjOnLayout*>* getObjects();
 
     void setWallType(WallType wallType);
 
-    void addObject(ObjOnLayout& obj);
-    void deleteObject(ObjOnLayout& obj);
+    // void addObject(ObjOnLayout& obj);
+    // void deleteObject(ObjOnLayout& obj);
 
     ~MapCell();
 };
@@ -46,23 +46,24 @@ MapCell::WallType MapCell::getWallType() { return wallType; }
 
 void MapCell::setWallType(WallType wallType) { this->wallType = wallType; }
 
-std::list<ObjOnLayout*>* MapCell::getObjects()
-{
-    return &objects;
-}
+// std::list<ObjOnLayout*>* MapCell::getObjects()
+// {
+//     return &objects;
+// }
 
-void MapCell::addObject(ObjOnLayout& obj)
-{
-    objects.push_back(&obj);
-}
+// void MapCell::addObject(ObjOnLayout& obj)
+// {
+//     objects.push_back(&obj);
+// }
 
-void MapCell::deleteObject(ObjOnLayout& obj)
-{
-    objects.remove(&obj);
-}
+// void MapCell::deleteObject(ObjOnLayout& obj)
+// {
+//     objects.remove(&obj);
+// }
 
 MapCell::~MapCell()
 {
+    // objects.clear();
 }
 
 #endif

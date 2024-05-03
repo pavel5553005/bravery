@@ -39,14 +39,18 @@ void Layout::generateEvent(Event event)
 
 void Layout::addObject(ObjOnLayout& obj)
 {
+    debuger.consoleLog("add object");
     objects.push_back(&obj);
-    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->addObject(obj);
+    debuger.consoleLog(std::to_string(objects.size()));
+    // map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->addObject(obj);
 }
 
 void Layout::deleteObject(ObjOnLayout& obj)
 {
+    debuger.consoleLog("delete object");
     objects.remove(&obj);
-    map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->deleteObject(obj);
+    debuger.consoleLog(std::to_string(objects.size()));
+    // map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->deleteObject(obj);
 }
 
 void Layout::tick()
@@ -56,7 +60,8 @@ void Layout::tick()
 
 Layout::~Layout()
 {
-
+    map.~Map();
+    objects.clear();
 }
 
 #endif

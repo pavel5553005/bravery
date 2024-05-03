@@ -7,7 +7,7 @@ private:
     const unsigned int windowWidth;
     const unsigned int windowHeight;
 
-    Unit player;
+    Unit* player;
     std::list<NPC*> npcs;
     Camera camera;
     sf::Font font;
@@ -30,10 +30,10 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
 {
     this->window = &window;
 
-    player = Unit(Coordinates(30, 30), Vector2d(0.8, 0.8), *server.getLayout());
-    player.setSpeed(0.1);
+    player = new Unit(Coordinates(30, 30), Vector2d(0.8, 0.8), *server.getLayout());
+    player->setSpeed(0.1);
 
-    camera = Camera(player, *server.getLayout(), 21, window, windowWidth, windowHeight);
+    camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
 
     debuger.setWindow(&window);
 }
@@ -48,14 +48,16 @@ void Game::setFont(sf::Font& font)
 void Game::run()
 {
     FpsCounter fpsCounter(font);
-
+    
     while (window->isOpen())
     {
         sf::Event event;
         while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed) {
+                
                 window->close();
+                server.~InternalServer();
                 return;
             }
             if (event.type == sf::Event::MouseWheelScrolled and event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
@@ -76,6 +78,14 @@ void Game::run()
         // for (auto i : npcList) i->move(animal.getPos());
 
         server.tick();
+
+        // for (int y = 0; y < 100; y++)
+        // {
+        //     for (int x = 0; x < 100; x++)
+        //     {
+        //         std::cout << ((server.getLayout()->getMap()->getCell(x, y, 0)->getObjects()->size() == 0)?(""):("*"));
+        //     }
+        // }
 
         keyboardCheck();
 
@@ -107,7 +117,7 @@ void Game::keyboardCheck()
 
     if (x != 0 or y != 0)
     {
-        player.move(atan2(y, x) * 180 / M_PI);
+        player->move(atan2(y, x) * 180 / M_PI);
     }
 }
 
@@ -123,10 +133,5 @@ void Game::createNPC()
 
 Game::~Game()
 {
-    for (auto i : npcs)
-    {
-        i->removeFromLayout();
-        delete i;
-        npcs.remove(i);
-    }
+    server.~InternalServer();
 }
