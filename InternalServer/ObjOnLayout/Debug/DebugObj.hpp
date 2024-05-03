@@ -10,8 +10,10 @@ public:
     DebugObj();
     DebugObj(Coordinates pos, Vector2d size, Layout& layout, ObjOnLayout& followObj);
 
-    void generateEvent();
-    void event(Event event);
+    void setFollowObj(ObjOnLayout& followObj) { this->followObj = &followObj; }
+
+    void sex(Event event) { setPos(Coordinates(followObj->getPos().x, followObj->getPos().y)); }
+
     ~DebugObj();
 };
 
@@ -20,16 +22,7 @@ DebugObj::DebugObj() : ObjOnLayout() { }
 DebugObj::DebugObj(Coordinates pos, Vector2d size, Layout& layout, ObjOnLayout& followObj) : ObjOnLayout(pos, size, layout)
 {
     this->followObj = &followObj;
-}
-
-void DebugObj::generateEvent() { }
-
-void DebugObj::event(Event event)
-{
-    if (event.type == Event::Type::Tick)
-    {
-        DebugObj::setPos(followObj->getPos());
-    }
+    handler.addListener(std::bind(&DebugObj::sex, this, std::placeholders::_1), Event::Type::TestEvent);
 }
 
 DebugObj::~DebugObj() { }

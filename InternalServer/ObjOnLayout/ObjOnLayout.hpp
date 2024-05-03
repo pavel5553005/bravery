@@ -25,9 +25,7 @@ public:
     Vector2d getSize();
 
     void setPos(Coordinates pos);
-
-
-    virtual void event(Event event);
+    
     void removeFromLayout();
 
     virtual ~ObjOnLayout();

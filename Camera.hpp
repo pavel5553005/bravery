@@ -135,10 +135,8 @@ void Camera::render()
 
     for (auto i : *layout->getObjects())
     {
-        debuger.consoleLog("sex2");
         if (i != followObj)
         {
-            debuger.consoleLog("sex");
             sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
             rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
             rect.setFillColor(sf::Color::Blue);

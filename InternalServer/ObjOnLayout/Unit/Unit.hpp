@@ -43,7 +43,7 @@ Unit::Unit(Coordinates pos, Vector2d size, Layout& layout) : ObjOnLayout(pos, si
     hp = 100;
     maxHp = 100;
     speed = 0.1;
-    handler.addListener([this](Event event) { Unit::walk(event); });
+    handler.addListener(std::bind(&Unit::walk, this, std::placeholders::_1), Event::Type::Tick);
 }
 
 void Unit::setHp(unsigned int hp) { this->hp = hp; }

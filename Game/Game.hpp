@@ -11,6 +11,7 @@ private:
     std::list<NPC*> npcs;
     Camera camera;
     sf::Font font;
+    DebugObj* d;
 
     InternalServer server;
     sf::RenderWindow* window;
@@ -34,6 +35,8 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
     player->setSpeed(0.1);
 
     camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
+
+    d = new DebugObj(Coordinates(40, 40), Vector2d(0.8, 0.8), *server.getLayout(), *player);
 
     debuger.setWindow(&window);
 }
@@ -114,6 +117,7 @@ void Game::keyboardCheck()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) x--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or sf::Keyboard::isKeyPressed(sf::Keyboard::S)) y--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D)) x++;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) handler.generateEvent(Event(Event::Type::TestEvent));
 
     if (x != 0 or y != 0)
     {

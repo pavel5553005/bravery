@@ -9,10 +9,13 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Game", sf::Style::Default);
 
-    window.setFramerateLimit(60);
+	window.setFramerateLimit(60);
 
     sf::Font font;
-    font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf");
+    if (font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf") == false)
+    {
+        font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonospacedBold.ttf");
+    }
 
     Game game(windowWidth, windowHeight, window);
 
