@@ -42,34 +42,34 @@ void ObjOnLayout::setPos(Coordinates newPos)
     if (newPos.x < 0) newPos.x = 0;
     if (newPos.y < 0) newPos.y = 0;
 
-    // for (int x = pos.x; x < pos.x + size.x; x++)
-    // {
-    //     if (newPos.y - pos.y > 0 and isCollide(x, newPos.y + size.y, pos.z))
-    //     {
-    //         newPos.y = int(newPos.y + size.y) - size.y;
-    //         break;
-    //     }
-    //     else if (newPos.y - pos.y < 0 and isCollide(x, newPos.y, pos.z))
-    //     {
-    //         newPos.y = int(newPos.y) + 1;
-    //         break;
-    //     }
-    // }
-    // for (int y = pos.y; y < pos.y + size.y; y++)
-    // {
-    //     if (newPos.x - pos.x > 0 and isCollide(newPos.x + size.x, y, pos.z))
-    //     {
-    //         newPos.x = int(newPos.x + size.x) - size.x;
-    //         break;
-    //     }
-    //     else if (newPos.x - pos.x < 0 and isCollide(newPos.x, y, pos.z))
-    //     {
-    //         newPos.x = int(newPos.x) + 1;
-    //         break;
-    //     }
-    // }
+    for (int x = pos.x; x < pos.x + size.x; x++)
+    {
+        if (newPos.y - pos.y > 0 and isCollide(x, newPos.y + size.y, pos.z))
+        {
+            newPos.y = int(newPos.y + size.y) - size.y;
+            break;
+        }
+        else if (newPos.y - pos.y < 0 and isCollide(x, newPos.y, pos.z))
+        {
+            newPos.y = int(newPos.y) + 1;
+            break;
+        }
+    }
+    for (int y = pos.y; y < pos.y + size.y; y++)
+    {
+        if (newPos.x - pos.x > 0 and isCollide(newPos.x + size.x, y, pos.z))
+        {
+            newPos.x = int(newPos.x + size.x) - size.x;
+            break;
+        }
+        else if (newPos.x - pos.x < 0 and isCollide(newPos.x, y, pos.z))
+        {
+            newPos.x = int(newPos.x) + 1;
+            break;
+        }
+    }
 
-    // if (newPos == pos) return;
+    if (newPos == pos) return;
 
     // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
 
