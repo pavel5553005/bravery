@@ -18,7 +18,7 @@ public:
     bool operator != (const Coordinates& other);
 };
 
-Coordinates::Coordinates(double x, double y, int z = 0)
+Coordinates::Coordinates(double x, double y, int z)
 {
     this->x = x;
     this->y = y;

@@ -1,5 +1,4 @@
 #include "../Header.hpp"
-#include "../InternalServer/InternalServer.hpp"
 
 class Game
 {
@@ -12,12 +11,14 @@ private:
     Camera camera;
     sf::Font font;
     DebugObj* d;
+    std::list<sf::Keyboard::Key> pressedKeys;
 
     InternalServer server;
     sf::RenderWindow* window;
 
     void createNPC();
     void keyboardCheck();
+    bool oneKeyPressed(sf::Keyboard::Key key);
 public:
     Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::RenderWindow& window);
     void setFont(sf::Font& font);
@@ -31,12 +32,12 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
 {
     this->window = &window;
 
-    player = new Unit(Coordinates(0, 0), Vector2d(0.8, 0.8), *server.getLayout());
+    player = new Unit(Coordinates(0, 0, 0), Vector2d(0.8, 0.8), *server.getLayout());
     player->setSpeed(0.1);
 
     camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
 
-    d = new DebugObj(Coordinates(10, 10), Vector2d(0.8, 0.8), *server.getLayout(), *player);
+    d = new DebugObj(Coordinates(1, 1, 0), Vector2d(0.8, 0.8), *server.getLayout(), *player);
 
     debuger.setWindow(&window);
 }
@@ -100,6 +101,33 @@ void Game::run()
     }
 }
 
+bool Game::oneKeyPressed(sf::Keyboard::Key key)
+{
+    if (!sf::Keyboard::isKeyPressed(key))
+    {
+        for (auto i : pressedKeys)
+        {
+            if (i == key)
+            {
+                pressedKeys.remove(i);
+                return false;
+            }
+        }
+        return false;
+    }
+    else
+    {
+        for (auto i : pressedKeys)
+        {
+            if (i == key)
+            {
+                return false;
+            }
+        }
+        pressedKeys.push_back(key);
+        return true;
+    }
+}
 void Game::keyboardCheck()
 {
     int x = 0;
@@ -110,6 +138,16 @@ void Game::keyboardCheck()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or sf::Keyboard::isKeyPressed(sf::Keyboard::S)) y--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D)) x++;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) handler.generateEvent(Event(Event::Type::TestEvent));
+    if (oneKeyPressed(sf::Keyboard::N))
+    {
+        player->setPos(Coordinates(player->getPos().x, player->getPos().y, player->getPos().z - 1));
+        debuger.consoleLog(std::to_string(player->getPos().z));
+    }
+    if (oneKeyPressed(sf::Keyboard::H))
+    {
+        player->setPos(Coordinates(player->getPos().x, player->getPos().y, player->getPos().z + 1));
+        debuger.consoleLog(std::to_string(player->getPos().z));
+    }
 
     if (x != 0 or y != 0)
     {
@@ -121,7 +159,7 @@ void Game::createNPC()
 {
     if (npcs.size() < 10) 
     {
-        NPC* npc = new NPC(Coordinates(rand() % 30 + 30, rand() % 30 + 30), Vector2d(1, 1), *server.getLayout());
+        NPC* npc = new NPC(Coordinates(rand() % 30 + 30, rand() % 30 + 30, 0), Vector2d(1, 1), *server.getLayout());
         npc->setSpeed((rand() % 40 + 10) / 1000.0);
         npcs.push_back(npc);
     }

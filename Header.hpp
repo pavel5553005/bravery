@@ -18,5 +18,6 @@
 #include <list>
 #include <iostream>
 #include "HUD/HUD.hpp"
+#include "InternalServer/InternalServer.hpp"
 
 #endif

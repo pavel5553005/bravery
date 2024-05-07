@@ -12,10 +12,7 @@ int main()
 	window.setFramerateLimit(60);
 
     sf::Font font;
-    if (font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf") == false)
-    {
-        font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeMonospacedBold.ttf");
-    }
+    font.loadFromFile("Resources/Fonts/JetBrainsMono-Medium.ttf");
 
     Game game(windowWidth, windowHeight, window);
 

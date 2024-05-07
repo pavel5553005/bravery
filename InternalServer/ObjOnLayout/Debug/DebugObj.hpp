@@ -12,7 +12,7 @@ public:
 
     void setFollowObj(ObjOnLayout& followObj) { this->followObj = &followObj; }
 
-    void sex(Event event) { setPos(Coordinates(followObj->getPos().x, followObj->getPos().y)); }
+    void sex(Event event) { setPos(Coordinates(followObj->getPos().x, followObj->getPos().y, followObj->getPos().z)); }
 
     ~DebugObj();
 };

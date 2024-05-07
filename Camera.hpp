@@ -12,8 +12,8 @@ private:
     Coordinates pos;
     ObjOnLayout* followObj;
     Layout* layout;
-    sf::Texture floorTexture;
-    sf::Texture wallsTexture;
+    sf::Texture* floorTexture;
+    sf::Texture* wallsTexture;
     sf::RenderWindow* window;
     std::list<sf::RectangleShape> rectangleShapes;
     sf::RectangleShape backgroundSprite;
@@ -48,46 +48,46 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
     this->window = &window;
     this->windowHeight = windowHeight;
     this->windowWidth = windowWidth;
-    floorTexture.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
 
     grassImage.loadFromFile("Resources/Textures/Floor/GrassTexture.png");
     stoneImage.loadFromFile("Resources/Textures/Floor/StoneTexture.png");
 
     sf::Image floorImage;
     floorImage.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16, sf::Color(255, 0, 255));
-
-    for (int x = 0; x < layout.getMap()->getSizeX(); x++)
-    {
-        for (int y = 0; y < layout.getMap()->getSizeY(); y++)
-        {
-            if (layout.getMap()->getCell(x, y, 0)->getFloorType() == MapCell::FloorType::Grass)
-            {
-                floorImage.copy(grassImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
-            }
-            else if (layout.getMap()->getCell(x, y, 0)->getFloorType() == MapCell::FloorType::Stone)
-            {
-                floorImage.copy(stoneImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
-            }
-        }
-    }
-    
-
-    floorTexture.update(floorImage);
-
-    wallsTexture.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
     sf::Image wallsImage;
-    wallsImage.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16, sf::Color(0, 0, 0, 0));
-    for (int x = 0; x < layout.getMap()->getSizeX() * 16; x++)
+    wallsImage.create(layout.getMap()->getSizeX(), layout.getMap()->getSizeY(), sf::Color(0, 0, 0, 0));
+    floorTexture = new sf::Texture[layout.getMap()->getSizeZ()];
+    wallsTexture = new sf::Texture[layout.getMap()->getSizeZ()];
+    for (int z = 0; z < layout.getMap()->getSizeZ(); z++)
     {
-        for (int y = 0; y < layout.getMap()->getSizeY() * 16; y++)
+        floorTexture[z].create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
+        wallsTexture[z].create(layout.getMap()->getSizeX(), layout.getMap()->getSizeY());
+        for (int x = 0; x < layout.getMap()->getSizeX(); x++)
         {
-            if (layout.getMap()->getCell(x / 16, y / 16, 0)->getWallType() == MapCell::WallType::Wall)
+            for (int y = 0; y < layout.getMap()->getSizeY(); y++)
             {
-                wallsImage.setPixel(x, y, sf::Color(255, 255, 255, 255));
+                if (layout.getMap()->getCell(x, y, z)->getFloorType() == MapCell::FloorType::Grass)
+                {
+                    floorImage.copy(grassImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
+                }
+                else if (layout.getMap()->getCell(x, y, z)->getFloorType() == MapCell::FloorType::Stone)
+                {
+                    floorImage.copy(stoneImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
+                }
+
+                if (layout.getMap()->getCell(x, y, z)->getWallType() == MapCell::WallType::Wall)
+                {
+                    wallsImage.setPixel(x, y, sf::Color(255, 255, 255, 255));
+                }
+                else
+                {
+                    wallsImage.setPixel(x, y, sf::Color(0, 0, 0, 0));
+                }
             }
         }
+        floorTexture[z].update(floorImage);
+        wallsTexture[z].update(wallsImage);
     }
-    wallsTexture.update(wallsImage);
 
     backgroundSprite.setSize(sf::Vector2f(windowWidth, windowHeight));
     backgroundSprite.setPosition(0, 0);
@@ -128,7 +128,7 @@ void Camera::render()
     window->draw(backgroundSprite);
 
     sf::Sprite floorSprite;
-    floorSprite.setTexture(floorTexture);
+    floorSprite.setTexture(floorTexture[followObj->getPos().z]);
     floorSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
     floorSprite.setScale(scale / 16, scale / 16);
     window->draw(floorSprite);
@@ -176,7 +176,7 @@ void Camera::render()
     // }
         
     sf::Sprite wallsSprite;
-    wallsSprite.setTexture(wallsTexture);
+    wallsSprite.setTexture(wallsTexture[followObj->getPos().z]);
     wallsSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
     wallsSprite.setScale(scale / 16, scale / 16);
     window->draw(wallsSprite);

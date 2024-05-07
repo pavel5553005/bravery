@@ -39,8 +39,11 @@ void ObjOnLayout::setPos(Coordinates newPos)
 
     if (newPos.x + size.x > layout->getMap()->getSizeX()) newPos.x = layout->getMap()->getSizeX() - size.x;
     if (newPos.y + size.y > layout->getMap()->getSizeY()) newPos.y = layout->getMap()->getSizeY() - size.y;
+    if (newPos.z >= layout->getMap()->getSizeZ()) newPos.z = layout->getMap()->getSizeZ() - 1;
     if (newPos.x < 0) newPos.x = 0;
     if (newPos.y < 0) newPos.y = 0;
+    if (newPos.z < 0) newPos.z = 0;
+    
 
     for (int x = pos.x; x < pos.x + size.x; x++)
     {

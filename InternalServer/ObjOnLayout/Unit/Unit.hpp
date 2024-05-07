@@ -66,7 +66,7 @@ void Unit::deletePath() { pathList.clear(); }
 
 void Unit::move(int angle)
 {
-    Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y - sin(angle * M_PI / 180) * speed));
+    Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y - sin(angle * M_PI / 180) * speed, Unit::getPos().z));
 }
 
 void Unit::move(Coordinates pos)
@@ -78,7 +78,7 @@ void Unit::move(Coordinates pos)
     else
     {
         int angle = atan2((pos.y - Unit::getPos().y), (pos.x - Unit::getPos().x)) * 180 / M_PI;
-        Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y + sin(angle * M_PI / 180) * speed));
+        Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y + sin(angle * M_PI / 180) * speed, Unit::getPos().z));
     }
 }
 
