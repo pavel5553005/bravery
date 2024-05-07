@@ -4,6 +4,7 @@
 #include "InternalServer/ObjOnLayout/ObjOnLayout.hpp"
 #include "InternalServer/Map/Layout.hpp"
 #include "InternalServer/Position/Coordinates.hpp"
+#include "Resources/ResourceManager.hpp"
 #include <list>
 
 class Camera
@@ -24,6 +25,8 @@ private:
     double scale;
     int windowHeight;
     int windowWidth;
+
+    void generateWallTexture();
 public:
     Camera();
     Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderWindow& window, int windowWidth, int windowHeight);
@@ -54,14 +57,10 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
 
     sf::Image floorImage;
     floorImage.create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16, sf::Color(255, 0, 255));
-    sf::Image wallsImage;
-    wallsImage.create(layout.getMap()->getSizeX(), layout.getMap()->getSizeY(), sf::Color(0, 0, 0, 0));
     floorTexture = new sf::Texture[layout.getMap()->getSizeZ()];
-    wallsTexture = new sf::Texture[layout.getMap()->getSizeZ()];
     for (int z = 0; z < layout.getMap()->getSizeZ(); z++)
     {
         floorTexture[z].create(layout.getMap()->getSizeX() * 16, layout.getMap()->getSizeY() * 16);
-        wallsTexture[z].create(layout.getMap()->getSizeX(), layout.getMap()->getSizeY());
         for (int x = 0; x < layout.getMap()->getSizeX(); x++)
         {
             for (int y = 0; y < layout.getMap()->getSizeY(); y++)
@@ -74,28 +73,49 @@ Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderW
                 {
                     floorImage.copy(stoneImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
                 }
-
-                if (layout.getMap()->getCell(x, y, z)->getWallType() == MapCell::WallType::Wall)
-                {
-                    wallsImage.setPixel(x, y, sf::Color(255, 255, 255, 255));
-                }
-                else
-                {
-                    wallsImage.setPixel(x, y, sf::Color(0, 0, 0, 0));
-                }
             }
         }
         floorTexture[z].update(floorImage);
-        wallsTexture[z].update(wallsImage);
     }
 
     backgroundSprite.setSize(sf::Vector2f(windowWidth, windowHeight));
     backgroundSprite.setPosition(0, 0);
     backgroundSprite.setFillColor(sf::Color(85, 85, 85));
+    generateWallTexture();
 }
 
 Camera::Camera()
 {
+}
+
+void Camera::generateWallTexture()
+{
+    wallsTexture = new sf::Texture[layout->getMap()->getSizeZ()];
+    sf::Image wallImage;
+    wallImage.create(layout->getMap()->getSizeX() * 16, layout->getMap()->getSizeY() * 16, sf::Color(0, 0, 0, 0));
+    for (int z = 0; z < layout->getMap()->getSizeZ(); z++)
+    {
+        wallImage.create(layout->getMap()->getSizeX() * 16, layout->getMap()->getSizeY() * 16, sf::Color(0, 0, 0, 0));
+        for (int x = 0; x < layout->getMap()->getSizeX(); x++)
+        {
+            for (int y = 0; y < layout->getMap()->getSizeY(); y++)
+            {
+                if (layout->getMap()->getCell(x, y, z)->getWallType() == MapCell::WallType::Wall)
+                {
+                    bool isTop = false;
+                    bool isBottom = false;
+                    bool isLeft = false;
+                    bool isRight = false;
+                    if (y > 0 and layout->getMap()->getCell(x, y - 1, z)->getWallType() != MapCell::WallType::None) isTop = true;
+                    if (y < layout->getMap()->getSizeY() - 1 and layout->getMap()->getCell(x, y + 1, z)->getWallType() != MapCell::WallType::None) isBottom = true;
+                    if (x > 0 and layout->getMap()->getCell(x - 1, y, z)->getWallType() != MapCell::WallType::None) isLeft = true;
+                    if (x < layout->getMap()->getSizeX() - 1 and layout->getMap()->getCell(x + 1, y, z)->getWallType() != MapCell::WallType::None) isRight = true;
+                    wallImage.copy(*resourceManager.getWallTexture(isTop, isBottom, isLeft, isRight), x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
+                }
+            }
+        }
+        wallsTexture[z].loadFromImage(wallImage);
+    }
 }
 
 Coordinates Camera::getPos()

@@ -44,13 +44,13 @@ Map::Map() : sizeX(100), sizeY(100), sizeZ(100) {
             {
                 if ((x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) <= 50*50)
                 {
-                    cells[z][x][y] = MapCell(MapCell::FloorType::Grass, MapCell::WallType::Wall);
+                    cells[z][x][y] = MapCell(MapCell::FloorType::Grass);
                 }
                 else
                 {
                     cells[z][x][y] = MapCell(MapCell::FloorType::Stone);
                 }
-                if ((x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) == 50*50)
+                if ((x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) <= 50*50 and (x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) >= 49*49)
                 {
                     cells[z][x][y].setWallType(MapCell::WallType::Wall);
                 }
@@ -63,6 +63,11 @@ Map::Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ) : cells(cells), size
 
 MapCell* Map::getCell(int x, int y, int z)
 {
+    if (x < 0 or x >= sizeX or y < 0 or y >= sizeY or z < 0 or z >= sizeZ)
+    {
+        return nullptr;
+    }
+    
     return &cells[z][x][y];
 }
 
