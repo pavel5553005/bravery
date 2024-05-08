@@ -27,7 +27,6 @@ Coordinates ObjOnLayout::getPos()
 {
     return pos;
 }
-
 Vector2d ObjOnLayout::getSize()
 {
     return size;

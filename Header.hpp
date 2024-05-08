@@ -6,7 +6,7 @@
 #include "InternalServer/Position/Coordinates.hpp"
 #include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
-#include "Camera.hpp"
+#include "Game/Camera.hpp"
 #include "InternalServer/ObjOnLayout/ObjOnLayout.cpp"
 #include "InternalServer/Event/Event.hpp"
 #include <random>

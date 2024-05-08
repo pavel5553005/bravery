@@ -58,5 +58,3 @@ void Debuger::drawConsole()
 Debuger::~Debuger() { }
 
 Debuger debuger;
-
-#include "../Camera.hpp"
