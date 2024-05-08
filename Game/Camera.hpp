@@ -6,6 +6,7 @@
 #include "../InternalServer/Position/Coordinates.hpp"
 #include "../Resources/ResourceManager.hpp"
 #include "MapTextureGenerator.hpp"
+#include "../Debug/Debuger.hpp"
 #include <list>
 
 class Camera
@@ -17,7 +18,6 @@ private:
     sf::Texture* floorTexture;
     sf::Texture* wallsTexture;
     sf::RenderWindow* window;
-    std::list<sf::RectangleShape> rectangleShapes;
     sf::RectangleShape backgroundSprite;
 
     sf::Image grassImage;
@@ -36,7 +36,6 @@ public:
     void setScale(double scale);
 
     void render();
-    void drawRectangle(sf::Color color, Coordinates pos, Vector2d size);
     
     ~Camera();
 };
@@ -161,21 +160,6 @@ void Camera::render()
     wallsSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
     wallsSprite.setScale(scale / 16, scale / 16);
     window->draw(wallsSprite);
-
-    for ( auto i : rectangleShapes)
-    {
-        window->draw(i);
-    }
-
-    rectangleShapes.clear();
-}
-
-void Camera::drawRectangle(sf::Color color, Coordinates pos, Vector2d size)
-{
-    sf::RectangleShape rect(sf::Vector2f(size.x * scale, size.y * scale));
-    rect.setPosition((pos.x - this->pos.x) * scale + windowWidth / 2, (pos.y - this->pos.y) * scale + windowHeight / 2);
-    rect.setFillColor(color);
-    rectangleShapes.push_back(rect);
 }
 
 Camera::~Camera()

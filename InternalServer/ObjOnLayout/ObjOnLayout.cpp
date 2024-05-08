@@ -43,33 +43,40 @@ void ObjOnLayout::setPos(Coordinates newPos)
     if (newPos.y < 0) newPos.y = 0;
     if (newPos.z < 0) newPos.z = 0;
     
+    Vector2d maxD = newPos - pos;
+    maxD = maxVextorOfModule(maxD, maxDPoint(pos, newPos, true));
+    maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x + size.x, pos.y, pos.z), Coordinates(newPos.x + size.x, newPos.y, newPos.z), true));
+    maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x, pos.y + size.y, pos.z), Coordinates(newPos.x, newPos.y + size.y, newPos.z), true));
+    maxD = maxVextorOfModule(maxD, maxDPoint(pos + size, newPos + size, true));
 
-    for (int x = pos.x; x < pos.x + size.x; x++)
-    {
-        if (newPos.y - pos.y > 0 and isCollide(x, newPos.y + size.y, pos.z))
-        {
-            newPos.y = int(newPos.y + size.y) - size.y;
-            break;
-        }
-        else if (newPos.y - pos.y < 0 and isCollide(x, newPos.y, pos.z))
-        {
-            newPos.y = int(newPos.y) + 1;
-            break;
-        }
-    }
-    for (int y = pos.y; y < pos.y + size.y; y++)
-    {
-        if (newPos.x - pos.x > 0 and isCollide(newPos.x + size.x, y, pos.z))
-        {
-            newPos.x = int(newPos.x + size.x) - size.x;
-            break;
-        }
-        else if (newPos.x - pos.x < 0 and isCollide(newPos.x, y, pos.z))
-        {
-            newPos.x = int(newPos.x) + 1;
-            break;
-        }
-    }
+    // for (int x = pos.x; x < pos.x + size.x; x++)
+    // {
+    //     if (newPos.y - pos.y > 0 and isCollide(x, newPos.y + size.y, pos.z))
+    //     {
+    //         newPos.y = int(newPos.y + size.y) - size.y;
+    //         break;
+    //     }
+    //     else if (newPos.y - pos.y < 0 and isCollide(x, newPos.y, pos.z))
+    //     {
+    //         newPos.y = int(newPos.y) + 1;
+    //         break;
+    //     }
+    // }
+    // for (int y = pos.y; y < pos.y + size.y; y++)
+    // {
+    //     if (newPos.x - pos.x > 0 and isCollide(newPos.x + size.x, y, pos.z))
+    //     {
+    //         newPos.x = int(newPos.x + size.x) - smaxDize.x;
+    //         break;
+    //     }
+    //     else if (newPos.x - pos.x < 0 and isCollide(newPos.x, y, pos.z))
+    //     {
+    //         newPos.x = int(newPos.x) + 1;
+    //         break;
+    //     }
+    // }
+
+    newPos = pos + maxD;
 
     if (newPos == pos) return;
 
@@ -82,9 +89,41 @@ void ObjOnLayout::setPos(Coordinates newPos)
 
 // void ObjOnLayout::event(Event event) { }
 
-bool ObjOnLayout::isCollide(int x, int y, int z)
+bool ObjOnLayout::isCollide(double x, double y, double z)
 {
+    if (layout->getMap()->getCell(x, y, z) == nullptr)
+    {
+        return false;
+    }
     return layout->getMap()->getCell(x, y, z)->getWallType() != MapCell::WallType::None;
+}
+
+Vector2d ObjOnLayout::maxDPoint(Coordinates pos, Coordinates newPos, bool isVertex)
+{
+    Vector2d maxD = newPos - pos;
+    if (isCollide(pos.x, newPos.y, newPos.z) and !(pos.x == int(pos.x) and isVertex))
+    {
+        if (newPos.y - pos.y < 0 and int(newPos.y) + 1 - pos.y > maxD.y)
+        {
+            maxD.y = int(newPos.y) + 1 - pos.y;
+        }
+        if (newPos.y - pos.y > 0 and int(newPos.y) - pos.y < maxD.y)
+        {
+            maxD.y = int(newPos.y) - pos.y;
+        }
+    }
+    if (isCollide(newPos.x, pos.y, newPos.z) and !(pos.y == int(pos.y) and isVertex))
+    {
+        if (newPos.x - pos.x < 0 and int(newPos.x) + 1 - pos.x > maxD.x)
+        {
+            maxD.x = int(newPos.x) + 1 - pos.x;
+        }
+        if (newPos.x - pos.x > 0 and int(newPos.x) - pos.x < maxD.x)
+        {
+            maxD.x = int(newPos.x) - pos.x;
+        }
+    }
+    return maxD;
 }
 
 void ObjOnLayout::removeFromLayout()

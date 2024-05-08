@@ -6,7 +6,7 @@ int main()
 {
     const int windowWidth = 1600;
     const int windowHeight = 900;
-
+    
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Game", sf::Style::Default);
 
 	window.setFramerateLimit(60);

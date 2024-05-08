@@ -23,7 +23,7 @@ public:
     ~Map();
 };
 
-Map::Map() : sizeX(100), sizeY(100), sizeZ(100) {
+Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
     std::cout << sizeX << " " << sizeY << " " << sizeZ << std::endl;
     cells = new MapCell**[sizeZ];
 
@@ -42,21 +42,17 @@ Map::Map() : sizeX(100), sizeY(100), sizeZ(100) {
         {
             for (int y = 0; y < sizeY; y++)
             {
-                if ((x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) <= 50*50)
-                {
-                    cells[z][x][y] = MapCell(MapCell::FloorType::Grass);
-                }
-                else
-                {
-                    cells[z][x][y] = MapCell(MapCell::FloorType::Stone);
-                }
-                if ((x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) <= 50*50 and (x-50)*(x-50) + (y-50)*(y-50) + (z-50)*(z-50) >= 49*49)
+                cells[z][x][y] = MapCell(MapCell::FloorType::Grass);
+                if (x == 4 and 3 <= y and y <= 7)
                 {
                     cells[z][x][y].setWallType(MapCell::WallType::Wall);
                 }
             }
         }
     }
+
+    
+    
 }
 
 Map::Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ) : cells(cells), sizeX(sizeX), sizeY(sizeY), sizeZ(sizeZ) { }

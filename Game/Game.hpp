@@ -33,7 +33,7 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
     this->window = &window;
 
     player = new Unit(Coordinates(0, 0, 0), Vector2d(0.8, 0.8), *server.getLayout());
-    player->setSpeed(0.1);
+    player->setSpeed(0.1001);
 
     camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
 
