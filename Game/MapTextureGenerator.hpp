@@ -19,15 +19,15 @@ namespace MapTextureGenerator
     {
         MapTexture mapTexture;
         sf::Image floorImage;
-        floorImage.create(map.getSizeX() * 16, map.getSizeY() * 16, sf::Color::Black);
+        floorImage.create(map.getSizeX() * TILE_SIZE, map.getSizeY() * TILE_SIZE, sf::Color::Black);
         sf::Image wallImage;
         wallImage.create(map.getSizeX() * 16, map.getSizeY() * 16, sf::Color(0, 0, 0, 0));
 
         sf::Image grassImage;
         sf::Image stoneImage;
 
-        grassImage.loadFromFile("Resources/Textures/Floor/GrassTexture.png");
-        stoneImage.loadFromFile("Resources/Textures/Floor/StoneTexture.png");
+        grassImage.loadFromFile("Resources/Textures/Floor/Elements/TALLGRASS.png");
+        stoneImage.loadFromFile("Resources/Textures/Floor/Rocks/GRAYROCKS.png");
 
         for (int z = 0; z < map.getSizeZ(); z++)
         {
@@ -37,11 +37,11 @@ namespace MapTextureGenerator
                 {
                     if (map.getCell(x, y, z)->getFloorType() == MapCell::FloorType::Grass)
                     {
-                        floorImage.copy(grassImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
+                        floorImage.copy(grassImage, x * TILE_SIZE, y * TILE_SIZE, sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
                     }
                     else if (map.getCell(x, y, z)->getFloorType() == MapCell::FloorType::Stone)
                     {
-                        floorImage.copy(stoneImage, x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
+                        floorImage.copy(stoneImage, x * TILE_SIZE, y * TILE_SIZE, sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
                     }
 
                     if (map.getCell(x, y, z)->getWallType() == MapCell::WallType::Wall)
@@ -65,8 +65,8 @@ namespace MapTextureGenerator
             mapTexture.floorTexture.push_back(floorImage);
             mapTexture.wallTexture.push_back(wallImage);
 
-            floorImage.create(map.getSizeX() * 16, map.getSizeY() * 16, sf::Color::Black);
-            wallImage.create(map.getSizeX() * 16, map.getSizeY() * 16, sf::Color(0, 0, 0, 0));
+            floorImage.create(map.getSizeX() * TILE_SIZE, map.getSizeY() * TILE_SIZE, sf::Color::Black);
+            wallImage.create(map.getSizeX() * TILE_SIZE, map.getSizeY() * TILE_SIZE, sf::Color(0, 0, 0, 0));
         }
         return mapTexture;
     }

@@ -21,6 +21,7 @@ public:
     // std::list<ObjOnLayout*>* getObjects();
 
     void setWallType(WallType wallType);
+    void setFloorType(FloorType floorType);
 
     // void addObject(ObjOnLayout& obj);
     // void deleteObject(ObjOnLayout& obj);
@@ -45,6 +46,8 @@ MapCell::FloorType MapCell::getFloorType() { return floorType; }
 MapCell::WallType MapCell::getWallType() { return wallType; }
 
 void MapCell::setWallType(WallType wallType) { this->wallType = wallType; }
+
+void MapCell::setFloorType(FloorType floorType) { this->floorType = floorType; }
 
 // std::list<ObjOnLayout*>* MapCell::getObjects()
 // {

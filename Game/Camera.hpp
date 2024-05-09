@@ -1,5 +1,7 @@
 #ifndef Camera_hpp_
 #define Camera_hpp_
+
+#define TILE_SIZE 32
 #include <SFML/Graphics.hpp>
 #include "../InternalServer/ObjOnLayout/ObjOnLayout.hpp"
 #include "../InternalServer/Map/Layout.hpp"
@@ -109,7 +111,7 @@ void Camera::render()
     sf::Sprite floorSprite;
     floorSprite.setTexture(floorTexture[followObj->getPos().z]);
     floorSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
-    floorSprite.setScale(scale / 16, scale / 16);
+    floorSprite.setScale(scale / TILE_SIZE, scale / TILE_SIZE);
     window->draw(floorSprite);
 
     for (auto i : *layout->getObjects())
@@ -132,7 +134,7 @@ void Camera::render()
         sf::Sprite sprite;
         sprite.setTexture(*i->getTexture().getTexture());
         sprite.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-        sprite.setScale(scale / 16, scale / 16);
+        sprite.setScale(scale / TILE_SIZE * 2, scale / TILE_SIZE * 2);
         window->draw(sprite);
     }
 

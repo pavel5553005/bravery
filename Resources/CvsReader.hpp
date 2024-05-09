@@ -41,16 +41,15 @@ std::vector<sf::Texture>* getTextureFromCsv(std::string path)
     std::vector<std::vector<std::string>> table = getTableFromCsv(path);
     int x = stoi(table[0][0]);
     int y = stoi(table[0][1]);
-    int count = stoi(table[0][2]);
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < table.size() - 1; i++)
     {
         // sf::Image image;
         // image.create(x, y, sf::Color(255, 0, 0));
 
         sf::Texture t;
-        t.loadFromFile(table[i + 1][1]);
+        t.loadFromFile(table[i + 1][0]);
         // t.loadFromImage(image);
-        std::cout << table[i + 1][1] << std::endl;
+        std::cout << table[i + 1][0] << std::endl;
         textures->push_back(t);
     }
     std::cout << (*textures)[0].getSize().x << " " << (*textures)[0].getSize().y << std::endl;

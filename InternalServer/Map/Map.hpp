@@ -47,6 +47,10 @@ Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
                 {
                     cells[z][x][y].setWallType(MapCell::WallType::Wall);
                 }
+                if (3 <= x and x <= 8 and 4 <= y and y <= 8)
+                {
+                    cells[z][x][y].setFloorType(MapCell::FloorType::Stone);
+                }
             }
         }
     }
