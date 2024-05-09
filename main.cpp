@@ -3,6 +3,9 @@
 #include "Game/Game.hpp"
 #include "Resources/CvsReader.hpp"
 
+// Bravery and Stupidity
+
+
 int main()
 {
     const int windowWidth = 1600;
