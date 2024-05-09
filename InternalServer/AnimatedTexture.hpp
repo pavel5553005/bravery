@@ -17,7 +17,8 @@ public:
 
     sf::Texture* getTexture();
 
-    void tick() { index += speed; }
+    void setSpeed(double speed) { this->speed = speed; }
+    void tick();
     bool operator == (const AnimatedTexture& other) { return textures == other.textures; }
     bool operator == (const std::vector<sf::Texture>& other) { return textures == &other; }
 
@@ -42,6 +43,15 @@ sf::Texture* AnimatedTexture::getTexture()
 {
     std::cout << (*textures)[int(index)].getSize().x << std::endl;
     return &(*textures)[int(index)];
+}
+
+void AnimatedTexture::tick()
+{
+    index += speed;
+    if (index >= textures->size())
+    {
+        index = 0;
+    }
 }
 
 AnimatedTexture::~AnimatedTexture()

@@ -36,6 +36,8 @@ public:
     Vector2d getSize();
     AnimatedTexture getTexture() { return texture; }
 
+    void updateTexture(Event event);
+
     void setPos(Coordinates pos);
     
     void removeFromLayout();

@@ -22,6 +22,8 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
     event.objSpawn.pos = pos;
     handler.generateEvent(event);
     this->texture = resourceManager.loadAnimatedTexture("Resources/Textures/ObjOnLayout/player.csv");
+    this->texture.setSpeed(0.1);
+    handler.addListener(std::bind(&ObjOnLayout::updateTexture, this, std::placeholders::_1), Event::Type::Tick);
 }
 
 Coordinates ObjOnLayout::getPos()
@@ -93,7 +95,10 @@ void ObjOnLayout::setPos(Coordinates newPos)
     // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
-// void ObjOnLayout::event(Event event) { }
+void ObjOnLayout::updateTexture(Event event)
+{
+    texture.tick();
+}
 
 bool ObjOnLayout::isCollide(double x, double y, double z)
 {
