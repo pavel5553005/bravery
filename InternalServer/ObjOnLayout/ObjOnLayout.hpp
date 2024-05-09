@@ -3,14 +3,8 @@
 
 #include "../Position/Coordinates.hpp"
 #include "../Position/Vector2d.hpp"
-
-Vector2d maxVextorOfModule(Vector2d a, Vector2d b)
-{
-    Vector2d result;
-    result.x = abs(a.x) < abs(b.x) ? a.x : b.x;
-    result.y = abs(a.y) < abs(b.y) ? a.y : b.y;
-    return result;
-}
+#include "../AnimatedTexture.hpp"
+#include "../../Resources/ResourceManager.hpp"
 
 class Event;
 
@@ -24,7 +18,15 @@ private:
     Vector2d center;
     bool isCollide(double x, double y, double z);
     Vector2d maxDPoint(Coordinates pos, Coordinates newPos, bool isVertex);
+    static Vector2d maxVextorOfModule(Vector2d a, Vector2d b)
+    {
+        Vector2d result;
+        result.x = abs(a.x) < abs(b.x) ? a.x : b.x;
+        result.y = abs(a.y) < abs(b.y) ? a.y : b.y;
+        return result;
+    }
 protected:
+    AnimatedTexture texture;
     Layout* layout;
 public:
     ObjOnLayout();
@@ -32,6 +34,7 @@ public:
 
     Coordinates getPos();
     Vector2d getSize();
+    AnimatedTexture getTexture() { return texture; }
 
     void setPos(Coordinates pos);
     

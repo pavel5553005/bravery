@@ -21,6 +21,7 @@ ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
     event.objSpawn.obj = this;
     event.objSpawn.pos = pos;
     handler.generateEvent(event);
+    this->texture = resourceManager.loadAnimatedTexture("Resources/Textures/ObjOnLayout/player.csv");
 }
 
 Coordinates ObjOnLayout::getPos()
@@ -48,6 +49,7 @@ void ObjOnLayout::setPos(Coordinates newPos)
     maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x + size.x, pos.y, pos.z), Coordinates(newPos.x + size.x, newPos.y, newPos.z), true));
     maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x, pos.y + size.y, pos.z), Coordinates(newPos.x, newPos.y + size.y, newPos.z), true));
     maxD = maxVextorOfModule(maxD, maxDPoint(pos + size, newPos + size, true));
+    debuger.consoleLog(std::to_string(maxD.x) + " " + std::to_string(maxD.y));
 
     // for (int x = pos.x; x < pos.x + size.x; x++)
     // {
@@ -76,13 +78,17 @@ void ObjOnLayout::setPos(Coordinates newPos)
     //     }
     // }
 
-    newPos = pos + maxD;
+    if (maxD.y == 0 and maxD.x == 0 and newPos.z == pos.z) return;
 
-    if (newPos == pos) return;
+    pos = pos + maxD;
+    pos.z = newPos.z;
 
     // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->deleteObject(*this);
-
-    this->pos = newPos;
+    
+    Event event(Event::Type::ObjMove);
+    event.objMove.obj = this;
+    event.objMove.pos = newPos;
+    handler.generateEvent(event);
     
     // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }

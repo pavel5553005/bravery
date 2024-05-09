@@ -32,12 +32,12 @@ Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::
 {
     this->window = &window;
 
-    player = new Unit(Coordinates(0, 0, 0), Vector2d(0.8, 0.8), *server.getLayout());
+    player = new Unit(Coordinates(0, 0, 0), Vector2d(0.75, 0.75), *server.getLayout());
     player->setSpeed(0.1001);
 
     camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
 
-    d = new DebugObj(Coordinates(1, 1, 0), Vector2d(0.8, 0.8), *server.getLayout(), *player);
+    d = new DebugObj(Coordinates(1, 1, 0), Vector2d(0.75, 0.75), *server.getLayout(), *player);
 
     debuger.setWindow(&window);
 }
@@ -137,7 +137,10 @@ void Game::keyboardCheck()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) x--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or sf::Keyboard::isKeyPressed(sf::Keyboard::S)) y--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D)) x++;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) handler.generateEvent(Event(Event::Type::TestEvent));
+    if (oneKeyPressed(sf::Keyboard::E))
+    {
+        handler.generateEvent(Event(Event::Type::TestEvent));
+    }
     if (oneKeyPressed(sf::Keyboard::N))
     {
         player->setPos(Coordinates(player->getPos().x, player->getPos().y, player->getPos().z - 1));

@@ -43,16 +43,15 @@ Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
             for (int y = 0; y < sizeY; y++)
             {
                 cells[z][x][y] = MapCell(MapCell::FloorType::Grass);
-                if (x == 4 and 3 <= y and y <= 7)
+                if (z == 0 and ((y == 4 and x >= 3 and x <= 8) or (y == 8 and x >= 3 and x <= 8) or (x == 3 and y >= 4 and y <= 8) or (x == 8 and y >= 4 and y <= 8)))
                 {
                     cells[z][x][y].setWallType(MapCell::WallType::Wall);
                 }
             }
         }
     }
-
-    
-    
+    cells[0][6][4].setWallType(MapCell::WallType::None);
+    cells[0][7][3].setWallType(MapCell::WallType::Wall);
 }
 
 Map::Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ) : cells(cells), sizeX(sizeX), sizeY(sizeY), sizeZ(sizeZ) { }

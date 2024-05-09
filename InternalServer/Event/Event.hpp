@@ -12,7 +12,14 @@ public:
         Coordinates pos;
     };
 
+    struct ObjMove
+    {
+        ObjOnLayout* obj;
+        Coordinates pos;
+    };
+
     enum class Type {
+        ObjMove,
         TestEvent,
         ObjSpawn,
         Tick
@@ -22,6 +29,7 @@ public:
 
     union
     {
+        ObjMove objMove;
         ObjSpawn objSpawn;
         bool nullEvent;
     };

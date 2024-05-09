@@ -115,20 +115,25 @@ void Camera::render()
     for (auto i : *layout->getObjects())
     {
         if (i->getPos().z != followObj->getPos().z) continue;
-        if (i != followObj)
-        {
-            sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-            rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-            rect.setFillColor(sf::Color::Blue);
-            window->draw(rect);
-        }
-        else
-        {
-            sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-            rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
-            rect.setFillColor(sf::Color::Red);
-            window->draw(rect);
-        }
+        // if (i != followObj)
+        // {
+        //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        //     rect.setFillColor(sf::Color::Blue);
+        //     window->draw(rect);
+        // }
+        // else
+        // {
+        //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        //     rect.setFillColor(sf::Color::Red);
+        //     window->draw(rect);
+        // }
+        sf::Sprite sprite;
+        sprite.setTexture(*i->getTexture().getTexture());
+        sprite.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        sprite.setScale(scale / 16, scale / 16);
+        window->draw(sprite);
     }
 
     // for (int y = 0; y < 100; y++)

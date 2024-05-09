@@ -1,6 +1,7 @@
 #include "Header.hpp"
 #include "InternalServer/Event/EventHandler.hpp"
 #include "Game/Game.hpp"
+#include "Resources/CvsReader.hpp"
 
 int main()
 {
