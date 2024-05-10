@@ -99,12 +99,21 @@ void Camera::setScale(double scale)
 
 void Camera::render()
 {
-    pos.x = followObj->getPos().x + followObj->getSize().x / 2;
-    pos.y = followObj->getPos().y + followObj->getSize().y / 2;
+    // pos.x = followObj->getPos().x + followObj->getSize().x / 2;
+    // pos.y = followObj->getPos().y + followObj->getSize().y / 2;
 
-    // double speed = 1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1));
-    // pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
-    // pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
+    double speed = (1 - (1 / (sqrt((followObj->getPos().x - pos.x) * (followObj->getPos().x - pos.x) + (followObj->getPos().y- pos.y) * (followObj->getPos().y- pos.y)) + 1))) / scale * 10;
+    // if (speed <= scale / 100)
+    // {
+    //     pos.x = followObj->getPos().x + followObj->getSize().x / 2;
+    //     pos.y = followObj->getPos().y + followObj->getSize().y / 2;
+    // }
+    // else
+    // {
+    debuger.consoleLog("speed: " + std::to_string(scale));
+    pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
+    pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
+    // }
 
     window->draw(backgroundSprite);
 

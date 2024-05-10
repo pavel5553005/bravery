@@ -51,7 +51,6 @@ void ObjOnLayout::setPos(Coordinates newPos)
     maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x + size.x, pos.y, pos.z), Coordinates(newPos.x + size.x, newPos.y, newPos.z), true));
     maxD = maxVextorOfModule(maxD, maxDPoint(Coordinates(pos.x, pos.y + size.y, pos.z), Coordinates(newPos.x, newPos.y + size.y, newPos.z), true));
     maxD = maxVextorOfModule(maxD, maxDPoint(pos + size, newPos + size, true));
-    debuger.consoleLog(std::to_string(maxD.x) + " " + std::to_string(maxD.y));
 
     // for (int x = pos.x; x < pos.x + size.x; x++)
     // {
