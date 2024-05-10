@@ -102,11 +102,14 @@ void ObjOnLayout::updateTexture(Event event)
 
 bool ObjOnLayout::isCollide(double x, double y, double z)
 {
-    if (layout->getMap()->getCell(x, y, z) == nullptr)
+    try
+    {
+        return layout->getMap()->getCell(x, y, z)->getWallType() != MapCell::WallType::None;
+    }
+    catch(const std::out_of_range& e)
     {
         return false;
     }
-    return layout->getMap()->getCell(x, y, z)->getWallType() != MapCell::WallType::None;
 }
 
 Vector2d ObjOnLayout::maxDPoint(Coordinates pos, Coordinates newPos, bool isVertex)

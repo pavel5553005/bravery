@@ -13,6 +13,7 @@ void Debuger::consoleLog(std::string text, sf::Color color)
 {
     ConsoleText* consoleText = new ConsoleText;
     consoleText->text = text;
+    consoleText->color = color;
     consoleText->time = 0;
     console.push_back(consoleText);
 
@@ -21,6 +22,8 @@ void Debuger::consoleLog(std::string text, sf::Color color)
         console.pop_front();
     }
 }
+
+void Debuger::errorLog(std::string text) { consoleLog("error: " + text, sf::Color(255, 128, 128)); }
 
 void Debuger::drawConsole()
 {
@@ -31,7 +34,7 @@ void Debuger::drawConsole()
         i->time++;
         
 
-        sf::RectangleShape rect(sf::Vector2f(i->text.length() * 11, 16));
+        sf::RectangleShape rect(sf::Vector2f(i->text.length() * 10, 16));
         rect.setPosition(0, index * 16);
 
         sf::Text text;
@@ -40,12 +43,12 @@ void Debuger::drawConsole()
         text.setCharacterSize(16);
         if (i->time < 515)
         {
-            text.setFillColor(sf::Color::White);
+            text.setFillColor(i->color);
             rect.setFillColor(sf::Color::Black);
         }
         else
         {
-            text.setFillColor(sf::Color(255, 255, 255, (600 - i->time) * 3));
+            text.setFillColor(sf::Color(i->color.r, i->color.g, i->color.b, (600 - i->time) * 3));
             rect.setFillColor(sf::Color(0, 0, 0, (600 - i->time) * 3));
         }
         text.setPosition(0, index * 16 - 3);

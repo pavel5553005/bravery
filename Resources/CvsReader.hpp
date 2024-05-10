@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include "../InternalServer/AnimatedTexture.hpp"
+#include "../Exception/UnableToLoadFile.hpp"
 
 std::vector<std::vector<std::string>> getTableFromCsv(std::string path)
 {
@@ -47,7 +48,18 @@ std::vector<sf::Texture>* getTextureFromCsv(std::string path)
         // image.create(x, y, sf::Color(255, 0, 0));
 
         sf::Texture t;
-        t.loadFromFile(table[i + 1][0]);
+        try
+        {
+            if (!t.loadFromFile(table[i + 1][0]))
+            {
+                throw UnableToLoadFile(table[i + 1][0]);
+            }
+        }
+        catch (UnableToLoadFile e)
+        {
+            debuger.errorLog(e.what());
+        }
+
         // t.loadFromImage(image);
         std::cout << table[i + 1][0] << std::endl;
         textures->push_back(t);

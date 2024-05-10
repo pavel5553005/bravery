@@ -64,7 +64,7 @@ MapCell* Map::getCell(int x, int y, int z)
 {
     if (x < 0 or x >= sizeX or y < 0 or y >= sizeY or z < 0 or z >= sizeZ)
     {
-        return nullptr;
+        throw std::out_of_range("Coordinates out of range");
     }
     
     return &cells[z][x][y];

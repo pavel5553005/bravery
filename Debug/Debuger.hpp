@@ -13,6 +13,7 @@ private:
     {
         std::string text;
         unsigned int time;
+        sf::Color color;
     };
     sf::RenderWindow* window;
     sf::Font font;
@@ -24,6 +25,7 @@ public:
     void setFont(sf::Font& font);
 
     void consoleLog(std::string text, sf::Color color = sf::Color::White);
+    void errorLog(std::string text);
     void drawConsole();
 
     ~Debuger();
