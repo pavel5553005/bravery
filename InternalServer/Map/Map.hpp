@@ -2,6 +2,7 @@
 #define Map_hpp_
 #include "MapCell.hpp"
 #include "iostream"
+#include <vector>
 
 class Map
 {
@@ -9,10 +10,9 @@ private:
     const int sizeX;
     const int sizeY;
     const int sizeZ;
-    MapCell*** cells;
+    std::vector<std::vector<std::vector<MapCell>>> cells;
 public:
     Map();
-    Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ);
 
     MapCell* getCell(int x, int y, int z);
     MapCell* getCell(Coordinates pos);
@@ -25,16 +25,8 @@ public:
 
 Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
     std::cout << sizeX << " " << sizeY << " " << sizeZ << std::endl;
-    cells = new MapCell**[sizeZ];
 
-    for (int z = 0; z < sizeZ; z++)
-    {
-        cells[z] = new MapCell*[sizeX];
-        for (int x = 0; x < sizeX; x++)
-        {
-            cells[z][x] = new MapCell[sizeY];
-        }
-    }
+    cells = std::vector<std::vector<std::vector<MapCell>>>(sizeZ, std::vector<std::vector<MapCell>>(sizeX, std::vector<MapCell>(sizeY)));
     
     for (int z = 0; z < sizeZ; z++)
     {
@@ -58,8 +50,6 @@ Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
     cells[0][7][3].setWallType(MapCell::WallType::Wall);
 }
 
-Map::Map(MapCell*** cells, int sizeX, int sizeY, int sizeZ) : cells(cells), sizeX(sizeX), sizeY(sizeY), sizeZ(sizeZ) { }
-
 MapCell* Map::getCell(int x, int y, int z)
 {
     if (x < 0 or x >= sizeX or y < 0 or y >= sizeY or z < 0 or z >= sizeZ)
@@ -77,13 +67,7 @@ MapCell* Map::getCell(Coordinates pos)
 
 Map::~Map()
 {
-    for (int x = 0; x < sizeX; x++)
-    {
-        for (int y = 0; y < sizeY; y++)
-        {
-            cells[0][x][y].~MapCell();
-        }
-    }
+    std::exit(0);
 }
 
 

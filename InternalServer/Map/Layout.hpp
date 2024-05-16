@@ -53,7 +53,6 @@ void Layout::tick()
 
 Layout::~Layout()
 {
-    map.~Map();
     objects.clear();
 }
 
