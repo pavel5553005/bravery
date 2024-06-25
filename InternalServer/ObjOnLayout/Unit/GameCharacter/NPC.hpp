@@ -11,8 +11,8 @@ private:
     bool isVowel(char c);
 public:
     NPC();
-    NPC(Coordinates pos, Vector2d size, Layout& layout);
-    NPC(Coordinates pos, Vector2d size, Layout& layout, std::string name);
+    NPC(const Coordinates pos, const Vector2d size);
+    NPC(const Coordinates pos, const Vector2d size, const std::string name);
 
     ~NPC();
 };
@@ -22,9 +22,9 @@ NPC::NPC()
     name = generateName();
 }
 
-NPC::NPC(Coordinates pos, Vector2d size, Layout& layout) : GameCharacter(pos, size, layout, NPC::generateName()) { }
+NPC::NPC(const Coordinates pos, const Vector2d size) : GameCharacter(pos, size, NPC::generateName()) { }
 
-NPC::NPC(Coordinates pos, Vector2d size, Layout& layout, std::string name) : GameCharacter(pos, size, layout, name) { }
+NPC::NPC(const Coordinates pos, const Vector2d size, const std::string name) : GameCharacter(pos, size, name) { }
 
 bool NPC::isVowel(char c)
 {

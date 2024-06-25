@@ -21,7 +21,7 @@ private:
 public:
     Debuger();
 
-    void setWindow(sf::RenderWindow* window);
+    void setWindow(sf::RenderWindow& window);
     void setFont(sf::Font& font);
 
     void consoleLog(std::string text, sf::Color color = sf::Color::White);

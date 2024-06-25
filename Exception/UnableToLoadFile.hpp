@@ -7,11 +7,11 @@
 class UnableToLoadFile : public std::runtime_error
 {
 public:
-    UnableToLoadFile(std::string file);
+    UnableToLoadFile(const std::string file);
     ~UnableToLoadFile();
 };
 
-UnableToLoadFile::UnableToLoadFile(std::string file) : std::runtime_error("Unable to load file: " + file) { }
+UnableToLoadFile::UnableToLoadFile(const std::string file) : std::runtime_error("Unable to load file: " + file) { }
 
 UnableToLoadFile::~UnableToLoadFile() { }
 

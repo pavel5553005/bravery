@@ -8,15 +8,12 @@ class Animal : public Unit
 private:
     int timeBeforeMove;
 public:
-    Animal(Coordinates pos, Vector2d size, Layout& layout);
+    Animal(const Coordinates pos, const Vector2d size);
 
     ~Animal();
 };
 
-Animal::Animal(Coordinates pos, Vector2d size, Layout& layout) : Unit(pos, size, layout)
-{
-    timeBeforeMove = 0;
-}
+Animal::Animal(const Coordinates pos, const Vector2d size) : Unit(pos, size), timeBeforeMove(0) { }
 
 Animal::~Animal() { }
 

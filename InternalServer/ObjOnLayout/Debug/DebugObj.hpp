@@ -5,10 +5,10 @@
 class DebugObj : public ObjOnLayout
 {
 private:
-    ObjOnLayout* followObj;
+    const ObjOnLayout* followObj;
 public:
     DebugObj();
-    DebugObj(Coordinates pos, Vector2d size, Layout& layout, ObjOnLayout& followObj);
+    DebugObj(const Coordinates pos, const Vector2d size, ObjOnLayout& followObj);
 
     void setFollowObj(ObjOnLayout& followObj) { this->followObj = &followObj; }
 
@@ -19,9 +19,10 @@ public:
 
 DebugObj::DebugObj() : ObjOnLayout() { }
 
-DebugObj::DebugObj(Coordinates pos, Vector2d size, Layout& layout, ObjOnLayout& followObj) : ObjOnLayout(pos, size, layout)
+DebugObj::DebugObj(const Coordinates pos, const Vector2d size, ObjOnLayout& followObj) :
+ObjOnLayout(pos, size),
+followObj(&followObj)
 {
-    this->followObj = &followObj;
     handler.addListener(std::bind(&DebugObj::sex, this, std::placeholders::_1), Event::Type::TestEvent);
 }
 

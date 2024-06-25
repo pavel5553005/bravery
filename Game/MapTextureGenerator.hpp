@@ -35,25 +35,25 @@ namespace MapTextureGenerator
             {
                 for (int y = 0; y < map.getSizeY(); y++)
                 {
-                    if (map.getCell(x, y, z)->getFloorType() == MapCell::FloorType::Grass)
+                    if (map.getCell(x, y, z).getFloorType() == MapCell::FloorType::Grass)
                     {
                         floorImage.copy(grassImage, x * TILE_SIZE, y * TILE_SIZE, sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
                     }
-                    else if (map.getCell(x, y, z)->getFloorType() == MapCell::FloorType::Stone)
+                    else if (map.getCell(x, y, z).getFloorType() == MapCell::FloorType::Stone)
                     {
                         floorImage.copy(stoneImage, x * TILE_SIZE, y * TILE_SIZE, sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
                     }
 
-                    if (map.getCell(x, y, z)->getWallType() == MapCell::WallType::Wall)
+                    if (map.getCell(x, y, z).getWallType() == MapCell::WallType::Wall)
                     {
                         bool isTop = false;
                         bool isBottom = false;
                         bool isLeft = false;
                         bool isRight = false;
-                        if (y > 0 and map.getCell(x, y - 1, z)->getWallType() != MapCell::WallType::None) isTop = true;
-                        if (y < map.getSizeY() - 1 and map.getCell(x, y + 1, z)->getWallType() != MapCell::WallType::None) isBottom = true;
-                        if (x > 0 and map.getCell(x - 1, y, z)->getWallType() != MapCell::WallType::None) isLeft = true;
-                        if (x < map.getSizeX() - 1 and map.getCell(x + 1, y, z)->getWallType() != MapCell::WallType::None) isRight = true;
+                        if (y > 0 and map.getCell(x, y - 1, z).getWallType() != MapCell::WallType::None) isTop = true;
+                        if (y < map.getSizeY() - 1 and map.getCell(x, y + 1, z).getWallType() != MapCell::WallType::None) isBottom = true;
+                        if (x > 0 and map.getCell(x - 1, y, z).getWallType() != MapCell::WallType::None) isLeft = true;
+                        if (x < map.getSizeX() - 1 and map.getCell(x + 1, y, z).getWallType() != MapCell::WallType::None) isRight = true;
                         wallImage.copy(*resourceManager.getWallTexture(isTop, isBottom, isLeft, isRight), x * 16, y * 16, sf::IntRect(0, 0, 16, 16));
                     }
                 }

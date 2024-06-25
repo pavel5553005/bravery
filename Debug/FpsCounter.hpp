@@ -23,7 +23,7 @@ public:
     FpsCounter(sf::Font& font);
     void getStartTime();
     void getEndTime();
-    void draw(sf::RenderWindow& window, int windowWidth);
+    void draw(sf::RenderWindow& window);
     void drawTextLeft(sf::RenderWindow& window, std::string text);
 };
 
@@ -87,7 +87,7 @@ sf::Color FpsCounter::getColor(int index)
     
 }
 
-void FpsCounter::draw(sf::RenderWindow& window, int windowWidth)
+void FpsCounter::draw(sf::RenderWindow& window)
 {
     try
     {
@@ -111,11 +111,11 @@ void FpsCounter::draw(sf::RenderWindow& window, int windowWidth)
         
         sf::Sprite sprite;
         sprite.setTexture(texture);
-        sprite.setPosition(windowWidth - 100, 0);
+        sprite.setPosition(WINDOW_WIDTH - 100, 0);
         window.draw(sprite);
 
         sf::RectangleShape rect(sf::Vector2f(std::to_string(averageFps).length() * 11, 20));
-        rect.setPosition(windowWidth - std::to_string(averageFps).length() * 11, 40);
+        rect.setPosition(WINDOW_WIDTH - std::to_string(averageFps).length() * 11, 40);
         rect.setFillColor(sf::Color::Black);
         window.draw(rect);
 
@@ -124,7 +124,7 @@ void FpsCounter::draw(sf::RenderWindow& window, int windowWidth)
         text.setCharacterSize(16);
         text.setString(std::to_string(averageFps));
         text.setFillColor(sf::Color::White);
-        text.setPosition(windowWidth - std::to_string(averageFps).length() * 11, 40);
+        text.setPosition(WINDOW_WIDTH - std::to_string(averageFps).length() * 11, 40);
         window.draw(text);
     }
     catch(...)

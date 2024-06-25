@@ -15,9 +15,9 @@ public:
     AnimatedTexture(std::vector<sf::Texture>* textures, double speed = 1);
     AnimatedTexture();
 
-    sf::Texture* getTexture();
+    sf::Texture& getTexture();
 
-    void setSpeed(double speed) { this->speed = speed; }
+    void setSpeed(const double speed) { this->speed = speed; }
     void tick();
     bool operator == (const AnimatedTexture& other) { return textures == other.textures; }
     bool operator == (const std::vector<sf::Texture>& other) { return textures == &other; }
@@ -25,24 +25,13 @@ public:
     ~AnimatedTexture();
 };
 
-AnimatedTexture::AnimatedTexture(std::vector<sf::Texture>* textures, double speed)
-{
-    this->textures = textures;
-    this->speed = speed;
-    index = 0;
-}
+AnimatedTexture::AnimatedTexture(std::vector<sf::Texture>* textures, double speed) : textures(textures), speed(speed), index(0) { }
 
-AnimatedTexture::AnimatedTexture()
-{
-    textures = nullptr;
-    speed = 1;
-    index = 0;
-}
+AnimatedTexture::AnimatedTexture() : textures(nullptr), speed(1), index(0) { }
 
-sf::Texture* AnimatedTexture::getTexture()
+sf::Texture& AnimatedTexture::getTexture()
 {
-    std::cout << (*textures)[int(index)].getSize().x << std::endl;
-    return &(*textures)[int(index)];
+    return (*textures)[int(index)];
 }
 
 void AnimatedTexture::tick()

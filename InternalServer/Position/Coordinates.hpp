@@ -8,58 +8,42 @@ public:
     double x;
     double y;
     int z;
-    Coordinates(double x, double y, int z);
+    Coordinates(const double x, const double y, const int z);
     Coordinates();
-    Coordinates operator + (const Coordinates other);
-    Coordinates operator + (const Vector2d other);
-    Coordinates operator - (const Coordinates other);
-    Coordinates operator - (const Vector2d other);
-    bool operator == (const Coordinates& other);
-    bool operator != (const Coordinates& other);
+    Coordinates operator + (const Coordinates& other) const;
+    Coordinates operator + (const Vector2d& other) const;
+    Coordinates operator - (const Coordinates& other) const;
+    Coordinates operator - (const Vector2d& other) const;
+    bool operator == (const Coordinates& other) const;
+    bool operator != (const Coordinates& other) const;
+    bool operator < (const Coordinates& other) const;
+    bool operator > (const Coordinates& other) const;
+    bool operator <= (const Coordinates& other) const;
+    bool operator >= (const Coordinates& other) const;
 };
 
-Coordinates::Coordinates(double x, double y, int z)
-{
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
+Coordinates::Coordinates(double x, double y, int z) : x(x), y(y), z(z) { }
 
-Coordinates::Coordinates()
-{
-    this->x = 0;
-    this->y = 0;
-    this->z = 0;
-}
+Coordinates::Coordinates() : x(0), y(0), z(0) { }
 
-Coordinates Coordinates::operator + (const Coordinates other)
-{
-    return Coordinates(x + other.x, y + other.y, z + other.z);
-}
+Coordinates Coordinates::operator + (const Coordinates& other) const { return Coordinates(x + other.x, y + other.y, z + other.z); }
 
-Coordinates Coordinates::operator + (const Vector2d other)
-{
-    return Coordinates(x + other.x, y + other.y, z);
-}
+Coordinates Coordinates::operator + (const Vector2d& other) const { return Coordinates(x + other.x, y + other.y, z); }
 
-Coordinates Coordinates::operator - (const Coordinates other)
-{
-    return Coordinates(x - other.x, y - other.y, z - other.z);
-}
+Coordinates Coordinates::operator - (const Coordinates& other) const { return Coordinates(x - other.x, y - other.y, z - other.z); }
 
-Coordinates Coordinates::operator - (const Vector2d other)
-{
-    return Coordinates(x - other.x, y - other.y, z);
-}
+Coordinates Coordinates::operator - (const Vector2d& other) const { return Coordinates(x - other.x, y - other.y, z); }
 
-bool Coordinates::operator == (const Coordinates& other)
-{
-    return x == other.x && y == other.y && z == other.z;
-}
+bool Coordinates::operator == (const Coordinates& other) const { return x == other.x and y == other.y and z == other.z; }
 
-bool Coordinates::operator != (const Coordinates& other)
-{
-    return x != other.x || y != other.y || z != other.z;
-}
+bool Coordinates::operator != (const Coordinates& other) const { return x != other.x or y != other.y or z != other.z; }
+
+bool Coordinates::operator < (const Coordinates& other) const { return x < other.x and y < other.y and z < other.z; }
+
+bool Coordinates::operator > (const Coordinates& other) const { return x > other.x and y > other.y and z > other.z; }
+
+bool Coordinates::operator <= (const Coordinates& other) const { return x <= other.x and y <= other.y and z <= other.z; }
+
+bool Coordinates::operator >= (const Coordinates& other) const { return x >= other.x and y >= other.y and z >= other.z; }
 
 #endif

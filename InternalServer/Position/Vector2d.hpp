@@ -11,14 +11,12 @@ public:
     double x;
     double y;
     Vector2d();
-    Vector2d(Coordinates pos);
-    Vector2d(double x, double y);
+    Vector2d(const Coordinates pos);
+    Vector2d(const double x, const double y);
 
     double getLength();
     double getAngle();
     
-    Vector2d& operator=(const Vector2d& other);
-
 };
 
 #endif

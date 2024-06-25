@@ -9,7 +9,7 @@ private:
 public:
     InternalServer();
 
-    Layout* getLayout();
+    Layout& getLayout();
 
     void tick();
     void stop();
@@ -19,7 +19,7 @@ public:
 
 InternalServer::InternalServer() {}
 
-Layout* InternalServer::getLayout() { return &layout; }
+Layout& InternalServer::getLayout() { return layout; }
 
 void InternalServer::tick()
 {

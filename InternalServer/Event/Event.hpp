@@ -25,7 +25,7 @@ public:
         Tick
     };
     
-    Type type;
+    const Type type;
 
     union
     {
@@ -34,12 +34,9 @@ public:
         bool nullEvent;
     };
     
-    Event(Type type);
+    Event(const Type type);
 };
 
-Event::Event(Type type)
-{
-    this->type = type;
-}
+Event::Event(const Type type) : type(type) { }
 
 #endif

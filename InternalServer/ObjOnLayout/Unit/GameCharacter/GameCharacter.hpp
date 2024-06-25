@@ -10,27 +10,19 @@ protected:
     std::string name;
 public:
     GameCharacter();
-    GameCharacter(Coordinates pos, Vector2d size, Layout& layout, std::string name);
-    GameCharacter(Unit& unit, std::string name);
+    GameCharacter(const Coordinates pos, const Vector2d size, const std::string name);
 
-    std::string getName();
+    const std::string& getName() const { return name; }
 
-    void setName(std::string name);
+    void setName(const std::string name) { this->name = name; }
 
     ~GameCharacter();
 };
 
 GameCharacter::GameCharacter() { }
 
-GameCharacter::GameCharacter(Coordinates pos, Vector2d size, Layout& layout, std::string name)
-: Unit(pos, size, layout) { this->name = name; }
-
-GameCharacter::GameCharacter(Unit& unit, std::string name)
-: Unit(unit), name(name) { }
-
-std::string GameCharacter::getName() { return name; }
-
-void GameCharacter::setName(std::string name) { this->name = name; }
+GameCharacter::GameCharacter(const Coordinates pos, const Vector2d size, const std::string name) :
+Unit(pos, size), name(name) { }
 
 GameCharacter::~GameCharacter() { }
 

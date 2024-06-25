@@ -14,8 +14,8 @@ private:
 public:
     Map();
 
-    MapCell* getCell(int x, int y, int z);
-    MapCell* getCell(Coordinates pos);
+    MapCell& getCell(int x, int y, int z);
+    MapCell& getCell(Coordinates pos);
     int getSizeX() {return sizeX;}
     int getSizeY() {return sizeY;}
     int getSizeZ() {return sizeZ;}
@@ -50,17 +50,17 @@ Map::Map() : sizeX(10), sizeY(10), sizeZ(10) {
     cells[0][7][3].setWallType(MapCell::WallType::Wall);
 }
 
-MapCell* Map::getCell(int x, int y, int z)
+MapCell& Map::getCell(int x, int y, int z)
 {
     if (x < 0 or x >= sizeX or y < 0 or y >= sizeY or z < 0 or z >= sizeZ)
     {
         throw std::out_of_range("Coordinates out of range");
     }
     
-    return &cells[z][x][y];
+    return cells[z][x][y];
 }
 
-MapCell* Map::getCell(Coordinates pos)
+MapCell& Map::getCell(Coordinates pos)
 {
     return getCell(pos.x, pos.y, pos.z);
 }

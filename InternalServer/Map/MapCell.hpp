@@ -14,14 +14,14 @@ private:
     // std::list<ObjOnLayout*> objects;
 public:
     MapCell();
-    MapCell(FloorType floorType, WallType wallType);
+    MapCell(const FloorType floorType, const WallType wallType);
 
-    FloorType getFloorType();
-    WallType getWallType();
+    const FloorType getFloorType();
+    const WallType getWallType();
     // std::list<ObjOnLayout*>* getObjects();
 
-    void setWallType(WallType wallType);
-    void setFloorType(FloorType floorType);
+    void setWallType(const WallType wallType);
+    void setFloorType(const FloorType floorType);
 
     // void addObject(ObjOnLayout& obj);
     // void deleteObject(ObjOnLayout& obj);
@@ -29,21 +29,13 @@ public:
     ~MapCell();
 };
 
-MapCell::MapCell()
-{
-    floorType = MapCell::FloorType::None;
-    wallType = MapCell::WallType::None;
-}
+MapCell::MapCell() : floorType(FloorType::None), wallType(WallType::None) { }
 
-MapCell::MapCell(FloorType floorType, WallType wallType = WallType::None)
-{
-    this->floorType = floorType;
-    this->wallType = wallType;
-}
+MapCell::MapCell(FloorType floorType, WallType wallType = WallType::None) : floorType(floorType), wallType(wallType) { }
 
-MapCell::FloorType MapCell::getFloorType() { return floorType; }
+const MapCell::FloorType MapCell::getFloorType() { return floorType; }
 
-MapCell::WallType MapCell::getWallType() { return wallType; }
+const MapCell::WallType MapCell::getWallType() { return wallType; }
 
 void MapCell::setWallType(WallType wallType) { this->wallType = wallType; }
 

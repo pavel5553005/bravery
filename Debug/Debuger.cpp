@@ -5,7 +5,7 @@ Debuger::Debuger()
     this->window = nullptr;
 }
 
-void Debuger::setWindow(sf::RenderWindow* window) { this->window = window; }
+void Debuger::setWindow(sf::RenderWindow& window) { this->window = &window; }
 
 void Debuger::setFont(sf::Font& font) { this->font = font; }
 

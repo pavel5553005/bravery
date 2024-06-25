@@ -14,8 +14,8 @@ private:
 public:
     Layout();
 
-    std::list<ObjOnLayout*>* getObjects();
-    Map* getMap();
+    std::list<ObjOnLayout*>& getObjects();
+    Map& getMap();
 
     void generateEvent(Event event);
     void addObject(ObjOnLayout& obj);
@@ -26,9 +26,9 @@ public:
 
 Layout::Layout() { }
 
-std::list<ObjOnLayout*>* Layout::getObjects() { return &objects; }
+std::list<ObjOnLayout*>& Layout::getObjects() { return objects; }
 
-Map *Layout::getMap() { return &map; }
+Map& Layout::getMap() { return map; }
 
 void Layout::addObject(ObjOnLayout& obj)
 {

@@ -2,46 +2,24 @@
 #include "../Event/Event.hpp"
 #include "../Map/Layout.hpp"
 #include <iostream>
+#include <functional>
 
-ObjOnLayout::ObjOnLayout()
+ObjOnLayout::ObjOnLayout() : pos(Coordinates(0, 0, 0)), size(Vector2d(1, 1)), layout(nullptr) { }
+ObjOnLayout::ObjOnLayout(const Coordinates pos, const Vector2d size) : 
+pos(pos), size(size), texture(resourceManager.loadAnimatedTexture("Resources/Textures/ObjOnLayout/player.csv")), layout(nullptr)
 {
-    this->pos = Coordinates();
-    this->size = Vector2d();
-    this->center = Vector2d();
-    this->layout = nullptr;
-}
-
-ObjOnLayout::ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout)
-{
-    this->size = size;
-    this->layout = &layout;
-    this->setPos(pos);
-    layout.addObject(*this);
-    Event event(Event::Type::ObjSpawn);
-    event.objSpawn.obj = this;
-    event.objSpawn.pos = pos;
-    handler.generateEvent(event);
     this->texture = resourceManager.loadAnimatedTexture("Resources/Textures/ObjOnLayout/player.csv");
     this->texture.setSpeed(0.1);
-    handler.addListener(std::bind(&ObjOnLayout::updateTexture, this, std::placeholders::_1), Event::Type::Tick);
-}
-
-Coordinates ObjOnLayout::getPos()
-{
-    return pos;
-}
-Vector2d ObjOnLayout::getSize()
-{
-    return size;
 }
 
 void ObjOnLayout::setPos(Coordinates newPos)
 {
+    // std::cout << "ObjOnLayout::setPos(" << newPos.x << ", " << newPos.y << ", " << newPos.z << ")" << std::endl;
     if (newPos == pos) return;
 
-    if (newPos.x + size.x > layout->getMap()->getSizeX()) newPos.x = layout->getMap()->getSizeX() - size.x;
-    if (newPos.y + size.y > layout->getMap()->getSizeY()) newPos.y = layout->getMap()->getSizeY() - size.y;
-    if (newPos.z >= layout->getMap()->getSizeZ()) newPos.z = layout->getMap()->getSizeZ() - 1;
+    if (newPos.x + size.x > layout->getMap().getSizeX()) newPos.x = layout->getMap().getSizeX() - size.x;
+    if (newPos.y + size.y > layout->getMap().getSizeY()) newPos.y = layout->getMap().getSizeY() - size.y;
+    if (newPos.z >= layout->getMap().getSizeZ()) newPos.z = layout->getMap().getSizeZ() - 1;
     if (newPos.x < 0) newPos.x = 0;
     if (newPos.y < 0) newPos.y = 0;
     if (newPos.z < 0) newPos.z = 0;
@@ -94,16 +72,21 @@ void ObjOnLayout::setPos(Coordinates newPos)
     // layout->getMap()->getCell(this->pos.x + size.x / 2, this->pos.y + size.y / 2, 0)->addObject(*this);
 }
 
-void ObjOnLayout::updateTexture(Event event)
+void ObjOnLayout::setLayout(Layout& layout)
 {
-    texture.tick();
+    this->layout = &layout;
+    layout.addObject(*this);
+    Event event(Event::Type::ObjSpawn);
+    event.objSpawn.obj = this;
+    event.objSpawn.pos = pos;
+    handler.generateEvent(event);
 }
 
 bool ObjOnLayout::isCollide(double x, double y, double z)
 {
     try
     {
-        return layout->getMap()->getCell(x, y, z)->getWallType() != MapCell::WallType::None;
+        return layout->getMap().getCell(x, y, z).getWallType() != MapCell::WallType::None;
     }
     catch(const std::out_of_range& e)
     {
@@ -139,6 +122,11 @@ Vector2d ObjOnLayout::maxDPoint(Coordinates pos, Coordinates newPos, bool isVert
     return maxD;
 }
 
+void ObjOnLayout::updateTexture(Event event)
+{
+    texture.tick();
+}
+
 void ObjOnLayout::removeFromLayout()
 {
     if (layout != nullptr)
@@ -146,6 +134,16 @@ void ObjOnLayout::removeFromLayout()
         layout->deleteObject(*this);
         layout = nullptr;
     }
+}
+
+Layout& ObjOnLayout::getLayout() const
+{
+    if (layout == nullptr)
+    {
+        throw EmptyLayout();
+    }
+
+    return *layout;
 }
 
 ObjOnLayout::~ObjOnLayout()

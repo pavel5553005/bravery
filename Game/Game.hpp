@@ -3,14 +3,11 @@
 class Game
 {
 private:
-    const unsigned int windowWidth;
-    const unsigned int windowHeight;
 
-    Unit* player;
+    Unit player;
     std::list<NPC*> npcs;
     Camera camera;
     sf::Font font;
-    DebugObj* d;
     std::list<sf::Keyboard::Key> pressedKeys;
 
     InternalServer server;
@@ -20,26 +17,22 @@ private:
     void keyboardCheck();
     bool oneKeyPressed(sf::Keyboard::Key key);
 public:
-    Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::RenderWindow& window);
+    Game(sf::RenderWindow& window);
     void setFont(sf::Font& font);
     void run();
     ~Game();
 };
 
-Game::Game(const unsigned int windowWidth, const unsigned int windowHeight, sf::RenderWindow& window)
-: windowWidth(windowWidth),
-  windowHeight(windowHeight)
+Game::Game(sf::RenderWindow& window) : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75))
 {
+    player.setLayout(server.getLayout());
     this->window = &window;
+    camera = Camera(player, 100, window);
+    camera.generateTextures();
 
-    player = new Unit(Coordinates(0, 0, 0), Vector2d(0.75, 0.75), *server.getLayout());
-    player->setSpeed(0.1001);
+    player.setSpeed(0.1001);
 
-    camera = Camera(*player, *server.getLayout(), 21, window, windowWidth, windowHeight);
-
-    d = new DebugObj(Coordinates(1, 1, 0), Vector2d(0.75, 0.75), *server.getLayout(), *player);
-
-    debuger.setWindow(&window);
+    debuger.setWindow(window);
 }
 
 void Game::setFont(sf::Font& font)
@@ -93,7 +86,7 @@ void Game::run()
 
         fpsCounter.getEndTime();
 
-        fpsCounter.draw(*window, windowWidth);
+        fpsCounter.draw(*window);
 
         debuger.drawConsole();
 
@@ -143,18 +136,18 @@ void Game::keyboardCheck()
     }
     if (oneKeyPressed(sf::Keyboard::N))
     {
-        player->setPos(Coordinates(player->getPos().x, player->getPos().y, player->getPos().z - 1));
-        debuger.consoleLog(std::to_string(player->getPos().z));
+        player.setPos(Coordinates(player.getPos().x, player.getPos().y, player.getPos().z - 1));
+        debuger.consoleLog(std::to_string(player.getPos().z));
     }
     if (oneKeyPressed(sf::Keyboard::H))
     {
-        player->setPos(Coordinates(player->getPos().x, player->getPos().y, player->getPos().z + 1));
-        debuger.consoleLog(std::to_string(player->getPos().z));
+        player.setPos(Coordinates(player.getPos().x, player.getPos().y, player.getPos().z + 1));
+        debuger.consoleLog(std::to_string(player.getPos().z));
     }
 
     if (x != 0 or y != 0)
     {
-        player->move(atan2(y, x) * 180 / M_PI);
+        player.move(atan2(y, x) * 180 / M_PI);
     }
 }
 
@@ -162,7 +155,7 @@ void Game::createNPC()
 {
     if (npcs.size() < 10) 
     {
-        NPC* npc = new NPC(Coordinates(rand() % 30 + 30, rand() % 30 + 30, 0), Vector2d(1, 1), *server.getLayout());
+        NPC* npc = new NPC(Coordinates(rand() % 30 + 30, rand() % 30 + 30, 0), Vector2d(1, 1));
         npc->setSpeed((rand() % 40 + 10) / 1000.0);
         npcs.push_back(npc);
     }

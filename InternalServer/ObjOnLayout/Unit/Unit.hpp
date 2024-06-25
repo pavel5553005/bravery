@@ -16,53 +16,33 @@ protected:
     void walk(Event event);
 public:
     Unit();
-    Unit(Coordinates pos, Vector2d size, Layout& layout);
+    Unit(const Coordinates pos, const Vector2d size);
 
-    void setHp(unsigned int hp);
-    void setMaxHp(unsigned int maxHp);
-    void setSpeed(double speed);
+    void setHp(const unsigned int hp) { this->hp = hp; }
+    void setMaxHp(const unsigned int maxHp) { this->maxHp = maxHp; }
+    void setSpeed(const double speed) { this->speed = speed; }
 
-    unsigned int getHp();
-    unsigned int getMaxHp();
-    double getSpeed();
-    bool isPathEmpty();
+    const unsigned int getHp() const { return hp; }
+    const unsigned int getMaxHp() const { return maxHp; }
+    const double getSpeed() const { return speed; }
+    const bool isPathEmpty() const { return pathList.empty(); }
 
-    void addPath(Coordinates pos);
-    void deletePath();
-    void move(int angle);
-    void move(Coordinates pos);
-    void event(Event event);
-
+    void addPath(const Coordinates pos) { pathList.push_back(pos); }
+    void deletePath(const Coordinates pos) { pathList.remove(pos); }
+    void move(const int angle);
+    void move(const Coordinates pos);
     ~Unit();
 };
 
 Unit::Unit() {}
 
-Unit::Unit(Coordinates pos, Vector2d size, Layout& layout) : ObjOnLayout(pos, size, layout)
+Unit::Unit(const Coordinates pos, const Vector2d size) : ObjOnLayout(pos, size)
 {
     hp = 100;
     maxHp = 100;
     speed = 0.1;
     handler.addListener(std::bind(&Unit::walk, this, std::placeholders::_1), Event::Type::Tick);
 }
-
-void Unit::setHp(unsigned int hp) { this->hp = hp; }
-
-void Unit::setMaxHp(unsigned int maxHp) { this->maxHp = maxHp; }
-
-void Unit::setSpeed(double speed) { this->speed = speed; }
-
-unsigned int Unit::getHp() { return hp; }
-
-unsigned int Unit::getMaxHp() { return maxHp; }
-
-double Unit::getSpeed() { return speed; }
-
-bool Unit::isPathEmpty() { return pathList.empty(); }
-
-void Unit::addPath(Coordinates pos) { pathList.push_back(pos); }
-
-void Unit::deletePath() { pathList.clear(); }
 
 void Unit::move(int angle)
 {
@@ -97,9 +77,7 @@ void Unit::walk(Event event)
     }
 }
 
-Unit::~Unit()
-{
-}
+Unit::~Unit() { }
 
 
 #endif

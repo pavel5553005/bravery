@@ -16,7 +16,6 @@ class Camera
 private:
     Coordinates pos;
     ObjOnLayout* followObj;
-    Layout* layout;
     sf::Texture* floorTexture;
     sf::Texture* wallsTexture;
     sf::RenderWindow* window;
@@ -26,60 +25,25 @@ private:
     sf::Image stoneImage;
 
     double scale;
-    int windowHeight;
-    int windowWidth;
 public:
-    Camera();
-    Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderWindow& window, int windowWidth, int windowHeight);
+    Camera() { }
+    Camera(ObjOnLayout& followObj, const double scale, sf::RenderWindow& window);
 
-    Coordinates getPos();
+    const Coordinates getPos();
     double getScale();
 
     void setScale(double scale);
 
     void render();
+    void generateTextures();
     
     ~Camera();
 };
 
-Camera::Camera(ObjOnLayout& followObj, Layout& layout, double scale, sf::RenderWindow& window, int windowWidth, int windowHeight)
-{
-    this->followObj = &followObj;
-    this->pos = followObj.getPos();
-    this->scale = scale;
-    this->layout = &layout;
-    this->window = &window;
-    this->windowHeight = windowHeight;
-    this->windowWidth = windowWidth;
+Camera::Camera(ObjOnLayout& followObj, const double scale, sf::RenderWindow& window) : 
+followObj(&followObj), scale(scale), window(&window) { }
 
-    floorTexture = new sf::Texture[layout.getMap()->getSizeX() * layout.getMap()->getSizeZ()];
-    wallsTexture = new sf::Texture[layout.getMap()->getSizeX() * layout.getMap()->getSizeZ()];
-
-    MapTextureGenerator::MapTexture mapTexture = MapTextureGenerator::generateMapTexture(*layout.getMap());
-    int index = 0;
-    for (auto i : mapTexture.floorTexture)
-    {
-        floorTexture[index].loadFromImage(i);
-        index++;
-    }
-
-    index = 0;
-    for (auto i : mapTexture.wallTexture)
-    {
-        wallsTexture[index].loadFromImage(i);
-        index++;
-    }
-
-    backgroundSprite.setSize(sf::Vector2f(windowWidth, windowHeight));
-    backgroundSprite.setPosition(0, 0);
-    backgroundSprite.setFillColor(sf::Color(85, 85, 85));
-}
-
-Camera::Camera()
-{
-}
-
-Coordinates Camera::getPos()
+const Coordinates Camera::getPos()
 {
     return pos;
 }
@@ -119,30 +83,30 @@ void Camera::render()
 
     sf::Sprite floorSprite;
     floorSprite.setTexture(floorTexture[followObj->getPos().z]);
-    floorSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
+    floorSprite.setPosition(-pos.x * scale + WINDOW_WIDTH / 2, -pos.y * scale + WINDOW_HEIGHT / 2);
     floorSprite.setScale(scale / TILE_SIZE, scale / TILE_SIZE);
     window->draw(floorSprite);
 
-    for (auto i : *layout->getObjects())
+    for (auto i : followObj->getLayout().getObjects())
     {
         if (i->getPos().z != followObj->getPos().z) continue;
         // if (i != followObj)
         // {
         //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
         //     rect.setFillColor(sf::Color::Blue);
         //     window->draw(rect);
         // }
         // else
         // {
         //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
         //     rect.setFillColor(sf::Color::Red);
         //     window->draw(rect);
         // }
         sf::Sprite sprite;
-        sprite.setTexture(*i->getTexture().getTexture());
-        sprite.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+        sprite.setTexture(i->getTexture().getTexture());
+        sprite.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
         sprite.setScale(scale / TILE_SIZE * 2, scale / TILE_SIZE * 2);
         window->draw(sprite);
     }
@@ -151,19 +115,19 @@ void Camera::render()
     // {
     //     for (int x = 0; x < 100; x++)
     //     {
-    //         for (auto i : *layout->getMap()->getCell(x, y, 0)->getObjects())
+    //         for (auto i : *followObj->getLayout()->getMap()->getCell(x, y, 0)->getObjects())
     //         {
     //             if (i != followObj)
     //             {
     //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
     //                 rect.setFillColor(sf::Color::Blue);
     //                 window->draw(rect);
     //             }
     //             else
     //             {
     //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + windowWidth / 2, (i->getPos().y - pos.y) * scale + windowHeight / 2);
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
     //                 rect.setFillColor(sf::Color::Red);
     //                 window->draw(rect);
     //             }
@@ -173,9 +137,35 @@ void Camera::render()
         
     sf::Sprite wallsSprite;
     wallsSprite.setTexture(wallsTexture[followObj->getPos().z]);
-    wallsSprite.setPosition(-pos.x * scale + windowWidth / 2, -pos.y * scale + windowHeight / 2);
+    wallsSprite.setPosition(-pos.x * scale + WINDOW_WIDTH / 2, -pos.y * scale + WINDOW_HEIGHT / 2);
     wallsSprite.setScale(scale / 16, scale / 16);
     window->draw(wallsSprite);
+}
+
+void Camera::generateTextures()
+{
+
+    floorTexture = new sf::Texture[followObj->getLayout().getMap().getSizeZ()];
+    wallsTexture = new sf::Texture[followObj->getLayout().getMap().getSizeZ()];
+
+    MapTextureGenerator::MapTexture mapTexture = MapTextureGenerator::generateMapTexture(followObj->getLayout().getMap());
+    int index = 0;
+    for (auto i : mapTexture.floorTexture)
+    {
+        floorTexture[index].loadFromImage(i);
+        index++;
+    }
+
+    index = 0;
+    for (auto i : mapTexture.wallTexture)
+    {
+        wallsTexture[index].loadFromImage(i);
+        index++;
+    }
+
+    backgroundSprite.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    backgroundSprite.setPosition(0, 0);
+    backgroundSprite.setFillColor(sf::Color(85, 85, 85));
 }
 
 Camera::~Camera()

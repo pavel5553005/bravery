@@ -5,6 +5,7 @@
 #include "../Position/Vector2d.hpp"
 #include "../AnimatedTexture.hpp"
 #include "../../Resources/ResourceManager.hpp"
+#include "../../Exception/EmptyLayout.hpp"
 
 class Event;
 
@@ -15,7 +16,6 @@ class ObjOnLayout
 private:
     Coordinates pos;
     Vector2d size;
-    Vector2d center;
     bool isCollide(double x, double y, double z);
     Vector2d maxDPoint(Coordinates pos, Coordinates newPos, bool isVertex);
     static Vector2d maxVextorOfModule(Vector2d a, Vector2d b)
@@ -30,15 +30,17 @@ protected:
     Layout* layout;
 public:
     ObjOnLayout();
-    ObjOnLayout(Coordinates pos, Vector2d size, Layout& layout);
+    ObjOnLayout(const Coordinates pos, const Vector2d size);
 
-    Coordinates getPos();
-    Vector2d getSize();
-    AnimatedTexture getTexture() { return texture; }
+    Coordinates getPos() const { return pos; }
+    Vector2d getSize() const { return size; }
+    AnimatedTexture getTexture() const { return texture; }
+    Layout& getLayout() const;
 
     void updateTexture(Event event);
 
-    void setPos(Coordinates pos);
+    void setPos(const Coordinates pos);
+    void setLayout(Layout& layout);
     
     void removeFromLayout();
 
