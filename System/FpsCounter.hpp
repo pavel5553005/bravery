@@ -19,17 +19,20 @@ private:
     sf::Font font;
     int getTime();
     sf::Color getColor(int index);
+    const unsigned int windowWidth;
 public:
-    FpsCounter(sf::Font& font);
+    FpsCounter(const unsigned int windowWidth);
     void getStartTime();
     void getEndTime();
+
+    void setFont(sf::Font& font) { this-> font = font; }
+
     void draw(sf::RenderWindow& window);
     void drawTextLeft(sf::RenderWindow& window, std::string text);
 };
 
-FpsCounter::FpsCounter(sf::Font& font)
+FpsCounter::FpsCounter(const unsigned int windowWidth) : windowWidth(windowWidth)
 {
-    this->font = font;
     texture.create(100, 40);
     sf::Image image;
     image.create(100, 40, sf::Color::Black);
@@ -111,11 +114,11 @@ void FpsCounter::draw(sf::RenderWindow& window)
         
         sf::Sprite sprite;
         sprite.setTexture(texture);
-        sprite.setPosition(WINDOW_WIDTH - 100, 0);
+        sprite.setPosition(windowWidth - 100, 0);
         window.draw(sprite);
 
         sf::RectangleShape rect(sf::Vector2f(std::to_string(averageFps).length() * 11, 20));
-        rect.setPosition(WINDOW_WIDTH - std::to_string(averageFps).length() * 11, 40);
+        rect.setPosition(windowWidth - std::to_string(averageFps).length() * 11, 40);
         rect.setFillColor(sf::Color::Black);
         window.draw(rect);
 
@@ -124,7 +127,7 @@ void FpsCounter::draw(sf::RenderWindow& window)
         text.setCharacterSize(16);
         text.setString(std::to_string(averageFps));
         text.setFillColor(sf::Color::White);
-        text.setPosition(WINDOW_WIDTH - std::to_string(averageFps).length() * 11, 40);
+        text.setPosition(windowWidth - std::to_string(averageFps).length() * 11, 40);
         window.draw(text);
     }
     catch(...)

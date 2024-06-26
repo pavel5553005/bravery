@@ -7,53 +7,38 @@ private:
     Unit player;
     std::list<NPC*> npcs;
     Camera camera;
-    sf::Font font;
     std::list<sf::Keyboard::Key> pressedKeys;
 
     InternalServer server;
-    sf::RenderWindow* window;
 
     void createNPC();
     void keyboardCheck();
     bool oneKeyPressed(sf::Keyboard::Key key);
 public:
-    Game(sf::RenderWindow& window);
-    void setFont(sf::Font& font);
+    Game();
     void run();
     ~Game();
 };
 
-Game::Game(sf::RenderWindow& window) : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75))
+Game::Game() : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75))
 {
     player.setLayout(server.getLayout());
-    this->window = &window;
-    camera = Camera(player, 100, window);
+    camera = Camera(player, 100);
     camera.generateTextures();
 
     player.setSpeed(0.1001);
-
-    debuger.setWindow(window);
 }
-
-void Game::setFont(sf::Font& font)
-{
-    this->font = font;
-    debuger.setFont(font);
-}
-
 
 void Game::run()
 {
-    FpsCounter fpsCounter(font);
-    
-    while (window->isOpen())
+    while (BaS.window.isOpen())
     {
         sf::Event event;
-        while (window->pollEvent(event))
+        while (BaS.window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed) {
                 
-                window->close();
+                BaS.window.close();
                 server.~InternalServer();
                 return;
             }
@@ -70,7 +55,7 @@ void Game::run()
             }
         }
 
-        fpsCounter.getStartTime();
+        BaS.counter.getStartTime();
 
         // for (auto i : npcList) i->move(animal.getPos());
 
@@ -78,19 +63,19 @@ void Game::run()
 
         keyboardCheck();
 
-        if (!window->isOpen()) return;
+        if (!BaS.window.isOpen()) return;
 
-        window->clear();
+        BaS.window.clear();
 
         camera.render();
 
-        fpsCounter.getEndTime();
+        BaS.counter.getEndTime();
 
-        fpsCounter.draw(*window);
+        BaS.counter.draw(BaS.window);
 
-        debuger.drawConsole();
+        BaS.console.drawConsole();
 
-        window->display();
+        BaS.window.display();
     }
 }
 
@@ -125,7 +110,7 @@ void Game::keyboardCheck()
 {
     int x = 0;
     int y = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window->close();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) BaS.window.close();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or sf::Keyboard::isKeyPressed(sf::Keyboard::W)) y++;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) x--;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or sf::Keyboard::isKeyPressed(sf::Keyboard::S)) y--;
@@ -137,12 +122,12 @@ void Game::keyboardCheck()
     if (oneKeyPressed(sf::Keyboard::N))
     {
         player.setPos(Coordinates(player.getPos().x, player.getPos().y, player.getPos().z - 1));
-        debuger.consoleLog(std::to_string(player.getPos().z));
+        BaS.console.log(std::to_string(player.getPos().z));
     }
     if (oneKeyPressed(sf::Keyboard::H))
     {
         player.setPos(Coordinates(player.getPos().x, player.getPos().y, player.getPos().z + 1));
-        debuger.consoleLog(std::to_string(player.getPos().z));
+        BaS.console.log(std::to_string(player.getPos().z));
     }
 
     if (x != 0 or y != 0)

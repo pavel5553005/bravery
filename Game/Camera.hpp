@@ -8,7 +8,6 @@
 #include "../InternalServer/Position/Coordinates.hpp"
 #include "../Resources/ResourceManager.hpp"
 #include "MapTextureGenerator.hpp"
-#include "../Debug/Debuger.hpp"
 #include <list>
 
 class Camera
@@ -18,7 +17,6 @@ private:
     ObjOnLayout* followObj;
     sf::Texture* floorTexture;
     sf::Texture* wallsTexture;
-    sf::RenderWindow* window;
     sf::RectangleShape backgroundSprite;
 
     sf::Image grassImage;
@@ -27,7 +25,7 @@ private:
     double scale;
 public:
     Camera() { }
-    Camera(ObjOnLayout& followObj, const double scale, sf::RenderWindow& window);
+    Camera(ObjOnLayout& followObj, const double scale);
 
     const Coordinates getPos();
     double getScale();
@@ -40,8 +38,8 @@ public:
     ~Camera();
 };
 
-Camera::Camera(ObjOnLayout& followObj, const double scale, sf::RenderWindow& window) : 
-followObj(&followObj), scale(scale), window(&window) { }
+Camera::Camera(ObjOnLayout& followObj, const double scale) : 
+followObj(&followObj), scale(scale) { }
 
 const Coordinates Camera::getPos()
 {
@@ -74,18 +72,18 @@ void Camera::render()
     // // }
     // // else
     // // {
-    // debuger.consoleLog("speed: " + std::to_string(scale));
+    // BaS.console.log("speed: " + std::to_string(scale));
     // pos.x += (followObj->getPos().x - pos.x + followObj->getSize().x / 2) * speed * scale / 100;
     // pos.y += (followObj->getPos().y - pos.y + followObj->getSize().y / 2) * speed * scale / 100;
     // }
 
-    window->draw(backgroundSprite);
+    BaS.window.draw(backgroundSprite);
 
     sf::Sprite floorSprite;
     floorSprite.setTexture(floorTexture[followObj->getPos().z]);
-    floorSprite.setPosition(-pos.x * scale + WINDOW_WIDTH / 2, -pos.y * scale + WINDOW_HEIGHT / 2);
+    floorSprite.setPosition(-pos.x * scale + BaS.windowWidth / 2, -pos.y * scale + BaS.windowHeight / 2);
     floorSprite.setScale(scale / TILE_SIZE, scale / TILE_SIZE);
-    window->draw(floorSprite);
+    BaS.window.draw(floorSprite);
 
     for (auto i : followObj->getLayout().getObjects())
     {
@@ -93,22 +91,22 @@ void Camera::render()
         // if (i != followObj)
         // {
         //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
         //     rect.setFillColor(sf::Color::Blue);
-        //     window->draw(rect);
+        //     BaS.window.draw(rect);
         // }
         // else
         // {
         //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
+        //     rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
         //     rect.setFillColor(sf::Color::Red);
-        //     window->draw(rect);
+        //     BaS.window.draw(rect);
         // }
         sf::Sprite sprite;
         sprite.setTexture(i->getTexture().getTexture());
-        sprite.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
+        sprite.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
         sprite.setScale(scale / TILE_SIZE * 2, scale / TILE_SIZE * 2);
-        window->draw(sprite);
+        BaS.window.draw(sprite);
     }
 
     // for (int y = 0; y < 100; y++)
@@ -120,16 +118,16 @@ void Camera::render()
     //             if (i != followObj)
     //             {
     //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
     //                 rect.setFillColor(sf::Color::Blue);
-    //                 window->draw(rect);
+    //                 BaS.window.draw(rect);
     //             }
     //             else
     //             {
     //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + WINDOW_WIDTH / 2, (i->getPos().y - pos.y) * scale + WINDOW_HEIGHT / 2);
+    //                 rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
     //                 rect.setFillColor(sf::Color::Red);
-    //                 window->draw(rect);
+    //                 BaS.window.draw(rect);
     //             }
     //         }
     //     }
@@ -137,9 +135,9 @@ void Camera::render()
         
     sf::Sprite wallsSprite;
     wallsSprite.setTexture(wallsTexture[followObj->getPos().z]);
-    wallsSprite.setPosition(-pos.x * scale + WINDOW_WIDTH / 2, -pos.y * scale + WINDOW_HEIGHT / 2);
+    wallsSprite.setPosition(-pos.x * scale + BaS.windowWidth / 2, -pos.y * scale + BaS.windowHeight / 2);
     wallsSprite.setScale(scale / 16, scale / 16);
-    window->draw(wallsSprite);
+    BaS.window.draw(wallsSprite);
 }
 
 void Camera::generateTextures()
@@ -163,7 +161,7 @@ void Camera::generateTextures()
         index++;
     }
 
-    backgroundSprite.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    backgroundSprite.setSize(sf::Vector2f(BaS.windowWidth, BaS.windowHeight));
     backgroundSprite.setPosition(0, 0);
     backgroundSprite.setFillColor(sf::Color(85, 85, 85));
 }

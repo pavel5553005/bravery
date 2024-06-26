@@ -1,15 +1,46 @@
-#include "Debuger.hpp"
+#ifndef Console_hpp_
+#define Console_hpp_
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <list>
+#include "../InternalServer/Position/Coordinates.hpp"
+#include "../InternalServer/Position/Vector2d.hpp"
 
-Debuger::Debuger()
+class Console
+{
+private:
+    struct ConsoleText
+    {
+        std::string text;
+        unsigned int time;
+        sf::Color color;
+    };
+    sf::RenderWindow* window;
+    sf::Font font;
+    std::list<ConsoleText*> console;
+public:
+    Console();
+
+    void setWindow(sf::RenderWindow& window);
+    void setFont(sf::Font& font);
+
+    void log(std::string text, sf::Color color = sf::Color::White);
+    void errorLog(std::string text);
+    void drawConsole();
+
+    ~Console();
+};
+
+Console::Console()
 {
     this->window = nullptr;
 }
 
-void Debuger::setWindow(sf::RenderWindow& window) { this->window = &window; }
+void Console::setWindow(sf::RenderWindow& window) { this->window = &window; }
 
-void Debuger::setFont(sf::Font& font) { this->font = font; }
+void Console::setFont(sf::Font& font) { this->font = font; }
 
-void Debuger::consoleLog(std::string text, sf::Color color)
+void Console::log(std::string text, sf::Color color)
 {
     ConsoleText* consoleText = new ConsoleText;
     consoleText->text = text;
@@ -23,9 +54,9 @@ void Debuger::consoleLog(std::string text, sf::Color color)
     }
 }
 
-void Debuger::errorLog(std::string text) { consoleLog("error: " + text, sf::Color(255, 128, 128)); }
+void Console::errorLog(std::string text) { log("Error: " + text, sf::Color(255, 128, 128)); }
 
-void Debuger::drawConsole()
+void Console::drawConsole()
 {
     int index = 0;
     for (auto i : console)
@@ -58,6 +89,6 @@ void Debuger::drawConsole()
     }
 }
 
-Debuger::~Debuger() { }
+Console::~Console() { }
 
-Debuger debuger;
+#endif

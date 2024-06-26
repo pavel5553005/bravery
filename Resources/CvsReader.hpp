@@ -57,7 +57,7 @@ std::vector<sf::Texture>* getTextureFromCsv(std::string path)
         }
         catch (UnableToLoadFile e)
         {
-            debuger.errorLog(e.what());
+            BaS.console.errorLog(e.what());
         }
 
         // t.loadFromImage(image);

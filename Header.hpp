@@ -2,7 +2,7 @@
 #define Header_hpp_
 
 #include <SFML/Graphics.hpp>
-#include "Debug/Debuger.hpp"
+#include "System/System.hpp"
 #include "InternalServer/Position/Coordinates.hpp"
 #include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
@@ -11,7 +11,6 @@
 #include "InternalServer/Event/Event.hpp"
 #include <random>
 #include "InternalServer/ObjOnLayout/Debug/DebugObj.hpp"
-#include "Debug/FpsCounter.hpp"
 #include "InternalServer/ObjOnLayout/Unit/Unit.hpp"
 #include "InternalServer/ObjOnLayout/Unit/GameCharacter/NPC.hpp"
 #include "InternalServer/ObjOnLayout/Unit/Animal/Animal.hpp"

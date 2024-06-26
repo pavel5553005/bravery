@@ -32,17 +32,17 @@ Map& Layout::getMap() { return map; }
 
 void Layout::addObject(ObjOnLayout& obj)
 {
-    debuger.consoleLog("add object");
+    BaS.console.log("add object");
     objects.push_back(&obj);
-    debuger.consoleLog(std::to_string(objects.size()));
+    BaS.console.log(std::to_string(objects.size()));
     // map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->addObject(obj);
 }
 
 void Layout::deleteObject(ObjOnLayout& obj)
 {
-    debuger.consoleLog("delete object");
+    BaS.console.log("delete object");
     objects.remove(&obj);
-    debuger.consoleLog(std::to_string(objects.size()));
+    BaS.console.log(std::to_string(objects.size()));
     // map.getCell(obj.getPos().x + obj.getSize().x / 2, obj.getPos().y + obj.getSize().y / 2, 0)->deleteObject(obj);
 }
 
