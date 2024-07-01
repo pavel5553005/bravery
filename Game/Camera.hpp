@@ -4,6 +4,8 @@
 #define TILE_SIZE 32
 #include <SFML/Graphics.hpp>
 #include "../InternalServer/ObjOnLayout/ObjOnLayout.hpp"
+#include "../InternalServer/ObjOnLayout/Unit/GameCharacter/GameCharacter.hpp"
+#include "../InternalServer/ObjOnLayout/Unit/Unit.hpp"
 #include "../InternalServer/Map/Layout.hpp"
 #include "../InternalServer/Position/Coordinates.hpp"
 #include "../Resources/ResourceManager.hpp"
@@ -87,57 +89,59 @@ void Camera::render()
 
     for (auto i : followObj->getLayout().getObjects())
     {
+        double ObjPosX = (i->getPos().x - pos.x) * scale + BaS.windowWidth / 2;
+        double ObjPosY = (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2;
+        
         if (i->getPos().z != followObj->getPos().z) continue;
-        // if (i != followObj)
-        // {
-        //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
-        //     rect.setFillColor(sf::Color::Blue);
-        //     BaS.window.draw(rect);
-        // }
-        // else
-        // {
-        //     sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-        //     rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
-        //     rect.setFillColor(sf::Color::Red);
-        //     BaS.window.draw(rect);
-        // }
         sf::Sprite sprite;
         sprite.setTexture(i->getTexture().getTexture());
-        sprite.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
+        sprite.setPosition(ObjPosX, ObjPosY);
         sprite.setScale(scale / TILE_SIZE * 2, scale / TILE_SIZE * 2);
         BaS.window.draw(sprite);
     }
-
-    // for (int y = 0; y < 100; y++)
-    // {
-    //     for (int x = 0; x < 100; x++)
-    //     {
-    //         for (auto i : *followObj->getLayout()->getMap()->getCell(x, y, 0)->getObjects())
-    //         {
-    //             if (i != followObj)
-    //             {
-    //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
-    //                 rect.setFillColor(sf::Color::Blue);
-    //                 BaS.window.draw(rect);
-    //             }
-    //             else
-    //             {
-    //                 sf::RectangleShape rect(sf::Vector2f(i->getSize().x * scale, i->getSize().y * scale));
-    //                 rect.setPosition((i->getPos().x - pos.x) * scale + BaS.windowWidth / 2, (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2);
-    //                 rect.setFillColor(sf::Color::Red);
-    //                 BaS.window.draw(rect);
-    //             }
-    //         }
-    //     }
-    // }
         
     sf::Sprite wallsSprite;
     wallsSprite.setTexture(wallsTexture[followObj->getPos().z]);
     wallsSprite.setPosition(-pos.x * scale + BaS.windowWidth / 2, -pos.y * scale + BaS.windowHeight / 2);
     wallsSprite.setScale(scale / 16, scale / 16);
     BaS.window.draw(wallsSprite);
+
+    for (auto i : followObj->getLayout().getObjects())
+    {
+        double ObjPosX = (i->getPos().x - pos.x) * scale + BaS.windowWidth / 2;
+        double ObjPosY = (i->getPos().y - pos.y) * scale + BaS.windowHeight / 2;
+
+        if (auto unit = dynamic_cast<Unit*>(i); unit)
+        {
+            sf::RectangleShape hpLine;
+            hpLine.setFillColor(sf::Color::Green);
+            hpLine.setSize(sf::Vector2f(1 * scale * unit->getHp() / unit->getMaxHp(), 0.1 * scale));
+            hpLine.setOrigin(0.5 * scale, 0.05 * scale);
+            hpLine.setPosition(ObjPosX + (i->getSize().x / 2) * scale, ObjPosY - 0.2 * scale);
+            BaS.window.draw(hpLine);
+
+            sf::RectangleShape hpBar;
+            hpBar.setFillColor(sf::Color(0, 0, 0, 0));
+            hpBar.setSize(sf::Vector2f(1 * scale, 0.1 * scale));
+            hpBar.setOutlineColor(sf::Color::Black);
+            hpBar.setOutlineThickness(1);
+            hpBar.setOrigin(0.5 * scale, 0.05 * scale);
+            hpBar.setPosition(ObjPosX + (i->getSize().x / 2) * scale, ObjPosY - 0.2 * scale);
+            BaS.window.draw(hpBar);
+        }
+        if (auto character = dynamic_cast<GameCharacter*>(i); character)
+        {
+            sf::Text text;
+            text.setFont(BaS.font);
+            text.setString(character->getName());
+            text.setCharacterSize(16);
+            text.setFillColor(sf::Color::Black);
+            text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height);
+            text.setPosition(ObjPosX + (i->getSize().x / 2) * scale, ObjPosY - 0.4 * scale);
+            BaS.window.draw(text);
+        }
+
+    }
 }
 
 void Camera::generateTextures()

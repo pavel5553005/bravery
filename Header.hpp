@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "System/System.hpp"
+#include "HUD/HudManager.hpp"
 #include "InternalServer/Position/Coordinates.hpp"
 #include "InternalServer/Position/Vector2d.cpp"
 #include "InternalServer/Map/Layout.hpp"
@@ -16,7 +17,8 @@
 #include "InternalServer/ObjOnLayout/Unit/Animal/Animal.hpp"
 #include <list>
 #include <iostream>
-#include "HUD/HUD.hpp"
+#include "HUD/Button.hpp"
 #include "InternalServer/InternalServer.hpp"
+#include "InternalServer/ObjOnLayout/Unit/GameCharacter/Player.hpp"
 
 #endif

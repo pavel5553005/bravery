@@ -18,14 +18,14 @@ public:
     Unit();
     Unit(const Coordinates pos, const Vector2d size);
 
-    void setHp(const unsigned int hp) { this->hp = hp; }
-    void setMaxHp(const unsigned int maxHp) { this->maxHp = maxHp; }
-    void setSpeed(const double speed) { this->speed = speed; }
+    void setHp(int hp);
+    void setMaxHp(unsigned int maxHp) { this->maxHp = maxHp; }
+    void setSpeed(double speed) { this->speed = speed; }
 
-    const unsigned int getHp() const { return hp; }
-    const unsigned int getMaxHp() const { return maxHp; }
-    const double getSpeed() const { return speed; }
-    const bool isPathEmpty() const { return pathList.empty(); }
+    int getHp() const { return hp; }
+    int getMaxHp() const { return maxHp; }
+    double getSpeed() const { return speed; }
+    bool isPathEmpty() const { return pathList.empty(); }
 
     void addPath(const Coordinates pos) { pathList.push_back(pos); }
     void deletePath(const Coordinates pos) { pathList.remove(pos); }
@@ -44,8 +44,16 @@ Unit::Unit(const Coordinates pos, const Vector2d size) : ObjOnLayout(pos, size)
     handler.addListener(std::bind(&Unit::walk, this, std::placeholders::_1), Event::Type::Tick);
 }
 
+void Unit::setHp(int hp)
+{
+    if (hp > int(maxHp)) hp = maxHp;
+    if (hp < 0) hp = 0;
+    this->hp = hp;
+}
+
 void Unit::move(int angle)
 {
+    if (hp <= 0) return;
     Unit::setPos(Coordinates(Unit::getPos().x + cos(angle * M_PI / 180) * speed, Unit::getPos().y - sin(angle * M_PI / 180) * speed, Unit::getPos().z));
 }
 

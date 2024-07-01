@@ -21,7 +21,7 @@ public:
     System();
 
     const std::string getUnicalId();
-    bool isIdUnical();
+    bool isIdUnical(std::string id);
 
     ~System();
 };
@@ -33,6 +33,25 @@ System::System() : windowWidth(1600), windowHeight(900), counter(windowWidth), w
     console.setFont(font);
     counter.setFont(font);
     console.setWindow(window);
+}
+
+const std::string System::getUnicalId()
+{
+    std::string id;
+    for (int i = 0; i < 5; i++)
+    {
+        id += std::to_string(rand() % 10 + '0');
+    }
+    return id;
+}
+
+bool System::isIdUnical(std::string id)
+{
+    for (auto i : hudIds)
+    {
+        if (i == id) return false;
+    }
+    return true;
 }
 
 System::~System() { }

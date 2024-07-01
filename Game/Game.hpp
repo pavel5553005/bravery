@@ -1,10 +1,12 @@
 #include "../Header.hpp"
+#include "../HUD/Button.hpp"
+#include "../HUD/Block.hpp"
 
 class Game
 {
 private:
 
-    Unit player;
+    Player player;
     std::list<NPC*> npcs;
     Camera camera;
     std::list<sf::Keyboard::Key> pressedKeys;
@@ -20,7 +22,7 @@ public:
     ~Game();
 };
 
-Game::Game() : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75))
+Game::Game() : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75), "Test")
 {
     player.setLayout(server.getLayout());
     camera = Camera(player, 100);
@@ -31,6 +33,21 @@ Game::Game() : player(Coordinates(0, 0, 0), Vector2d(0.75, 0.75))
 
 void Game::run()
 {
+    Block block;
+    block.setPos(Vector2d(10, 10));
+    block.setSize(Vector2d(200, 200));
+
+    Button button;
+    button.setPos(Vector2d(10, 10));
+    button.setSize(Vector2d(100, 100));
+    button.setText("Test");
+    button.setFuncOnClick([&]{player.setHp(player.getHp() - 10); BaS.console.log(std::to_string(player.getHp()));});
+
+    block.addElement(button);
+
+    hudManager.addElement(block);
+    hudManager.openBlock(block);
+
     while (BaS.window.isOpen())
     {
         sf::Event event;
@@ -61,6 +78,8 @@ void Game::run()
 
         server.tick();
 
+        hudManager.tick();
+
         keyboardCheck();
 
         if (!BaS.window.isOpen()) return;
@@ -68,6 +87,8 @@ void Game::run()
         BaS.window.clear();
 
         camera.render();
+
+        hudManager.draw();
 
         BaS.counter.getEndTime();
 

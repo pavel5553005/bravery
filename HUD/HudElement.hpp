@@ -3,6 +3,7 @@
 #include <string>
 #include "../System/System.hpp"
 #include "../InternalServer/Position/Vector2d.hpp"
+#include <SFML/Graphics.hpp>
 
 class HudElement
 {
@@ -21,13 +22,21 @@ public:
     void setPos(const Vector2d pos) { this->pos = pos; }
     void setSize(const Vector2d size) { this->size = size; }
 
-    virtual void draw() = 0;
+    virtual void draw() const = 0;
+    virtual void tick() = 0;
 
     virtual ~HudElement();
 };
 
 HudElement::HudElement() : id(BaS.getUnicalId()) { }
 
-HudElement::HudElement(const std::string id) : id(id) { }
+HudElement::HudElement(const std::string id) : id(id)
+{
+    if (!BaS.isIdUnical(id))
+    {
+        throw std::invalid_argument("id is not unical");
+    }
+    BaS.hudIds.push_back(id);
+}
 
 HudElement::~HudElement() { BaS.hudIds.remove(id); }
