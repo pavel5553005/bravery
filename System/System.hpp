@@ -1,12 +1,13 @@
 #pragma once
+
 #include "Console.hpp"
 #include "FpsCounter.hpp"
+#include <list>
 
 class System
 {
-private:
-    
 public:
+    std::list<std::string> hudIds;
     const unsigned int windowWidth;
     const unsigned int windowHeight;
 
@@ -18,6 +19,10 @@ public:
     FpsCounter counter;
 
     System();
+
+    const std::string getUnicalId();
+    bool isIdUnical();
+
     ~System();
 };
 

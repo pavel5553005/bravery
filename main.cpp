@@ -3,7 +3,7 @@
 #include "Game/Game.hpp"
 #include "Resources/CvsReader.hpp"
 
-// Bravery and Stupidi* args */ty
+// Bravery and Stupidity
 
 int main()
 {
